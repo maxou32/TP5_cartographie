@@ -1,0 +1,21 @@
+﻿#**************************************
+#routes à suivre
+#**************************************
+# l'appel donne le nom de la fonction
+# puis les paramètres éventuels
+#**************************************
+#Nom de la route :
+# classe : nom de la classe
+# operation : nom de l'opération
+# niveauSecurité : valeur du niveau requis
+# variable :
+#  nomVariable1 : son nom
+#....
+#  nomVariablen : son nom
+#**************************************
+carte.html :
+ classe : Front
+ operation : executeCarte
+ niveauSecurité : 0
+ variable:
+  nomVar : zone 

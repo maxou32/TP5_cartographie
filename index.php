@@ -1,12 +1,13 @@
 <?php
 	session_start();
 
-	include_once('lib/Config.php');
+	include_once('lib/Autoload.php');
 	
-	MyAutoload::start();
+	Autoload::start();
 	
-	$request = $_GET['request'];
-	echo "request = ".$request."<br />";
+	//$request = $_GET['request'];
+	$request = $_GET;
+	//echo "request = ".$request."<br />";
 		
 	$monRouter = new Router($request);
 	$monRouter->renderControlleur();

@@ -1,50 +1,97 @@
 <?php
+ 
+// show errors if not in php.ini
+//ini_set('display_errors','on');
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
 
-class MyAutoload{
-	public static function start (){
-		spl_autoload_register(array(__CLASS__, 'autoload'));
-				
-		ini_set('display_errors',1);
-		ini_set('display_startup_errors',1);
-		error_reporting(E_ALL);			
-		
-		//echo"<pre>";print_r($_SERVER);echo"</pre>";
-
-		$host='http://'.$_SERVER['HTTP_HOST'].'/';
-		$root=$_SERVER['CONTEXT_DOCUMENT_ROOT'].'/';
-
-		define ("HOST",$host.'edsa-TP5/');
-		define ("ROOT",$root);
-
-
-		define ("CONTROLLEUR", ROOT."controlleur/"); 
-		define ("LIB", ROOT."lib/");
-		define ("MODEL", ROOT."model/");
-		define ("VIEW", ROOT."view/");
+/**
+*  Classe exploitant le fichier de config
+*
+*/
+class Config{
+	
+	private $_data;
+	
+	/**
+	 * ouverture du fichier de configuration 
+	 * @private
+	 */
+	public function __construct()   {
+		//echo "CONFIG construct<br/>";
+		require_once "Spyc.php";
+		$this->data = \Spyc::YAMLLoad('lib/config.yaml');
+		$this->data['secu'] = \Spyc::YAMLLoad('lib/secu.yaml');
 	}
 	
+    /**
+     * Donne le login d'accès à la base de données
+     * @return string nom de l'utilisateur
+     */
+    public function getLogin(){
+		return $this->data['secu']["login"];
+	}
 	
-	private static function autoload($class){
-		/*echo "debut autoload : ".$class."<br />";
-		echo MODEL."<br />";
-		echo CONTROLLEUR."<br />";
-		echo LIB."<br />";
-		echo VIEW."<br />";
-		*/
-		if(file_exists(MODEL.$class.".php")){
-			echo "model ".$class."<br />";
-			include_once(MODEL.$class.".php");
-		}elseif(file_exists(CONTROLLEUR.$class.".php")){
-			echo "controlleur ".$class."<br />";
-			include_once(CONTROLLEUR.$class."php");
-		}elseif(file_exists(LIB.$class.".php")){
-			echo "lib ".$class."<br />";
-			include_once(LIB.$class.".php");
-		}elseif(file_exists(VIEW.$class.".php")){
-			echo "view ".$class."<br />";
-			include_once(VIEW.$class.".php");
+	   /**
+     * Donne le login d'accès à la base de données
+     * @return string nom de l'utilisateur
+     */
+    public function getHost(){
+		return $this->data['secu']["serveur"];
+	}
+	
+    /**
+     * donne le mot de passe d'accès à la base de données
+     * @return string mot de passe
+     */
+    public function getPassword(){
+		return $this->data['secu']["password"];
+	}
+
+    /**
+     * donne le mot de passe d'accès à la base de données
+     * @return string mot de passe
+     */
+    public function getPrefixe(){
+		if($this->data['secu']["avecPrefixe"]){
+			return $this->data['secu']["prefixe"];
+		}else{
+			return Null;
 		}
-		echo "fin autoLoad ".LIB.$class.".php";
+	}
+
+    /**
+     * donne la chaîne de connexion
+     * @return string connexion à la base de donnees
+     */
+    public function getConnect(){
+		$connect='mysql:host='. $this->data['secu']["serveur"].';dbname='. $this->data['secu']["nom"];
+		return $connect;
 	}
 	
-}
+    
+	/**
+     * donne l'adresse mail du site
+     * @return string adresse mail
+     */
+    public function getMail(){
+		return $this->data['secu']["mail"];
+	}
+
+	
+	/**
+	 * recherche les éléments de la route demandée
+	 * @param  string $theRoad nom de la route recherchée
+	 * @return array  tableau avec les caractéristiques de la route
+	 */
+	public function getRoad($theRoad){
+		try{
+			if(isset($this->data[$theRoad])){
+				return $this->data[$theRoad];
+			}
+		}catch(Exception $e){
+			return false;
+		}
+	}
+}			

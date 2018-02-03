@@ -1,13 +1,14 @@
 <?php
 
-class Carte(){
+class Front{
 
 	public function __construct(){
 
 		}
 		
-	public function executeCarte($zone){
-		$maView= new View($zone);
+	public function executeCarte($params){
+		//echo"<br />FRONT: <pre>";print_r($params);echo"</pre>";
+		$maView= new View($params['zone']);
 		$maView->render();
 	}
 	
