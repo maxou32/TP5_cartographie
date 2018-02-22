@@ -1,4 +1,15 @@
+<?php 
 
+class IGN extends View
+{	
+	public function __construct(){
+		
+	}
+
+	
+	public function show($datas){
+		ob_start(); 
+		?>
 				<script language="javascript" type="text/javascript">
 				/*	var projection = ol.proj.get('EPSG:3857');
 					var resolutions = [
@@ -58,44 +69,9 @@
 						})
 					});
 				};*/
-				/*	function chargeCarte() {
-						var map = Gp.Map.load(
-							"mapDiv",   // identifiant du conteneur HTML
-							// options d'affichage de la carte (Gp.MapOptions)
-							{           
-								 // clef d'accès à la plateforme
-								 apiKey: "49omnj6r7aljry7wsph1zxlx",
-								 // centrage de la carte
-								 center : {
-									 //location : "6 rue sébastien leclerc, Nancy"
-									 
-									 x : -4.620391,
-									 y : 48.268698,
-									 projection : "CRS:84"
-								 },
-								 // niveau de zoom de la carte (de 1 à 21)
-								 zoom : 17,
-								 // Couches à afficher
-								 layersOptions : {
-									 "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {
-									 }
-								 },
-								 // Outils additionnels à proposer sur la carte
-								 controlsOptions : {
-									 // ajout d'une barre de recherche
-									 "search" : {
-										 maximised : true
-									 }
-								 },
-								  Repères visuels
-								 markersOptions : [{
-									 content : "<h1>Caserne Thiry</h1><br/><p>24 rue sainte catherine, Nancy</p><br/><p><a href='http://web-max.fr/index.htm' target='_blank'>Site Web</a></p>"
-								 }]
-							}
-						)
-					};	*/
+				
 					window.onload = function () {
-							var map = L.map('mapid').setView([48.268698,-4.620391], 13);
+							/*var map = L.map('mapid').setView([48.268698,-4.620391], 13);
 
 							L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 								attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -104,55 +80,135 @@
 							L.marker([51.5, -0.09]).addTo(map)
 								.bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
 								.openPopup();
-							
+							*/
+							/*
 							var map = Gp.Map.load(
-							"mapDiv",   // identifiant du conteneur HTML
-							// options d'affichage de la carte (Gp.MapOptions)
-							{           
-								 // clef d'accès à la plateforme
-								 apiKey: "49omnj6r7aljry7wsph1zxlx",
-								 // centrage de la carte
-								 center : {
-									 //location : "6 rue sébastien leclerc, Nancy"
-									 
-									 x : -4.620391,
-									 y : 48.268698,
-									 projection : "CRS:84"
-								 },
-								 // niveau de zoom de la carte (de 1 à 21)
-								 zoom : 17,
-								 // Couches à afficher
-								 layersOptions : {
-									 "GEOGRAPHICALGRIDSYSTEMS.MAPS" : {	//.SCAN-EXPRESS.STANDARD
-									 }
-								 },
-								 // Outils additionnels à proposer sur la carte
-								 controlsOptions : {
-									 // ajout d'une barre de recherche
-									 "search" : {
-										 maximised : true
-									 }
-								 },
-								 // Repères visuels
-								 markersOptions : [{
-									 content : "<h1>Caserne Thiry</h1><br/><p>24 rue sainte catherine, Nancy</p><br/><p><a href='http://web-max.fr/index.htm' target='_blank'>Site Web</a></p>"
-								 }]
+								"mapDiv",   // identifiant du conteneur HTML
+								// options d'affichage de la carte (Gp.MapOptions)
+								{           
+									 // clef d'accès à la plateforme
+									 apiKey: "hz2zuzccg4dyv6kacncfnbxj",   //"49omnj6r7aljry7wsph1zxlx"
+									 // centrage de la carte
+									 center : {
+										 location : "6, rue sébastien Leclerc, 54000 Nancy"
+									 },
+									 // niveau de zoom de la carte (de 1 à 21)
+									 zoom : 17,
+									 // Couches à afficher
+									 layersOptions : {
+										 "GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD" : {
+										 }
+									 },
+									 // Outils additionnels à proposer sur la carte
+									 controlsOptions : {
+										 // ajout d'une barre de recherche
+										 "search" : {
+											 maximised : true
+										 }
+									 },
+									 // Repères visuels
+									 markersOptions : [{
+										 content : "<h1>Pôle Géosciences</h1><br/><p>place stanislas, 54000 Nancy</p><br/><p><a href='http://www.pôle-géosciences.fr/index.htm' target='_blank'>Site Web</a></p>"
+									 }]
+								}    
+							)*/
+							function go() {
+								var osmLyr = new ol.layer.Tile({
+										source: new ol.source.OSM()
+									});
+								var map = new ol.Map({
+									target: 'map',
+									layers: [
+										osmLyr,
+										new ol.layer.GeoportalWMTS({
+											layer: "GEOGRAPHICALGRIDSYSTEMS.MAPS",
+										}),
+										new ol.layer.GeoportalWMTS({
+											layer: "ORTHOIMAGERY.ORTHOPHOTOS",
+											olParams: {
+												opacity: 0.7
+											}
+										})
+									],
+									view: new ol.View({
+										center: [288074.8449901076, 6247982.515792289],
+										zoom: 12
+									})
+								});    
+								// gestion des couches
+								var lsControl = new ol.control.LayerSwitcher({
+									layers : [{
+										layer: osmLyr,
+										config: {
+											title: "OSM",
+											description: "Couche OpenStreet Map",
+										}
+									}], 
+									options : {
+										collapsed: true
+									}
+								});
+								map.addControl(lsControl);
+								
+								// Creation du controle caclcu coordonnées
+							  var mpControl = new ol.control.GeoportalMousePosition({
+									collapsed: false,
+									systems : [
+										{
+											crs : 'EPSG:4559',
+											label : "UTM 20 Nord",
+											type : "Metric"
+										},
+										{
+											crs : "EPSG:4326",
+											label : "Géographiques",
+											type : "Geographical"
+										}
+									],
+									units : ["DEC","M"]
+								});
+								map.addControl(mpControl);
+
+								
+								// Creation du controle de recherche
+								var searchControl = new ol.control.SearchEngine({
+								});
+
+								// Ajout à la carte
+								map.addControl(searchControl);								
+
+																
+								// Creation du controle de dessin 
+								var drawControl = new ol.control.Drawing({
+								});
+								// Ajout à la carte
+								map.addControl(drawControl);
+								
+								// creéation du controle d'importation
+								var lyrImport = new ol.control.LayerImport({
+								});       
+								map.addControl(lyrImport); 
 							}
-						)
+
+							Gp.Services.getConfig({
+								apiKey: "hz2zuzccg4dyv6kacncfnbxj",
+								onSuccess: go
+							});
+
+							var infoDiv = document.getElementById("map");
+							infoDiv.innerHTML = "<p> Extension OL3 version " + Gp.ol3extVersion + " (" + Gp.ol3extDate + ")</p>";
+						
 					}    
             
        
 				</script>
 		<title>Cartographie</title>
-		<div id="mapid" style="height:600px"></div>
-		<p> AVANT MA CARTE IGN </p>
 		<div id="mapDiv" >
-			<a href='#!' onClick='javascript:chargeCarte()'> PENDANT MA CARTE IGN </a>
 		</div>
-		<p> APRES MA CARTE IGN </p>
-		
-	
-	
-	
-	<iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" sandbox="allow-forms allow-scripts allow-same-origin" src="https://www.geoportail.gouv.fr/embed/visu.html?c=-4.620391,48.268698&z=6&l0=ORTHOIMAGERY.ORTHOPHOTOS::GEOPORTAIL:OGC:WMTS(1)&permalink=yes" allowfullscreen></iframe>
+		<div id="map"></div>
+		<div id="info"></div>		
+		<?php
+		return ob_get_clean();
+	}
+}
 	

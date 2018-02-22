@@ -48,7 +48,28 @@ class Config{
     public function getPassword(){
 		return $this->data['secu']["password"];
 	}
-
+	/**
+     * donne les couleurs à employer
+     * @return array des couleurs
+     */
+    public function getCouleur(){
+		return $this->data['style'];
+	}
+	/**
+     * donne les propriétés de la carte
+     * @return array des propriétés
+     */	
+	public function getProprieteLeaflet(){
+		$resultat['zoom']= $this->data['zoom'];
+		$resultat['latCentre']= $this->data['latCentre'];
+		$resultat['lngCentre']= $this->data['lngCentre'];
+		$resultat['maxZoom']= $this->data['maxZoom'];
+		$resultat['boxZoom']= $this->data['boxZoom'];
+		$resultat['tileSize']= $this->data['tileSize'];
+		$resultat['attribution']= $this->data['attribution'];
+		$resultat['layer']= $this->data['layer'];
+		return $resultat;
+	}
     /**
      * donne le mot de passe d'accès à la base de données
      * @return string mot de passe
@@ -78,7 +99,10 @@ class Config{
     public function getMail(){
 		return $this->data['secu']["mail"];
 	}
-
+    
+	public function getFichierJSON(){
+		return $this->data['secu']["frontJSON"];
+	}
 	
 	/**
 	 * recherche les éléments de la route demandée

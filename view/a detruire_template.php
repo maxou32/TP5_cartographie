@@ -20,7 +20,7 @@
 				
 				<!-- facebook		-->
 				<meta property="og:title" content="Alaska, mon périple" />
-				<meta property="og:url" content="https://web-max.fr/ecrivain/index.php"/>
+				<meta property="og:url" content="https://web-max.fr/gestFront"/>
 				<meta property="og:site_name" content="web-max.fr"/>
 				<meta property="og:description" content="Mon périple en Alaska au milieu du PHP entouré de MVC menaçants.">
 				<meta property="og:image" content="">
@@ -50,7 +50,7 @@
 				<!-- Let browser know website is optimized for mobile -->
 				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-				<script src="public\js\tinymce\tinymce.min.js"></script>
+				<script src="public/js/tinymce/tinymce.min.js"></script>
 				<script>
 				tinymce.init({
 					selector:'.texteChapitre',
@@ -64,21 +64,21 @@
 				</script>
 			</head>
 			<body >	 
-				<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 				<script type="text/javascript"  src="public/js/jquery-3.2.1.min.js"></script>		
 				<script type="text/javascript" src="public/js/ajax.js"></script>
 				<script type="text/javascript" src="public/materialize/js/materialize.min.js"></script>
 				<script src="public/sdk-ol/GpOl3.js"></script>
 		
-		<title>Cartographie</title>
-		
-		<div id="content" >
-			
-			<div id="contenuDetail">
-				<?php echo $content; ?>
-			</div>
-		
-		</div>
+				<title>Cartographie</title>
+				
+				<div id="content" >
+					
+					<div id="contenuDetail">
+						<?php echo $content; ?>
+					</div>
+				
+				</div>
 
-	</body>
-</html>
+			</body>
+		</html>

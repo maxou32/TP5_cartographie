@@ -3,17 +3,6 @@
 #*************************************
 #background : public/media/alaska.jpg
 #**************************************
-# propriétés de la carte
-#*************************************
-zoom : 5
-latCentre : 48.777006
-lngCentre : 6.354958
-maxZoom : 18
-tileSize : 256
-boxZoom : 1
-attribution : Web-Max &copy; https://web-max.fr
-layer : GEOGRAPHICALGRIDSYSTEMS.MAPS
-#**************************************
 # style 
 #*************************************
 style :
@@ -50,14 +39,12 @@ addCarte.html :
  niveauSecurité : 2
  variable :
   cible : Leaflet2
-  proprieteLeaflet : 1
 leaflet2.html :
  classe : ControlleurMap
  operation : executeCarte
  niveauSecurité : 0
  variable :
   cible : Leaflet2
-  proprieteLeaflet : 1
 accueil.html :
  classe : Controlleur
  operation : montre
@@ -121,21 +108,9 @@ creerFrontsJSON:
  niveauSecurité : 0
  variable :
   Null   
-lireFrontsJSON:
+lireFronJSON:
  classe : ControlleurFront
  operation : lireJSON
  niveauSecurité : 0
  variable :
   Null   
-supprimeFront :
- classe : ControlleurFront
- operation : supprimeFront
- niveauSecurité: 3
- variable :
-  Null 
-supprimeLigneFront :
- classe : ControlleurLigne
- operation : supprimeLigne
- niveauSecurité: 3
- variable :
-  Null 
