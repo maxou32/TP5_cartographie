@@ -1,13 +1,15 @@
 <?php
 	session_start();
+	
+	ini_set('display_errors',1);
+	ini_set('display_startup_errors',1);
+	error_reporting(E_ALL);
+	
 
-	include_once('lib/Autoload.php');
+	/*require_once("lib/SplClassLoader.php");		
+	$Loader = new \SplClassLoader('web_max\ecrivain\lib', 'lib');
+	$Loader->register();
+	*/
 	
-	Autoload::start();
-	
-	//$request = $_GET['request'];
-	$request = $_GET;
-	//echo "request = ".$request."<br />";
-		
-	$monRouter = new Router($request);
-	$monRouter->renderControlleur();
+	$monRouter = new Router($_REQUEST);
+	$monRouter->Router();
