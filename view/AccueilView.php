@@ -64,7 +64,7 @@ class AccueilView extends View
 					<div class="card-image">
 					  <img src="public/media/FrontsChambrey.jpg">
 					  <span class="card-title text-black">Le front à Chambrey</span>
-					  <a  href="?action=leaflet1.html/cible/Leaflet1" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+					  <a  href="?action=leaflet2.html/cible/Leaflet2" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
 					</div>
 					<div class="card-content">
 					  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
@@ -76,7 +76,7 @@ class AccueilView extends View
 						<div class="card-image">
 						  <img src="public/media/FrontsBrun.jpg">
 						  <span class="card-title text-black">Le front à Brun</span>
-						  <a  href="?action=leaflet2.html/cible/Leaflet2" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+						  <a  href="?action=leaflet2.html/cible/Leaflet3" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
 						</div>
 						<div class="card-content">
 						  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>

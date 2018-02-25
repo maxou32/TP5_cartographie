@@ -108,7 +108,9 @@ class ControlleurLigne  extends Controlleur {
 	
 	
 	public function supprimeLigne ($params){
-		echo('Demande de suppression pour le front = '.$params['idLigne']);
+		echo('Demande de suppression pour le front = '.$params['idLigne']."<br />");
+		echo"<br />Controlleur Ligne 3.5: <pre>";print_r($params);echo"</pre>";
+		$result=false;
 		$maLigne= new LigneFrontManager;
 		$result=$maLigne->delete($params['idLigne']);
 		if($result){

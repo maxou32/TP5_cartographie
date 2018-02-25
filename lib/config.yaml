@@ -38,25 +38,31 @@ style :
 #....
 #  nomVariablen : son nom
 #**************************************
+paramGenerauxCarte :
+ classe : ControlleurCarte
+ operation : donneParamGenerauxCartes
+ niveauSecurité : 0
+ variable :
+  Null
 IGN.html :
- classe : ControlleurMap
+ classe : ControlleurCarte
  operation : executeCarte
  niveauSecurité : 0
  variable :
   cible : IGN
 addCarte.html :
- classe : ControlleurMap
+ classe : ControlleurCarte
  operation : executeCarte
  niveauSecurité : 2
  variable :
   cible : Leaflet2
   proprieteLeaflet : 1
 leaflet2.html :
- classe : ControlleurMap
+ classe : ControlleurCarte
  operation : executeCarte
  niveauSecurité : 0
  variable :
-  cible : Leaflet2
+  cible : Leaflet
   proprieteLeaflet : 1
 accueil.html :
  classe : Controlleur
@@ -109,6 +115,18 @@ addLigne:
  niveauSecurité : 0
  variable :
   Null
+listeFront.html: 
+ classe : ControlleurFront
+ operation : LireTousFrontsSeuls
+ niveauSecurité : 0
+ variable :
+  Null 
+listeCarte.html: 
+ classe : ControlleurCarte
+ operation : LireToutesCartesSeules
+ niveauSecurité : 0
+ variable :
+  Null 
 lireTousFronts:
  classe : ControlleurFront
  operation : lireTousFronts

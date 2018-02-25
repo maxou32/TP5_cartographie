@@ -40,7 +40,7 @@ class ControlleurFront  extends Controlleur {
 			$params['idFront']=$result['idFront'];
 			//echo"<br />ControlleurFront Carte 1 <pre>";print_r($result);echo"</pre>";
 
-			$maCarte= new ControlleurMap;
+			$maCarte= new ControlleurCarte;
 			$resultCarte=$maCarte->addCarte($params);
 			if (!$result['resultat']){
 				echo"<br />ControlleurFront erreur création ";
@@ -58,6 +58,7 @@ class ControlleurFront  extends Controlleur {
 	
 	
 	public function demandeSuppressionFront($params){
+		echo"<br />Controlleur front 3.5: <pre>";print_r($params);echo"</pre>";
 		$monFront= new FrontManager;
 		$result=$monFront->getLigneUnFront($params['idFront']);
 		if($result){
@@ -76,6 +77,31 @@ class ControlleurFront  extends Controlleur {
 		}else{
 			echo ("suppression impossible"); 
 		}
+	}
+	
+	public function LireTousFrontsSeuls(){
+		$monFrontManager = new FrontManager();
+		$mesFronts=$monFrontManager->getListAll();
+		
+		
+		for($i=0; $i < count($mesFronts);$i++){
+			$id=$mesFronts[$i]->getIdFront();
+			
+			//echo "<br /> id = ".$id;
+			
+			//$temp[$i]=[];
+			$temp[$i]['idfront']=$mesFronts[$i]->getIdFront();
+			$temp[$i]['idauteur']=$mesFronts[$i]->getIdAuteur();
+			$temp[$i]['dateDebut']=$mesFronts[$i]->getDateDebut();
+			$temp[$i]['dateFin']=$mesFronts[$i]->getDateFin();
+			$temp[$i]['nom']=$mesFronts[$i]->getNom();
+			$temp[$i]['description']=$mesFronts[$i]->getDescription();
+			$temp[$i]['valide']=$mesFronts[$i]->getValide();
+
+		}
+		//echo "<br />ControlleurFront 3 : <pre>";print_r($temp);"</pre>";
+		echo json_encode($temp);	
+		//return $temp;	
 	}
 	
 	public function lireTousFronts(){
@@ -98,10 +124,11 @@ class ControlleurFront  extends Controlleur {
 			$temp[$i]['valide']=$mesFronts[$i]->getValide();
 			
 			
-			$monControlleurCarte= new ControlleurMap;
+			$monControlleurCarte= new ControlleurCarte;
 			$temp[$i]['carte']=$monControlleurCarte->LireUneCarte($id);
 			//echo "<br />ControlleurFront 3 : <pre>";print_r($temp[$i]);"</pre>";
 			//$temp[$i]['carte']
+			
 			
 			$monControlleurLigne= new ControlleurLigne;
 			$temp[$i]['ligne']=$monControlleurLigne->LireLignesUnFront($id);
