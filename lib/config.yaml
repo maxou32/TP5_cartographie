@@ -126,7 +126,13 @@ listeCarte.html:
  operation : LireToutesCartesSeules
  niveauSecurité : 0
  variable :
-  Null 
+  Null
+listeDate.html: 
+ classe : ControlleurDateFront
+ operation : LireToutesDatesSeules
+ niveauSecurité : 0
+ variable :
+  Null  
 lireTousFronts:
  classe : ControlleurFront
  operation : lireTousFronts
