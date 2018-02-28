@@ -47,7 +47,7 @@ class ControlleurDateFront  extends Controlleur {
 	public function supprimeDatesFront ($params){
 		//echo('Demande de suppression pour le front = '.$params['idFront']);
 		$monDatesFront= new DatesFrontManager();
-		$result=$monDatesFront->delete($params['idFront']);
+		$result=$monDatesFront->delete($params['idront']);
 		if($result){
 			echo ("Success");
 		}else{
@@ -55,13 +55,14 @@ class ControlleurDateFront  extends Controlleur {
 		}
 	}
 	
-	public function LireToutesDatesSeules(){
+	public function LireDatesSeulesUnFront($params){
 		$monDatesFront= new DatesFrontManager();
-		$mesDatesFronts=$monDatesFront->getListAll();
+		$mesDatesFronts=$monDatesFront->getListUnFront($params['idfront']);
+		//echo"<pre>";print_r($params);echo"</pre>";
 		//echo"<pre>";print_r($mesDatesFronts);echo"</pre>";
 		
 		for($i=0; $i < count($mesDatesFronts);$i++){
-			$id=$mesDatesFronts[$i]->getIddate();
+			//$id=$mesDatesFronts[$i]->getIddate();
 
 			$temp[$i]=[];
 			$temp[$i]['iddate']=$mesDatesFronts[$i]->getIddate();
@@ -73,9 +74,7 @@ class ControlleurDateFront  extends Controlleur {
 			
 		}
 		//echo "<br />ControlleurFront 3 : <pre>";print_r($temp);"</pre>";
-		//echo $temp;	
 		
-		$temp[count($mesDatesFronts)-1]['test maxou']='maxou';
 		echo json_encode($temp);	
 		
 		//return $temp;	

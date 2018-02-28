@@ -19,7 +19,7 @@ class DatesFrontManager extends Manager{
 			
 			$result['iddatesfront']= $this->dbConnect()->lastInsertId();
 			if($result['iddatesfront']==0){
-				$q = $this->dbConnect()->query('SELECT Max(iddatesfront) as idMax from '.$this->prefix.'datesfront');
+				$q = $this->dbConnect()->query('SELECT Max(iddatesfront) as idMax from '.$this->prefix.'datesFront');
 				$donnees = $q->fetch(\PDO::FETCH_ASSOC);
 				echo"<br />datesfronttManager Front<pre>";print_r($donnees);echo"</pre>";
 				$result['iddatesfront']= $donnees['idMax'];
@@ -35,7 +35,7 @@ class DatesFrontManager extends Manager{
 	public function delete($iddatesfront)  {
 		try{
 			$iddatesfront = (int) $iddatesfront;
-			$this->dbConnect()->exec('DELETE FROM '.$this->prefix.'datesfront WHERE idDate = '.$iddatesfront);
+			$this->dbConnect()->exec('DELETE FROM '.$this->prefix.'datesFront WHERE idDate = '.$iddatesfront);
 			return true;			
 		}catch (PDOException  $e){ 
 			return 'Erreur : '.$e->getMessage();
@@ -45,7 +45,7 @@ class DatesFrontManager extends Manager{
 	public function get($iddatesfront)  {
 		try{
 			$iddatesfront = (int) $iddatesfront;
-			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, date,  description,  idfront FROM '.$this->prefix.'datesfront WHERE idDate = '.$iddatesfront);
+			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, date,  description,  idfront FROM '.$this->prefix.'datesFront WHERE idDate = '.$iddatesfront);
 			$donnees = $q->fetch(\PDO::FETCH_ASSOC);
 			
 			if($donnees) {
@@ -58,17 +58,17 @@ class DatesFrontManager extends Manager{
 		}	;
 	}
 
-	public function getdatesfrontUnFront($idFront)  {
+	public function getListUnFront($idFront)  {
 		try{
 			$idFront = (int) $idFront;
-			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, date,  description, idfront FROM '.$this->prefix.'datesfront WHERE idfront = '.$idFront);
-			$donnees = $q->fetch(\PDO::FETCH_ASSOC);
+			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, date,  description, idfront FROM '.$this->prefix.'datesFront WHERE idfront = '.$idFront);
 			
-			if($donnees) {
-				return $donnees;
-			}else{
-				return false;
+			
+			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
+				$datesfront[] = new DatesFront($donnees);
 			}
+			
+			return $datesfront;
 		}catch (PDOException  $e){ 
 			return 'Erreur : '.$e->getMessage();
 		}	;
@@ -91,7 +91,7 @@ class DatesFrontManager extends Manager{
 
 	public function update(datesfront $datesfront)  {
 		try{
-			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'datesfront SET valide = :valide, numordre= :numordre, date = :date, idfront = :idfront WHERE idDate = :idDate');
+			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'datesFront SET valide = :valide, numordre= :numordre, date = :date, idfront = :idfront WHERE idDate = :idDate');
 
 			$q->bindValue(':idDate', $datesfront->getIddatesfront(), \PDO::PARAM_INT);
 			$q->bindValue(':valide', $datesfront->getValide(), \PDO::PARAM_BOOL);

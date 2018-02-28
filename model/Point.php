@@ -29,7 +29,7 @@ class Point{
 	public function getLat()  {return $this->_lat;}  
 	public function getLng()  {return $this->_lng; }  
 	public function getIdMarqueur()  {return $this->_idmarqueur; }  
-	public function getidLignefront()  {return $this->_idlignefront; }  
+	public function getIdLigneFront()  {return $this->_idlignefront; }  
 
 	
 	// Liste des setters

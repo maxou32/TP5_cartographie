@@ -69,14 +69,15 @@ class Router{
 			$function = $this->myRoad['operation'];
 			//echo"<br />appel 1 : ".$this->myRoad['classe']." fonction : ".$this->myRoad['operation'];
 			//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
-			$this->myParam=$this->request;
+			$this->myParam=$this->myRequest;
+			
 			foreach ($this->myRoad["variable"] as $key => $value){
 				//echo"<br />element : <pre>";print_r($key);echo"</pre>";
 				empty($key) ? null : $param = $key ;
 				$this->myParam[$key]=$value;
 				//echo"<br />element 2: <pre>";print_r($this->myParam);echo"</pre>";
 				
-	;		}
+			}
 			$maClasse->$function($this->myParam);
 		}
 	}

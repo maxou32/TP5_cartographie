@@ -141,4 +141,27 @@ class ControlleurLigne  extends Controlleur {
 		return $mesLignes; 
 	}
 	
+	public function LireLignesUnFrontSeul($params){
+		//echo"<br />Controlleur Ligne 5 =<pre>";print_r($params);echo"</pre>";
+		$mesLignes=[];
+		$maLigneFrontManager = new LigneFrontManager();
+		$mesLignes=$maLigneFrontManager->getLigneUneDate($params['iddatefront']);
+		$temp=[];
+		for($i=0; $i < count($mesLignes);$i++){
+			//$id=$mesDatesFronts[$i]->getIddate();
+
+			$temp[$i]=[];
+			$temp[$i]['idlignefront']=$mesLignes[$i]->getIdlignefront();
+			$temp[$i]['couleur']=$mesLignes[$i]->getCouleur();
+			$temp[$i]['type']=$mesLignes[$i]->getType();
+			$temp[$i]['valide']=$mesLignes[$i]->getValide();
+			$temp[$i]['iddatefront']=$mesLignes[$i]->getIddatefront();
+			$temp[$i]['idcontributeurfront']=$mesLignes[$i]->getIdcontributeurfront();
+			
+		}
+		//echo "<br />ControlleurFront 3 : <pre>";print_r($temp);"</pre>";
+		
+		echo json_encode($temp);	
+	}
+	
 }

@@ -4,10 +4,8 @@ class LigneFront{
 	private $_idlignefront;
 	private $_couleur;
 	private $_type;
-	private $_dateDebut;
-	private $_dateFin;
 	private $_valide;
-	private $_idfront;
+	private $_iddatefront;
 	private $_idcontributeurfront;
 	
 	// Un tableau de données doit être passé à la fonction (d'où le préfixe « array »).
@@ -28,14 +26,12 @@ class LigneFront{
 		}
 	}
 	// Liste des getters  
-	public function getIdLigneFront()  { return $this->_idlignefront;}  
+	public function getIdligneFront()  { return $this->_idlignefront;}  
 	public function getCouleur()  {return $this->_couleur;}  
 	public function getType()  {return $this->_type;}  
-	public function getDateDebut()  {return $this->_dateDebut; }  
-	public function getDateFin()  {  return $this->_dateFin;  }  
 	public function getValide()  {return $this->_valide;}  
-	public function getIdFront()  {return $this->_idfront; }  
-	public function getIdContributeurFront()  {return $this->_idcontributeurfront; }  
+	public function getIddatefront()  {return $this->_iddatefront; }  
+	public function getIdcontributeurfront()  {return $this->_idcontributeurfront; }  
 
 	
 	// Liste des setters
@@ -47,15 +43,6 @@ class LigneFront{
 			// Si c'est le cas, c'est tout bon, on assigne la valeur à l'attribut correspondant.
 			$this->_idlignefront = $idlignefront;
 		}
-	}
-	
-	public function setDatedebut($dateDebut){
-		$this->_dateDebut= $dateDebut;
-	}
-	  
-	public function setDatefin($dateFin){
-
-		$this->_dateFin= $dateFin;
 	}
 	
 	public function setValide($valide){
@@ -74,13 +61,13 @@ class LigneFront{
 			$this->_type= $type;
 	}
 	
-	public function setIdfront($idfront){
+	public function setIddatefront($iddatefront){
 		// On convertit l'argument en couleurbre entier.
-		$idfront = (int) $idfront;
+		$iddatefront = (int) $iddatefront;
 		// On vérifie ensuite si ce couleurbre est bien strictement positif.
-		if ($idfront > 0){
+		if ($iddatefront > 0){
 			// Si c'est le cas, c'est tout bon, on assigne la valeur à l'attribut correspondant.
-			$this->_idfront = $idfront;
+			$this->_iddatefront = $iddatefront;
 		}
 	}
 	  

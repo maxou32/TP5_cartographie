@@ -79,7 +79,7 @@ class CarteManager extends Manager{
 	public function getListAll()  {
 		try{
 			$carte = [];
-			$q = $this->dbConnect()->query('SELECT  idcarte, lat, lng, projection, layeroption, nom,  idfront FROM '.$this->prefix.'carte ORDER BY idcarte ASC');
+			$q = $this->dbConnect()->query('SELECT  idcarte, lat, lng, projection, layeroption, nom, zoom, idfront FROM '.$this->prefix.'carte ORDER BY idcarte ASC');
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
 				$carte[] = new Carte($donnees);

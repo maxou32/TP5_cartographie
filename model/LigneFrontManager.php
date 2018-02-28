@@ -10,14 +10,12 @@ class LigneFrontManager extends Manager{
 		$result=[];
 		try{
 			
-			$q = $this->dbConnect()->prepare('INSERT INTO '.$this->prefix.'lignefront (couleur, type, datedebut, datefin, valide, idfront, idcontributeurfront ) VALUES (:couleur, :type, :datedebut, :datefin, :valide, :idfront, :idcontributeurfront)');
+			$q = $this->dbConnect()->prepare('INSERT INTO '.$this->prefix.'lignefront (couleur, type, valide, iddatefront, idcontributeurfront ) VALUES (:couleur, :type, :valide, :iddatefront, :idcontributeurfront)');
 			
 			$q->bindValue(':couleur', $lignefront->getCouleur(), \PDO::PARAM_STR);
 			$q->bindValue(':type', $lignefront->getType(), \PDO::PARAM_STR);
-			$q->bindValue(':datedebut', $lignefront->getDateDebut(), \PDO::PARAM_STR);
-			$q->bindValue(':datefin', $lignefront->getDateFin(), \PDO::PARAM_STR);
 			$q->bindValue(':valide', $lignefront->getValide(), \PDO::PARAM_BOOL);
-			$q->bindValue(':idfront', $lignefront->getIdFront(), \PDO::PARAM_INT);
+			$q->bindValue(':iddatefront', $lignefront->getIdFront(), \PDO::PARAM_INT);
 			$q->bindValue(':idcontributeurfront', $lignefront->getIdContributeurFront(), \PDO::PARAM_INT);
 			
 			$q->execute(); 
@@ -54,7 +52,7 @@ class LigneFrontManager extends Manager{
 	public function get($idfront)  {
 		try{
 			$idfront = (int) $idfront;
-			$q = $this->dbConnect()->query('SELECT idlignefront, dateDebut, dateFin, valide, couleur, type, idfront, idcontributeurfront FROM '.$this->prefix.'lignefront WHERE idlignefront = '.$idlignefront);
+			$q = $this->dbConnect()->query('SELECT idlignefront, valide, couleur, type, iddatefront, idcontributeurfront FROM '.$this->prefix.'lignefront WHERE idlignefront = '.$idlignefront);
 			$donnees = $q->fetch(\PDO::FETCH_ASSOC);
 			
 			if($donnees) {
@@ -64,27 +62,28 @@ class LigneFrontManager extends Manager{
 			}
 		}catch (PDOException  $e){ 
 			return 'Erreur : '.$e->getMessage();
-		}	;
+		}	
 	}
 
-	public function getLigneUnFront($idfront)  {
+	public function getLigneUneDate($iddatefront)  {
 		try{
-			$idfront = (int) $idfront;
-			$q = $this->dbConnect()->query('SELECT idlignefront, dateDebut, dateFin, valide, couleur, type, idfront, idcontributeurfront FROM '.$this->prefix.'lignefront WHERE idfront = '.$idfront);
+			$lignefront = [];
+			$iddatefront = (int) $iddatefront;
+			$q = $this->dbConnect()->query('SELECT idlignefront, valide, couleur, type, iddatefront, idcontributeurfront FROM '.$this->prefix.'lignefront WHERE iddatefront = '.$iddatefront);
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
-				$lignefront[] = $donnees;
+				$lignefront[] = new LigneFront ($donnees);
 			}
 			return $lignefront;
 			
 		}catch (PDOException  $e){ 
 			return 'Erreur : '.$e->getMessage();
-		}	;
+		}	
 	}
 	public function getListAll()  {
 		try{
 			$lignefront = [];
-			$q = $this->dbConnect()->query('SELECT idlignefront, dateDebut, dateFin, valide, couleur, type, idfront, idcontributeurfront FROM '.$this->prefix.'lignefront ORDER BY Nom ASC');
+			$q = $this->dbConnect()->query('SELECT idlignefront, valide, couleur, type, iddatefront, idcontributeurfront FROM '.$this->prefix.'lignefront ORDER BY Nom ASC');
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
 				$lignefront[] = new LigneFront($donnees);
@@ -93,20 +92,18 @@ class LigneFrontManager extends Manager{
 			return $lignefront;
 		}catch (PDOException  $e){ 
 			return 'Erreur : '.$e->getMessage();
-		}	;
+		}	
 	}
 
 	public function update(LigneFront $lignefront)  {
 		try{
-			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'lignefront SET dateDebut = :dateDebut, dateFin= :dateFin,  valide = :valide, couleur = :couleur, type = :type, idfront = :idfront, idcontributeurfront= :idcontributeurfront WHERE idlignefront = :idlignefront');
+			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'lignefront SET  valide = :valide, couleur = :couleur, type = :type, iddatefront = :iddatefront, idcontributeurfront= :idcontributeurfront WHERE idlignefront = :idlignefront');
 
 			$q->bindValue(':idLigneFront', $lignefront->getIdLigneFront(), \PDO::PARAM_INT);
-			$q->bindValue(':dateDebut', $lignefront->getDateDebut(), \PDO::PARAM_DEC);
-			$q->bindValue(':dateFin', $lignefront->getDateFin(), \PDO::PARAM_DEC);
 			$q->bindValue(':valide', $lignefront->getValide(), \PDO::PARAM_STR);
 			$q->bindValue(':couleur', $lignefront->getCouleur(), \PDO::PARAM_STR);
 			$q->bindValue(':type', $lignefront->getType(), \PDO::PARAM_STR);
-			$q->bindValue(':idauteur', $lignefront->getIdAuteur(), \PDO::PARAM_INT);
+			$q->bindValue(':iddatefront', $lignefront->getIddatefront(), \PDO::PARAM_INT);
 			$q->bindValue(':idcontributeurfront', $lignefront->getIdContributeurFront(), \PDO::PARAM_INT);
 			
 			$q->execute();

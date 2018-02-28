@@ -129,10 +129,22 @@ listeCarte.html:
   Null
 listeDate.html: 
  classe : ControlleurDateFront
- operation : LireToutesDatesSeules
+ operation : LireDatesSeulesUnFront
  niveauSecurité : 0
  variable :
-  Null  
+  Null 
+listeLigneDate.html: 
+ classe : ControlleurLigne
+ operation : LireLignesUnFrontSeul
+ niveauSecurité : 0
+ variable :
+  Null 
+listePoint.html: 
+ classe : ControlleurPoint
+ operation : LirePointsUneLigne
+ niveauSecurité : 0
+ variable :
+  Null 
 lireTousFronts:
  classe : ControlleurFront
  operation : lireTousFronts

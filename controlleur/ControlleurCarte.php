@@ -41,7 +41,7 @@ class ControlleurCarte extends Controlleur{
 		$param=[];
 			$param['zoom']=$maConfig->getProprieteLeaflet()['zoom'];
 			$param['latCentre']=$maConfig->getProprieteLeaflet()['latCentre'];
-			$param	['lngCentre']=$maConfig->getProprieteLeaflet()['lngCentre'];
+			$param['lngCentre']=$maConfig->getProprieteLeaflet()['lngCentre'];
 			$param['maxZoom']=$maConfig->getProprieteLeaflet()['maxZoom'];
 			$param['tileSize']=$maConfig->getProprieteLeaflet()['tileSize']; 
 			$param['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
@@ -106,6 +106,7 @@ class ControlleurCarte extends Controlleur{
 			
 			//$temp[$i]=[];
 			$temp[$i]['idcarte']=$mesCartes[$i]->getIdCartes();
+			$temp[$i]['zoom']=$mesCartes[$i]->getZoom();
 			$temp[$i]['lat']=$mesCartes[$i]->getLat();
 			$temp[$i]['lng']=$mesCartes[$i]->getLng();
 			$temp[$i]['projection']=$mesCartes[$i]->getProjection();

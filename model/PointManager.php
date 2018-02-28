@@ -64,11 +64,11 @@ class PointManager extends Manager{
 	
 	public function getPointsUneLigne($idlignefront)  {
 		try{
-			//$point = [];
+			$point = [];
 			$q = $this->dbConnect()->query('SELECT idpoint, lng, lat,  idmarqueur, idlignefront FROM '.$this->prefix.'points WHERE idlignefront = '.$idlignefront);
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
-				$point[] = $donnees;
+				$point[] = new Point($donnees);
 			}
 			//echo"<br />Point Manager 1 = <pre>";print_r($point);echo"</pre>";
 			return $point;
