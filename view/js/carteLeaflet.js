@@ -1,3 +1,4 @@
+
 /*******************************************
 		globales
 ********************************************/
@@ -40,10 +41,50 @@ function ouvrirCarte(){
 	appelAjax('paramGenerauxCarte','');
 	
 	mymap = L.map("mapid",{
-	center : [ ParamGeneraux[0]['latCentre'],ParamGeneraux[0]['lngCentre'] ],
-			zoom: ParamGeneraux[0]['zoom'] 
-			}
-		);  //
+		center : [ ParamGeneraux[0]['latCentre'],ParamGeneraux[0]['lngCentre'] ],
+		zoom: ParamGeneraux[0]['zoom'],
+		contextmenu: true,
+		contextmenuWidth: 140,
+		contextmenuItems: [
+			{
+				text: 'Créer une nouvelle zone de fronts',
+				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+				callback: AddFront
+			},{ 
+				separator: true
+			}, {
+				text: 'Center map here',
+				callback: centerMap
+			}, {
+				text: 'Zoom in',
+				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+				callback: zoomIn
+			}, {
+				text: 'Zoom out',
+				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+				callback: zoomOut
+			}]
+		}
+	);
+
+	function AddFront (e) {
+		alert(e.latlng);
+		console.debug('e ='+e);
+	}
+
+	function centerMap (e) {
+		mymap.panTo(e.latlng);
+	}
+
+	function zoomIn (e) {
+		mymap.zoomIn();
+	}
+
+	function zoomOut (e) {
+		mymap.zoomOut();
+	}//
+
+
 	var etatMajor =	L.tileLayer('https://wxs.ign.fr/hz2zuzccg4dyv6kacncfnbxj/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer='+ParamGeneraux[0]['layer']+'&format=image/jpeg&style=normal',  //
 		{
 			minZoom : 0,
@@ -305,6 +346,9 @@ var Carte={
 	getZoom:function(){
 		return this.zoom;
 	},
+	getNom:function(){
+		return this.nom;
+	},
 	getParamCarteUnFront(){
 		for(i=0;i<listeCartes.length;i++){
 			console.log('getParamCarteUnFront 1 = '+this.idfront+'nb cartes ='+listeCartes.length);
@@ -326,6 +370,7 @@ var Carte={
 			[this.lat,this.lng], 
 			{
 				draggable: true, 
+				contextmenu: false,
 				icon:  L.icon({
 					iconUrl:formeligne,		//FormeLigne[4].icone
 					iconSize: [24,24],
@@ -340,6 +385,7 @@ var Carte={
 		this.creePointeur(centreCarte);
 		return centreCarte;
 	},
+
 	creePointeur:function(centreCarte){
 		var newLeaflet= Object.create(Leaflet);
 		
@@ -353,7 +399,7 @@ var Carte={
 		var idFront=this.getIdFront();
 		monFront=listeFronts[idFront];	
 		
-		centreCarte.bindPopup("<b>"+monFront.getNom()+" <i>"+this.getIdFront()+"</i></b><br />"+monFront.getDescription()+"<br />"+"<button class='date-show-button' title='affiche les dates'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-chronometre-32.png'></button>"+"<button class='ligne-update-button' title='modifie le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'></button>"+"<button class='ligne-delete-button' title='supprime le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();
+		centreCarte.bindPopup("<b>"+monFront.getNom()+" <i>"+this.getIdFront()+"</i></b><br />"+monFront.getDescription()+"<br />"+"<button class='date-show-button' title='affiche les dates'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-chronometre-32.png'></button>"+"<button class='date-add-button' title='ajoute une date'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'></button>"+"<button class='date-update-button' title='modifie le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'></button>"+"<button class='date-delete-button' title='supprime le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();
 		
 		centreCarte.on("popupopen", this.onPopupOpenCentreCarte);
 		
@@ -365,17 +411,20 @@ var Carte={
 			appelAjax('listeDate.html','idfront/'+listeLeaflet[tempCentreCarte._leaflet_id].getIdFront(),'');
 			
 		});
-		$(".ligne-show-button:visible").click(function () {
+		$(".date-add-button:visible").click(function () {
+			alert('date add');
 			
 		});
-		$(".ligne-update-button:visible").click(function () {
+		$(".date-update-button:visible").click(function () {
+			alert('date update');
 			
 		});
-		$(".ligne-delete-button:visible").click(function () {
-			
+		$(".date-delete-button:visible").click(function () {
+			alert('date delete');
 		});
 	}
 };
+
 	/*******************************************
 			liste de date des fronts
 	********************************************/
@@ -440,23 +489,33 @@ var LigneFront={
 		listeLigneFront.forEach(function(monFront){
 			appelAjax('listePoint.html', 'idlignefront/'+monFront.idlignefront);
 			console.log('nombre de points '+listePoint.length);
-			uneLigneFront =  L.polyline
-				(monFront.donneCoordonneesMesPoints(monFront.idlignefront),			//coordonnees,
-					{
-					color: monFront.couleur,
-					weight: 5,
-					dashArray: '10,7',
-					lineJoin:'round'
-					}
-				).addTo(mymap);
+			
+			var polylineOptions = {
+				// The user can add new polylines by clicking anywhere on the map:
+				newPolylines: true,
+				newPolylineConfirmMessage: 'Add a new polyline here?',
+				// Show editable markers only if less than this number are in map bounds:
+				maxMarkers: 100,
+				color: monFront.couleur,
+				weight: 5,
+				dashArray: '10,7',
+				lineJoin:'round',
+				maxMarkers: 1000,
+				newPolylines:true//,
+				//pointIcon:'https://web-max.fr/gesFront/public/leaflet/maxouMarker.png',
+				//newPointIcon:'https://web-max.fr/gesFront/public/leaflet/maxouMarker2.png'
+			}
+			uneLigneFront = L.Polyline.PolylineEditor(monFront.donneCoordonneesMesPoints(monFront.idlignefront), polylineOptions).addTo(mymap);
+			
+			//uneLigneFront =  L.polyline
+			
 			console.log('id une ligne de front = '+uneLigneFront._leaflet_id);
 			
-			uneLigneFront.bindPopup("<b>"+" <i>"+uneLigneFront._leaflet_id+"</i></b><br />"+"<button class='ligne-update-button' title='modifie la lignet'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'></button>"+"<button class='ligne-delete-button' title='supprime la ligne'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();	
+			uneLigneFront.bindPopup("<b>Ligne de front"+" <i>"+uneLigneFront._leaflet_id+"<br /><button class='ligne-delete-button' title='supprime la ligne'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();	
 			uneLigneFront.on("popupopen", this.onPopupLigneFrontOpen);
-		})	
+		});
 			
 		var monFrontMere=listeDates[this.iddatefront].getIdfront();
-		//var maCarteMere=Object.create(Carte);
 		console.log('id front mere '+monFrontMere);
 		var paramCarte=[];
 		paramCarte=listeCartes[monFrontMere].getParamCarteUnFront();
@@ -465,19 +524,32 @@ var LigneFront={
 
 		
 	},
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	dumpPoints:function() {
+		console.log('dump fonction');
+		var pointsTextArea = document.getElementById('pointsTextArea');
+		pointsTextArea.innerHTML = 'Je suis un point';
+		map.getEditablePolylines().forEach(function(uneLigneFront) {
+			var points = uneLigneFront.getPoints();
+			points.forEach(function(point) {
+				var latLng = point.getLatLng();
+				console.log('context du point =' + point.context);
+				pointsTextArea.innerHTML += 
+					'originalPointNo=' + (point.context ? point.context.originalPointNo : null)
+					+ ' originalPolylineNo=' + (point.context ? point.context.originalPolylineNo : null)
+					+ ' (' + latLng.lat + ',' + latLng.lng + ')\n';
+					+ '\n';
+			});
+			pointsTextArea.innerHTML += '----------------------------------------------------------------------------------------------------\n';
+		});
+	},
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	onPopupLigneFrontOpen:function(){
 		var tempCentreCarte=this;
-		$(".date-show-button:visible").click(function () {
-			
-		});
-		$(".ligne-show-button:visible").click(function () {
-			
-		});
-		$(".ligne-update-button:visible").click(function () {
-			
-		});
-		$(".ligne-delete-button:visible").click(function () {
-			
+		alert ('on popup ligneFrontOpen');
+		
+		$(".date-update-button:visible").click(function () {
+			alert ('demande ligne del');
 		});
 	}
 };
@@ -566,3 +638,12 @@ window.onload = function () {
 	});
 		
 }
+
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+

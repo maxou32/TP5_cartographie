@@ -10,10 +10,11 @@ class LeafLet extends View
 	public function show($datas){
 		ob_start(); 
 		?>
-
+		<script src="public/leaflet/leaflet.js"></script>
+		<script src="public/js/leaflet-editable-polyline.js"></script> 
+		<script src="public/js/leaflet-contextmenu-min.js"></script> 
 		<script data-key="hz2zuzccg4dyv6kacncfnbxj" src="public/sdk-ol/GpPluginLeaflet.js"></script>
-		 <script src="view/js/carteLeaflet.js"></script> 
-		<!-- <script src="public/js/leaflet-editable-polyline.js"></script> -->
+		<script src="view/js/carteLeaflet.js"></script> 
 		<title>Cartographie</title>
 		<div class="row">
 			
@@ -22,35 +23,47 @@ class LeafLet extends View
 			</div>
 
 			<div id="btnCommande" style="position: absolute; top: 150px; left: 0px; z-index: 600; background-color: azure; padding : 10px; margin: 10px; border-radius: 5px; width:270px; display:none">
+				<div id="dateFront-action" class="col s12" style="display:inline-block" >					
+					<button id='dateFront-add-button' title='ajoute un front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
+					</button>
+					<button id='dateFront-update-button' title='modifie le front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
+					</button>
+					<button id='dateFront-delete-button' title='supprime le front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
+					</button>
+				</div>
 				<div class="col s12" >
 					<label for="dateLigne">Date des lignes</label>
 					<select id="dateLigne" style="display:inline-block">
 						<option value="" >Choisissez</option> 	<!-- disabled selected  -->
 					</select>
+					<label for="adddateLigne">nouvelle date</label>
+					<input id="adddateLigne" style="display:inline-block"/>
+										
+				</div>					
+				<div id="dateFront-show" class="col s12" style="display:inline-block" >					
+					<button id='dateFront-show-ligne' title='affiche le front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
+					</button>
 				</div>
-				<div id="dateFront-action" class="col s12" style="display:none" >					
-					<button id='dateFront-show-ligne' title='affiche le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
-					</button>
-					<button id='dateFront-add-button' title='ajoute un front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
-					</button>
-					<button id='dateFront-update-button' title='modifie le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
-					</button>
-					<button id='dateFront-delete-button' title='supprime le front'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
-					</button>
-					
-				</div>
-				<div id="btnAjoutLigne" class="col s12" style="display:none">
-					<div class="row center-align">
-						<button id="addFront" class=" col s4 blue lighten-5 center-align" style="width: 75px;">1° étape : définir le front 
-							<!-- <img src="public/sdk-ol/img/MarkerVert.png">  -->
+
+				<div id="Front-action" class="col s12" style="display:inline-block" >					
+					<div id="dateFront-action" class="col s12" style="display:inline-block" >					
+						<button id='Front-show-ligne' title='affiche le front'/> 
+							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
 						</button>
-						<button id="addCarte" class=" col s4  blue lighten-5 center-align" style="width: 75px;">2° étape : centrer la carte
-							<!-- <img src="public/sdk-ol/img/MarkerVert.png">  -->
-						</button>
-						<button id="addLigneFront" class=" col s4  blue lighten-5 center-align" style="width: 75px;">3° étape : Dessiner les lignes 
-							<!-- <img src="public/sdk-ol/img/MarkerVert.png">  -->
-						</button>
-					</div> 
+					</div>
+					<button id='Front-add-button' title='ajoute un front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
+					</button>
+					<button id='Front-update-button' title='modifie le front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
+					</button>
+					<button id='Front-delete-button' title='supprime le front'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
+					</button>
 				</div>
 						
 			
@@ -60,18 +73,7 @@ class LeafLet extends View
 						<input id="nom" /></h2>
 						<label for="description">description</label>
 						<textarea id='description' name='description' rows="10" cols="50" ></textarea> 
-						<div class="col s12">
-							<div class="col s6">
-								<label for="dateDebutLigne">début de période</label>
-								<input id="dateDebutLigne" />
-							</div>
-							<div class="col s6">
-								<label for="dateFinLigne">fin de période</label>
-								<input id="dateFinLigne" />
-							</div>
-						</div>
 					</div>
-
 				</div>
 			</div>
 			

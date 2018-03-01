@@ -2,3 +2,17 @@
 {
 	min-height:700px !important;
 }
+.GPshowAdvancedToolOpen
+{
+	background-color:white;
+	border: 0px solide white;
+}
+.leaflet-top .leaflet-left
+{
+	background-color: yellow;
+}
+
+#^GPshowSearchEngineOpen
+{
+	background-color:blue;	
+}
