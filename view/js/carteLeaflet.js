@@ -5,7 +5,7 @@
 	/*******************************************
 		variables
 	********************************************/
-var mymap;
+// 		var mymap;
 var FormeLigne={
 	1:{
 		couleur:'blue',	
@@ -96,6 +96,34 @@ function ouvrirCarte(){
 	etatMajor.addTo(mymap);	
 	//alert('fin chgt carte');
 	//return mymap;
+}
+
+function voirDumpPoint (e){
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	console.log('dump fonction');
+	var pointsTextArea = document.getElementById('pointsTextArea');
+	pointsTextArea.innerHTML = 'Je suis un point';
+	//mymap.getEditablePolylines.forEach(function(uneLigneFront) {
+	if(typeof mymap._editablePolylines !== "undefined"){
+		mymap._editablePolylines.forEach(function(uneLigneFront) {
+			var points = uneLigneFront.getPoints();
+			console.log('uneLigneFront id = '+uneLigneFront._leaflet_id+", type ="+uneLigneFront.options.newPolylineTypeMessage);
+			
+			points.forEach(function(point) {
+				var latLng = point.getLatLng();
+				console.debug('context du point =' + point.context);
+				pointsTextArea.innerHTML += 
+					'originalPointNo=' + (point.context ? point.context.originalPointNo : null)
+					+ ' originalPolylineNo=' + (point.context ? point.context.originalPolylineNo : null)
+					+ ' (' + latLng.lat + ',' + latLng.lng + ')\n';
+					+ '\n';
+			});
+			pointsTextArea.innerHTML += '----------------------------------------------------------------------------------------------------\n';
+		});
+	}
+
+// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 }
 
 function appelAjax(action, param){
@@ -420,7 +448,22 @@ var Carte={
 			
 		});
 		$(".date-delete-button:visible").click(function () {
-			alert('date delete');
+			console.log('dump fonction');
+			var pointsTextArea = document.getElementById('pointsTextArea');
+			pointsTextArea.innerHTML = 'Je suis un point';
+			mymap.getEditablePolylines().forEach(function(uneLigneFront) {
+				var points = uneLigneFront.getPoints();
+				points.forEach(function(point) {
+					var latLng = point.getLatLng();
+					console.log('context du point =' + point.context);
+					pointsTextArea.innerHTML += 
+						'originalPointNo=' + (point.context ? point.context.originalPointNo : null)
+						+ ' originalPolylineNo=' + (point.context ? point.context.originalPolylineNo : null)
+						+ ' (' + latLng.lat + ',' + latLng.lng + ')\n';
+						+ '\n';
+				});
+				pointsTextArea.innerHTML += '----------------------------------------------------------------------------------------------------\n';
+			});
 		});
 	}
 };
@@ -493,17 +536,26 @@ var LigneFront={
 			var polylineOptions = {
 				// The user can add new polylines by clicking anywhere on the map:
 				newPolylines: true,
-				newPolylineConfirmMessage: 'Add a new polyline here?',
+				contextmenu: true,
+				newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici 	?',
 				// Show editable markers only if less than this number are in map bounds:
+				newPolylineTypeMessage: 2,
 				maxMarkers: 100,
 				color: monFront.couleur,
-				weight: 5,
+				weight: 3,
 				dashArray: '10,7',
 				lineJoin:'round',
-				maxMarkers: 1000,
-				newPolylines:true//,
-				//pointIcon:'https://web-max.fr/gesFront/public/leaflet/maxouMarker.png',
-				//newPointIcon:'https://web-max.fr/gesFront/public/leaflet/maxouMarker2.png'
+				maxMarkers: 100,
+				newPolylines:true,
+				contextmenuItems: [
+					{ 
+						separator: true
+					}, {
+						text: 'Voir dump',
+						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
+						callback: this.voirDumpPoint
+					}
+				]
 			}
 			uneLigneFront = L.Polyline.PolylineEditor(monFront.donneCoordonneesMesPoints(monFront.idlignefront), polylineOptions).addTo(mymap);
 			
@@ -511,48 +563,33 @@ var LigneFront={
 			
 			console.log('id une ligne de front = '+uneLigneFront._leaflet_id);
 			
-			uneLigneFront.bindPopup("<b>Ligne de front"+" <i>"+uneLigneFront._leaflet_id+"<br /><button class='ligne-delete-button' title='supprime la ligne'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();	
-			uneLigneFront.on("popupopen", this.onPopupLigneFrontOpen);
+			//uneLigneFront.bindPopup("<b>Ligne de front"+" <i>"+uneLigneFront._leaflet_id+"<br /><button class='ligne-delete-button' title='supprime la ligne'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();	
+			//uneLigneFront.on("popupopen", this.onPopupLigneFrontOpen);
 		});
-			
 		var monFrontMere=listeDates[this.iddatefront].getIdfront();
 		console.log('id front mere '+monFrontMere);
 		var paramCarte=[];
 		paramCarte=listeCartes[monFrontMere].getParamCarteUnFront();
 		console.debug("paramCarte = "+paramCarte);
 		mymap.setView([paramCarte['lat'],paramCarte['lng']],paramCarte['zoom']);
+	},
+	
 
-		
-	},
-	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	dumpPoints:function() {
-		console.log('dump fonction');
-		var pointsTextArea = document.getElementById('pointsTextArea');
-		pointsTextArea.innerHTML = 'Je suis un point';
-		map.getEditablePolylines().forEach(function(uneLigneFront) {
-			var points = uneLigneFront.getPoints();
-			points.forEach(function(point) {
-				var latLng = point.getLatLng();
-				console.log('context du point =' + point.context);
-				pointsTextArea.innerHTML += 
-					'originalPointNo=' + (point.context ? point.context.originalPointNo : null)
-					+ ' originalPolylineNo=' + (point.context ? point.context.originalPolylineNo : null)
-					+ ' (' + latLng.lat + ',' + latLng.lng + ')\n';
-					+ '\n';
-			});
-			pointsTextArea.innerHTML += '----------------------------------------------------------------------------------------------------\n';
-		});
-	},
-	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/*
 	onPopupLigneFrontOpen:function(){
-		var tempCentreCarte=this;
-		alert ('on popup ligneFrontOpen');
-		
-		$(".date-update-button:visible").click(function () {
-			alert ('demande ligne del');
+
+		$(".ligne-delete-button:visible").click(function (e) {
+			alert ('delete ligne del');
+			this.dumpPoints();
 		});
 	}
+	*/
+	
+	
+	
 };
+
+
 
 	/*******************************************
 		liste de points d'une ligne
@@ -635,6 +672,9 @@ window.onload = function () {
 	document.getElementById("dateFront-add-button").addEventListener("change", function(e){
 		$('#btnAjoutLigne').css({display:'inline-block'});
 		console.log("Mode ajout commencé");
+	});
+	document.getElementById("Front-delete-button").addEventListener("click", function(e){
+		
 	});
 		
 }

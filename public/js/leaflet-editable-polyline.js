@@ -13,7 +13,7 @@ L.Polyline.polylineEditor = L.Polyline.extend({
 
         // Click anywhere on map to add a new point-polyline:
         if(this._options.newPolylines) {
-            console.log('click na map');
+            console.log('click my map');
             that._map.on('dblclick', function(event) {
                 console.log('click, target=' + (event.target == that._map) + ' type=' + event.type);
                 if(that._map.isEditablePolylinesBusy())
@@ -21,16 +21,45 @@ L.Polyline.polylineEditor = L.Polyline.extend({
 
                 var latLng = event.latlng;
                 if(that._options.newPolylineConfirmMessage)
-                    if(!confirm(that._options.newPolylineConfirmMessage))
-                        return
+					// ---------------------------------------------
+					$('#questionLigne').html (that._options.newPolylineConfirmMessage);
+					$('#choixLigne').css({display:'inline-block'});
+                    // ---------------------------------------------
+					
+					//if(!confirm(that._options.newPolylineConfirmMessage))
+                    //    return
 
                 var contexts = [{'originalPolylineNo': null, 'originalPointNo': null}];
-                L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
+				
+                /*
+				L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
 
                 that._showBoundMarkers();
                 that._changed = true;
+				*/
+				// ---------------------------------------------------------------------------
+				// ---------------------------------------------------------------------------
+				document.getElementById("btnOuiLigne").addEventListener("click", function(e){
+					
+					console.log("ligne oui ");
+					$('#choixLigne').css({display:'none'});
+					that._options.color=FormeLigne[$('#typeLigne2').val()].couleur;
+					L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
+
+					that._showBoundMarkers();
+					that._changed = true;
+				});
+				document.getElementById("btnAnnuler").addEventListener("click", function(e){
+					
+					console.log("ligne oui ");
+					$('#choixLigne').css({display:'none'});
+					
+					that._changed = false;
+				});
+				// ---------------------------------------------------------------------------
+				// ---------------------------------------------------------------------------
             });
-        }
+		}
 
         /**
          * Check if there is *any* busy editable polyline on this map.
@@ -146,7 +175,12 @@ L.Polyline.polylineEditor = L.Polyline.extend({
         this.getPoints = function() {
             return this._markers;
         };
-
+		// ----------------------------------------------------
+		this.getPointsOptions = function() {
+            return this._options.newPolylineTypeMessage;
+        };
+		// ----------------------------------------------------
+		
         this.isChanged = function() {
             return this._changed;
         }
@@ -162,12 +196,16 @@ L.Polyline.polylineEditor = L.Polyline.extend({
                 options.newPolylines = false;
             if(!('newPolylineConfirmMessage' in options))
                 options.newPolylineConfirmMessage = '';
+			if(!('newPolylineTypeMessage' in options))
+                options.newPolylineTypeMessage = '';
             if(!('addFirstLastPointEvent' in options))
                 options.addFirstLastPointEvent = 'click';
             if(!('customPointListeners' in options))
                 options.customPointListeners = {};
             if(!('customNewPointListeners' in options))
                 options.customNewPointListeners = {};
+			if(!('color' in options))
+                options.color = {color:'rose'};
 
             this._options = options;
 
@@ -473,9 +511,9 @@ L.Polyline.polylineEditor = L.Polyline.extend({
         this._setupDragLines = function(marker, point1, point2) {
             var line1 = null;
             var line2 = null;
-            if(point1) line1 = L.polyline([marker.getLatLng(), point1], {dasharray: "5,1", weight: 1})
+            if(point1) line1 = L.polyline([marker.getLatLng(), point1], {color:'grey', dasharray: "5,1", weight: 2})
                                 .addTo(that._map);
-            if(point2) line2 = L.polyline([marker.getLatLng(), point2], {dasharray: "5,1", weight: 1})
+            if(point2) line2 = L.polyline([marker.getLatLng(), point2], {color:'grey',dasharray: "5,1", weight: 2})
                                 .addTo(that._map);
 
             var moveHandler = function(event) {

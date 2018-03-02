@@ -65,7 +65,7 @@ class LeafLet extends View
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
 					</button>
 				</div>
-						
+				<p id="pointsTextArea"></p>		
 			
 				<div id="defFront" style="display : none;background-color: azure;" class="col s12">
 					<div >
@@ -110,6 +110,18 @@ class LeafLet extends View
 				<p id="question"></p>
 				<button id="btnOui" class="btn center-align col s6 text-green" ><i class="material-icons">check</i>oui</button>
 				<button id="btnNon" class="btn center-align col s6 text-red" ><i class="material-icons">cancel</i> non</button>
+			</div>
+			<div id="choixLigne" class="row" style="position:absolute; top:100px;left:45%; display:none; z-index:700; background-color:white;text-align:center">
+				<p id="questionLigne" ></p>
+				<label for="typeLigne2" class="col s12">Choisissez le type de ligne à créer :</label>
+				<select id="typeLigne2" class="col s12" style="visibility : visible;display :inline-block">
+					<option value="" disabled selected>Choisissez</option>
+					<option value="1">Ami</option>
+					<option value="2">Ennemi</option>
+					<option value="3">Neutre</option>
+				</select>
+				<button id="btnOuiLigne" class="btn center-align col s6 text-green" ><i class="material-icons">check</i> oui</button>
+				<button id="btnAnnuler" class="btn center-align col s6 text-red" ><i class="material-icons">cancel</i> annuler</button>
 			</div>
 		</div>
 		
