@@ -15,18 +15,18 @@ class LigneFrontManager extends Manager{
 			$q->bindValue(':couleur', $lignefront->getCouleur(), \PDO::PARAM_STR);
 			$q->bindValue(':type', $lignefront->getType(), \PDO::PARAM_STR);
 			$q->bindValue(':valide', $lignefront->getValide(), \PDO::PARAM_BOOL);
-			$q->bindValue(':iddatefront', $lignefront->getIdFront(), \PDO::PARAM_INT);
+			$q->bindValue(':iddatefront', $lignefront->getIddatefront(), \PDO::PARAM_INT);
 			$q->bindValue(':idcontributeurfront', $lignefront->getIdContributeurFront(), \PDO::PARAM_INT);
 			
 			$q->execute(); 
-			
+			/*
 			$result['idlignefront']= $this->dbConnect()->lastInsertId();
 			if($result['idlignefront']==0){
 				$q = $this->dbConnect()->query('SELECT Max(idlignefront) as idMax from '.$this->prefix.'lignefront');
 				$donnees = $q->fetch(\PDO::FETCH_ASSOC);
 				$result['idlignefront']= $donnees['idMax'];
 			}
-				
+			*/	
 			$result['resultat']=true;
 			
 			return $result;

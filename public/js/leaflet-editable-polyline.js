@@ -44,14 +44,15 @@ L.Polyline.polylineEditor = L.Polyline.extend({
 					console.log("ligne oui ");
 					$('#choixLigne').css({display:'none'});
 					that._options.color=FormeLigne[$('#typeLigne2').val()].couleur;
+					that._options.formeLigne=FormeLigne[$('#typeLigne2').val()].type;
 					L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
-
+					
 					that._showBoundMarkers();
 					that._changed = true;
 				});
-				document.getElementById("btnAnnuler").addEventListener("click", function(e){
+				document.getElementById("btnAnnulerLigne").addEventListener("click", function(e){
 					
-					console.log("ligne oui ");
+					console.log("ligne  annulée ");
 					$('#choixLigne').css({display:'none'});
 					
 					that._changed = false;

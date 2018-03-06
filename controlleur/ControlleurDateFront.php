@@ -5,49 +5,71 @@ class ControlleurDateFront  extends Controlleur {
 	public function __construct(){
 
 		}
-		
+	public function DonneNbEnreg($params){
+		$monDatesFront= new DatesFrontManager();
+		$mesDatesFronts=$monDatesFront->getListUnFront($params['idfront']);
+		echo count($mesDatesFronts);
+	}
+	public function maxId (){
+		$monDatesFront= new DatesFrontManager();
+		$maxId=$monDatesFront->getMaxId();
+		echo $maxId;		
+	}
 	
-	public function addDatesFront($params){
+	public function addDateFront($params){
+		
+		//echo "<br />ControlleurLigne 0 : <pre>";print_r($params);"</pre>";
+		$params=$this->decoupeParam($params['maDate']); 
+		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
 		
 		$donnees=array('description' => $params['description'],'valide'=>false,'numordre' => $params['numordre'], 'date'=>$params['date'],  'idfront'=>$params['idfront']);
 		//echo"<br />ControlleurFront addFront 0<pre>";print_r($donnees);echo"</pre>";
 		
 		$monDatesFront= new DatesFrontManager();
-		$result=$monDatesFront->add( new Front($donnees));	
+		$result=$monDatesFront->add( new DatesFront($donnees));	
+		//echo"<br />ControlleurDateFront<pre>";print_r($result);echo"</pre>";
 		if (!$result['resultat']){
-			echo"<br />ControlleurFront erreur création ";
+			//echo"<br />ControlleurDateFront erreur création ";
 			/*$monError=new ControlleurErreur();
 			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
 			*/
 		}else{
-			echo"<br />ControlleurFront création Front terminée ";
+			echo"Success";
+		}			
+		//return $result;
+	}
+	
+	public function updateDateFront($params){
 		
-		//2 creation de la carte
-			$result['idFront']=$result['idFront'];
-			$params['idFront']=$result['idFront'];
-			//echo"<br />ControlleurFront Carte 1 <pre>";print_r($result);echo"</pre>";
-		}
-		//echo "<br />ControlleurFront 2 : <pre>";print_r($result);"</pre>";
-			
-		return $result;
-	}
-	
-	
-	public function demandeSuppressionDatesFront($params){
-		echo"<br />Controlleur front 3.5: <pre>";print_r($params);echo"</pre>";
+		//echo "<br />ControlleurLigne 0 : <pre>";print_r($params);"</pre>";
+		$params=$this->decoupeParam($params['madate']); 
+		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
+		
+		$donnees=array('iddate' => $params['iddate'],'description' => $params['description'],'valide'=>false,'numordre' => $params['numordre'], 'date'=>$params['date'],  'idfront'=>$params['idfront']);
+		//echo"<br />ControlleurFront addFront 0<pre>";print_r($donnees);echo"</pre>";
+		
 		$monDatesFront= new DatesFrontManager();
-		$result=$monDatesFront->getDatesFront($params['iddate']);
-		if($result){
-			echo ("Success");
+		$result=$monDatesFront->update( new DatesFront($donnees));	
+		//echo"<br />ControlleurDateFront<pre>";print_r($result);echo"</pre>";
+		if (!$result['resultat']){
+			//echo"<br />ControlleurDateFront erreur création ";
+			/*$monError=new ControlleurErreur();
+			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
+			*/
 		}else{
-			echo ("suppression impossible"); 
-		}	
+			echo"Success";
+		}			
+		//return $result;
 	}
 	
-	public function supprimeDatesFront ($params){
-		//echo('Demande de suppression pour le front = '.$params['idFront']);
+	public function deleteDateFront ($params){
+		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
+		//$params=$this->decoupeParam($params['iddate']); 
+		//echo('Demande de suppression pour le front = '.$params['iddate']);
+		//echo "<br />ControlleurLigne 2 : <pre>";print_r($params);"</pre>";	
+		
 		$monDatesFront= new DatesFrontManager();
-		$result=$monDatesFront->delete($params['idront']);
+		$result=$monDatesFront->delete($params['iddate']);
 		if($result){
 			echo ("Success");
 		}else{
@@ -60,7 +82,7 @@ class ControlleurDateFront  extends Controlleur {
 		$mesDatesFronts=$monDatesFront->getListUnFront($params['idfront']);
 		//echo"<pre>";print_r($params);echo"</pre>";
 		//echo"<pre>";print_r($mesDatesFronts);echo"</pre>";
-		
+		$temp=[];
 		for($i=0; $i < count($mesDatesFronts);$i++){
 			//$id=$mesDatesFronts[$i]->getIddate();
 

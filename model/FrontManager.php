@@ -9,14 +9,15 @@ class FrontManager extends Manager{
 	public function add(Front $front)  {
 		$result=[];
 		try{
-			$q = $this->dbConnect()->prepare('INSERT INTO '.$this->prefix.'front(nom,  description, dateDebut, dateFin, valide, idauteur) VALUES(:nom, :description, :dateDebut, :dateFin, :valide, :idauteur)');
+			$q = $this->dbConnect()->prepare('INSERT INTO '.$this->prefix.'front(nom,  description, zoom, lat, lng, valide, idauteur) VALUES(:nom, :description, :zoom, :lat, :lng, :valide, :idauteur)');
 			
-			$q->bindValue(':dateDebut', $front->getDateDebut(), \PDO::PARAM_STR);
-			$q->bindValue(':dateFin', $front->getDateFin(), \PDO::PARAM_STR);
+			$q->bindValue(':zoom', $front->getZoom(), \PDO::PARAM_INT);
+			$q->bindValue(':lat', $front->getLat(), \PDO::PARAM_STR);
+			$q->bindValue(':lng', $front->getLng(), \PDO::PARAM_STR);
 			$q->bindValue(':valide', $front->getValide(), \PDO::PARAM_BOOL);
 			$q->bindValue(':nom', $front->getNom(), \PDO::PARAM_STR);
 			$q->bindValue(':description', $front->getDescription(), \PDO::PARAM_INT);
-			$q->bindValue(':idauteur', $front->getidauteur(), \PDO::PARAM_INT);
+			$q->bindValue(':idauteur', $front->getIdauteur(), \PDO::PARAM_INT);
 			$q->execute(); 
 			
 			$result['idFront']= $this->dbConnect()->lastInsertId();
@@ -50,7 +51,7 @@ class FrontManager extends Manager{
 	public function getLigneUnFront($idFront)  {
 		try{
 			$idFront = (int) $idFront;
-			$q = $this->dbConnect()->query('SELECT idfront, idauteur, dateDebut, dateFin, valide, nom, description,  idauteur FROM '.$this->prefix.'front WHERE idfront = '.$idFront);
+			$q = $this->dbConnect()->query('SELECT idfront, idauteur, zoom, lat, lng, valide, nom, description,  idauteur FROM '.$this->prefix.'front WHERE idfront = '.$idFront);
 			$donnees = $q->fetch(\PDO::FETCH_ASSOC);
 			
 			if($donnees) {
@@ -66,7 +67,7 @@ class FrontManager extends Manager{
 	public function getListAll()  {
 		try{
 			$front = [];
-			$q = $this->dbConnect()->query('SELECT  idfront, idauteur, dateDebut, dateFin,  valide, nom, description FROM '.$this->prefix.'front ORDER BY Nom ASC');
+			$q = $this->dbConnect()->query('SELECT  idfront, idauteur, zoom, lat, lng,  valide, nom, description FROM '.$this->prefix.'front ORDER BY Nom ASC');
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
 				$front[] = new Front($donnees);
@@ -80,15 +81,16 @@ class FrontManager extends Manager{
 
 	public function update(Front $front)  {
 		try{
-			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'front SET dateDebut = :dateDebut, dateFin= :dateFin, projection = :projection, valide = :valide, nom = :nom,  description= :description,  idauteur = :idauteur WHERE idFronts = :idFronts');
+			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'front SET zoom = :zoom, lat= :lat, lng = :lng,  valide = :valide, nom = :nom,  description= :description,  idauteur = :idauteur WHERE idfront = :idfront');
 
-			$q->bindValue(':idFronts', $front->getIdFronts(), \PDO::PARAM_INT);
-			$q->bindValue(':dateDebut', $front->getDateDebut(), \PDO::PARAM_DEC);
-			$q->bindValue(':dateFin', $front->getDateFin(), \PDO::PARAM_DEC);
+			$q->bindValue(':idfront', $front->getIdFront(), \PDO::PARAM_INT);
+			$q->bindValue(':zoom', $front->getZoom(), \PDO::PARAM_INT);
+			$q->bindValue(':lat', $front->getLat(), \PDO::PARAM_STR);
+			$q->bindValue(':lng', $front->getLng(), \PDO::PARAM_STR);
 			$q->bindValue(':valide', $front->getValide(), \PDO::PARAM_STR);
 			$q->bindValue(':nom', $front->getNom(), \PDO::PARAM_STR);
 			$q->bindValue(':description', $front->getDescription(), \PDO::PARAM_STR);
-			$q->bindValue(':iduteur', $front->getIdAuteur(), \PDO::PARAM_INT);
+			$q->bindValue(':idauteur', $front->getIdAuteur(), \PDO::PARAM_INT);
 			
 			$q->execute();
 			return true;

@@ -21,9 +21,13 @@ class ControlleurFront  extends Controlleur {
 	
 	
 	public function addFront($params){
+		//echo "<br />ControlleurLigne 0 : <pre>";print_r($paramsBrut);"</pre>";
+		$params=$this->decoupeParam($params['mesFronts']); 
+		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
 		
-		$donnees=array('nom' => $params['nom'], 'description' => $params['description'],'dateDebut' => $params['dateDebut'], 'dateFin'=>$params['dateFin'], 'valide'=>false, 'idauteur'=>5);
-		//echo"<br />ControlleurFront addFront 0<pre>";print_r($donnees);echo"</pre>";
+		
+		$donnees=array('nom' => $params['nom'], 'description' => $params['description'],'zoom'=> $params['zoom'], 'lat' => $params['lat'], 'lng'=> $params['lng'], 'valide'=>false, 'idauteur'=>5);
+		
 		
 		$monFront= new FrontManager();
 		$result=$monFront->add( new Front($donnees));	
@@ -33,45 +37,42 @@ class ControlleurFront  extends Controlleur {
 			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
 			*/
 		}else{
-			echo"<br />ControlleurFront création Front terminée ";
-		
-		//2 creation de la carte
-			$result['idFront']=$result['idFront'];
-			$params['idFront']=$result['idFront'];
-			//echo"<br />ControlleurFront Carte 1 <pre>";print_r($result);echo"</pre>";
-
-			$maCarte= new ControlleurCarte;
-			$resultCarte=$maCarte->addCarte($params);
-			if (!$result['resultat']){
-				echo"<br />ControlleurFront erreur création ";
-				/*$monError=new ControlleurErreur();
-				$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
-				*/
-			}else{
-				$result['idCarte']=$resultCarte['idCarte'];
-			}
+			echo"Success";
 		}
-		//echo "<br />ControlleurFront 2 : <pre>";print_r($result);"</pre>";
-			
-		return $result;
+		//return $result;
 	}
 	
-	
-	public function demandeSuppressionFront($params){
-		echo"<br />Controlleur front 3.5: <pre>";print_r($params);echo"</pre>";
-		$monFront= new FrontManager;
-		$result=$monFront->getLigneUnFront($params['idFront']);
-		if($result){
-			echo ("Success");
+	public function updateFront($params){
+		
+		echo "<br />ControlleurFront 0 : <pre>";print_r($params);"</pre>";
+		$params=$this->decoupeParam($params['mesFronts']); 
+		echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
+		
+		$donnees=array('idfront'=>$params['idfront'], 'nom' => $params['nom'],'description' => $params['description'],'zoom'=>$params['zoom'],'lat' => $params['lat'], 'lng'=>$params['lng'], 'idauteur'=>$params['idauteur'],'valide' => $params['valide'] );
+		echo"<br />ControlleurFront addFront 0<pre>";print_r($donnees);echo"</pre>";
+		
+		$monFront= new FrontManager();
+		$result=$monFront->update( new Front($donnees));	
+		echo"<br />ControlleurFront<pre>";print_r($result);echo"</pre>";
+		if (!$result['resultat']){
+			//echo"<br />ControlleurDateFront erreur création ";
+			/*$monError=new ControlleurErreur();
+			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
+			*/
 		}else{
-			echo ("suppression impossible"); 
-		}	
+			echo"Success";
+		}			
+		//return $result;
 	}
-	
-	public function supprimeFront ($params){
-		//echo('Demande de suppression pour le front = '.$params['idFront']);
-		$monFront= new FrontManager;
-		$result=$monFront->delete($params['idFront']);
+		
+	public function deleteFront ($params){
+		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
+		//$params=$this->decoupeParam($params['iddate']); 
+		//echo('Demande de suppression pour le front = '.$params['idfront']);
+		//echo "<br />ControlleurLigne 2 : <pre>";print_r($params);"</pre>";	
+		
+		$monFront= new FrontManager();
+		$result=$monFront->delete($params['idfront']);
 		if($result){
 			echo ("Success");
 		}else{
@@ -87,13 +88,14 @@ class ControlleurFront  extends Controlleur {
 		for($i=0; $i < count($mesFronts);$i++){
 			$id=$mesFronts[$i]->getIdFront();
 			
-			//echo "<br /> id = ".$id;
+			//echo "<br /> id = ".$id; 
 			
 			//$temp[$i]=[];
-			$temp[$i]['idfront']=$mesFronts[$i]->getIdFront();
+			$temp[$i]['idfront']=$mesFronts[$i]->getIdFront();  
 			$temp[$i]['idauteur']=$mesFronts[$i]->getIdAuteur();
-			$temp[$i]['dateDebut']=$mesFronts[$i]->getDateDebut();
-			$temp[$i]['dateFin']=$mesFronts[$i]->getDateFin();
+			$temp[$i]['zoom']=$mesFronts[$i]->getZoom();
+			$temp[$i]['lat']=$mesFronts[$i]->getLat();
+			$temp[$i]['lng']=$mesFronts[$i]->getLng();
 			$temp[$i]['nom']=$mesFronts[$i]->getNom();
 			$temp[$i]['description']=$mesFronts[$i]->getDescription();
 			$temp[$i]['valide']=$mesFronts[$i]->getValide();

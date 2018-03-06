@@ -23,49 +23,60 @@ class LeafLet extends View
 			</div>
 
 			<div id="btnCommande" style="position: absolute; top: 150px; left: 0px; z-index: 600; background-color: azure; padding : 10px; margin: 10px; border-radius: 5px; width:270px; display:none">
-				<div id="dateFront-action" class="col s12" style="display:inline-block" >					
-					<button id='dateFront-add-button' title='ajoute un front'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
-					</button>
-					<button id='dateFront-update-button' title='modifie le front'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
-					</button>
-					<button id='dateFront-delete-button' title='supprime le front'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
+				<div class="detailFront col s12" style="display:none" >		
+					<label class="detailFront" for="nomDetailFront">Nom</label>
+					<input class="detailFront" type="text" id="nomDetailFront"/>
+					<label class="detailFront" for="descriptionDetailFront">Description</label>
+					<input class="detailFront" id="descriptionDetailFront" />
+					<button id='detailFront-save-button' class="col s3 detailFront" title='enregistre modification conflit'  /> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
 					</button>
 				</div>
-				<div class="col s12" >
-					<label for="dateLigne">Date des lignes</label>
-					<select id="dateLigne" style="display:inline-block">
-						<option value="" >Choisissez</option> 	<!-- disabled selected  -->
+				<div id="infoDateLigne col s12" >
+					<label class="dateLigne" for="dateLigne">Date des lignes</label>
+					<select class="dateLigne" id="dateLigne" style="display:inline-block">
+						<option value="" >Choisissez une date</option> 	<!-- disabled selected  -->
 					</select>
-					<label for="adddateLigne">nouvelle date</label>
-					<input id="adddateLigne" style="display:inline-block"/>
+					<label class="addDateLigne" for="addDateLigne">Date</label>
+					<input class="addDateLigne" type="date" id="addDateLigne"/>
+					<label class="addDateLigne" for="addDescriptionLigne">Description</label>
+					<input class="addDateLigne" id="addDescriptionLigne" />
 										
 				</div>					
 				<div id="dateFront-show" class="col s12" style="display:inline-block" >					
-					<button id='dateFront-show-ligne' title='affiche le front'/> 
+					
+					<button id='dateFront-show-button' class="col s3" title='affiche le détail de la journée'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
+					</button>
+					<button id='dateFront-add-button' class="col s3" title='ajoute une nouvelle date'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
+					</button>
+
+					<button id='dateFront-update-button' class="col s3" title='modifie les caractéristiques de la date'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
+					</button>					
+					<button id='dateFront-delete-button' class="col s3"title='supprime une date'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
+					</button>
+					<button id='dateFront-save-button' class="col s3 addDateLigne" title='enregistre date' style="display:none" /> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
 					</button>
 				</div>
 
-				<div id="Front-action" class="col s12" style="display:inline-block" >					
+				<div id="Front-action" class="col s12" style="display:none" >					
 					<div id="dateFront-action" class="col s12" style="display:inline-block" >					
 						<button id='Front-show-ligne' title='affiche le front'/> 
 							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
 						</button>
 					</div>
-					<button id='Front-add-button' title='ajoute un front'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
-					</button>
+					
 					<button id='Front-update-button' title='modifie le front'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
 					</button>
 					<button id='Front-delete-button' title='supprime le front'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
 					</button>
-				</div>
-				<p id="pointsTextArea"></p>		
+				</div>	
 			
 				<div id="defFront" style="display : none;background-color: azure;" class="col s12">
 					<div >
@@ -106,22 +117,34 @@ class LeafLet extends View
 				</div>
 			</div>
 			<p id="resultat"></p>
+			
 			<div id="confirmation" class="row" style="position:absolute; top:100px;left:45%; display:none; z-index:700; background-color:white;text-align:center">
 				<p id="question"></p>
 				<button id="btnOui" class="btn center-align col s6 text-green" ><i class="material-icons">check</i>oui</button>
 				<button id="btnNon" class="btn center-align col s6 text-red" ><i class="material-icons">cancel</i> non</button>
 			</div>
+			
 			<div id="choixLigne" class="row" style="position:absolute; top:100px;left:45%; display:none; z-index:700; background-color:white;text-align:center">
 				<p id="questionLigne" ></p>
 				<label for="typeLigne2" class="col s12">Choisissez le type de ligne à créer :</label>
-				<select id="typeLigne2" class="col s12" style="visibility : visible;display :inline-block">
+				<select id="typeLigne2" class="col s6 offset-s3" style="visibility : visible;display :inline-block">
 					<option value="" disabled selected>Choisissez</option>
 					<option value="1">Ami</option>
 					<option value="2">Ennemi</option>
 					<option value="3">Neutre</option>
 				</select>
 				<button id="btnOuiLigne" class="btn center-align col s6 text-green" ><i class="material-icons">check</i> oui</button>
-				<button id="btnAnnuler" class="btn center-align col s6 text-red" ><i class="material-icons">cancel</i> annuler</button>
+				<button id="btnAnnulerLigne" class="btn center-align col s6 text-red" ><i class="material-icons">cancel</i> annuler</button>
+			</div>
+			
+			<div id="addFront" class="row" style="position:absolute; top:100px;left:45%; display:none; z-index:700; background-color:white;text-align:center">
+				<p id="questionFront" ></p>
+				<label for="nomFront" class="col s12">Nom du conflit :</label>
+				<input id="nomFront" type="text"></input>
+				<label for="descriptionFront" class="col s12">Description sommaire :</label>
+				<input id="descriptionFront" type="text"></input>
+				<button id="btnOuiFront" class="btn center-align col s6 text-green" ><i class="material-icons">check</i> oui</button>
+				<button id="btnAnnulerFront" class="btn center-align col s6 text-red" ><i class="material-icons">cancel</i> annuler</button>
 			</div>
 		</div>
 		
