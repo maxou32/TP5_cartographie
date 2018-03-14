@@ -53,7 +53,8 @@ function zoomOut (e) {
 function gererlesDates(idfront){
 	var idFront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
 	sessionStorage['idFront']=idFront;
-	appelAjax('listeDate.html', 'idfront/'+idFront,'json');
+	var maDate=Object.create(DateFront);
+	maDate.appelAjax('listeDate.html', 'idfront/'+idFront,'json');
 };
 
 function ajoutConflit(e){
@@ -82,7 +83,9 @@ function supprimerUnConflit(idfront){
 };
 function donneCarte(){
 	return mymap;
-}
+};
+
+
 
 function voirDumpPoint (e){
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -127,6 +130,7 @@ function ouvrirCarte(){
 				separator: true
 			}, {
 				text: 'Centrer la carte ici',
+				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-centrer-32.png',
 				callback: centerMap
 			}, {
 				text: 'Aggrandir',
@@ -202,122 +206,9 @@ function appelAjax(action, param, monDataType){
 				);
 				ParamGeneraux.push(tempParam);
 				console.debug(ParamGeneraux[0]);
-			}else if(action==="listeFront.html"){
-				console.log('front');
-				console.debug(resultat);
-				console.log('nb fronts prévu :'+resultat.responseJSON.length);
-				for (i=0;i<resultat.responseJSON.length;i++){
-					console.log('fronts JSON '+resultat.responseJSON[i].idfront);
-					var unFront=Object.create(Front);
-					unFront.init(
-						resultat.responseJSON[i].idfront,
-						resultat.responseJSON[i].nom,
-						resultat.responseJSON[i].zoom,
-						resultat.responseJSON[i].lat,
-						resultat.responseJSON[i].lng,
-						resultat.responseJSON[i].valide,
-						resultat.responseJSON[i].idauteur,
-						resultat.responseJSON[i].description
-					);
-					listeFronts[unFront['idfront']]=unFront;
-					console.log('id front =' + unFront['idfront']);
-				}
-				console.log('nb front =' +listeFronts.length);
-			}else if(action==="listeDate.html"){
-				console.log('nb dates  avt :'+listeDates.length);
-				listeDates.splice(0,listeDates.length);
-				console.log('nb dates  apr :'+listeDates.length);
-				console.log('date');
-				console.debug(resultat);
-				
-				var nbDate=resultat.responseJSON.length;
-				console.log('nb dates prévues :'+nbDate);
-				for (i=0;i<nbDate;i++){
-					console.log('Dates JSON '+resultat.responseJSON[i].iddate);
-					var uneDateFront=Object.create(DateFront);
-					uneDateFront.init(
-						resultat.responseJSON[i].iddate,
-						resultat.responseJSON[i].description,
-						resultat.responseJSON[i].valide,
-						resultat.responseJSON[i].numordre,
-						resultat.responseJSON[i].date,
-						resultat.responseJSON[i].idfront
-					);
-					listeDates[uneDateFront['iddate']]=uneDateFront;
-				}
-						
-				removeOptions(document.getElementById("dateLigne"));
-				$('#btnCommande').css({display:'inline-block'});
-				if(nbDate>0){
-					listeDates.forEach(function(madate){
-						console.log('clic date = '+madate.getIddate());
-						var newOption = new Option(madate.getDate(), madate.getIddate(), false, false);
-						$('.dateLigne').css({display:'inline-block'});
-						$('#dateLigne').append(newOption).trigger('change');
-						$('.addDateLigne').css({display:'none'});
-						$('#infoDateLigne').css({display:'inline-block'});
-					});
-				}else{
-					console.log('clic date : pas de date');
-					$('.dateLigne').css({display:'none'});
-					$('.addDateLigne').css({display:'none'});
-					$('.dateFront-save-button').css({display:'inline-block'});
-					$('#infoDateLigne').css({display:'none'});
-					console.log("Mode ajout commencé");
-				}
-				console.debug('nb date =' +listeDates.length);
-				return listeDates.length;
-			}else if(action==='listeLigneDate.html'){
-				console.log('nb ligne avt :'+listeLigneFront.length);
-				listeLigneFront.splice(0,listeLigneFront.length);
-				listePoint.splice(0,listePoint.length);
-				console.log('nb dates  apr :'+listeLigneFront.length);
-				console.log('ligne date');
-				console.debug(resultat);
-				console.log('nb lignes dates prévues :'+resultat.responseJSON.length);
-				if(resultat.responseJSON.length>0){
-					for (i=0;i<resultat.responseJSON.length;i++){
-						console.log('Ligne de front JSON '+resultat.responseJSON[i].idlignefront);
-						var uneLigneFront=Object.create(LigneFront);
-						uneLigneFront.init(
-							resultat.responseJSON[i].idlignefront,
-							resultat.responseJSON[i].couleur,
-							resultat.responseJSON[i].type,
-							resultat.responseJSON[i].valide,
-							resultat.responseJSON[i].iddatefront,
-							resultat.responseJSON[i].idcontributeurfront
-						);
-						listeLigneFront[uneLigneFront['idlignefront']]=uneLigneFront;	
-						listeLigneFront[uneLigneFront['idlignefront']].montreMoi();				
-					}
-				}else{
-					var newLigne=Object.create(LigneFront);
-					newLigne.autoriseCreation();
-				}
-				
-				console.debug('nb date =' +listeLigneFront.length);
-				
-			}else if(action==='listePoint.html'){
-				console.log('liste des points');
-				console.debug(resultat);
-				//console.log('nb dates prévues :'+resultat.responseJSON.length);
-				for (i=0;i<resultat.responseJSON.length;i++){
-					console.log('Points JSON '+resultat.responseJSON[i].idlignefront);
-					var unPoint=Object.create(Point);
-					unPoint.init(
-						resultat.responseJSON[i].idpoint,
-						resultat.responseJSON[i].lat,
-						resultat.responseJSON[i].lng,
-						resultat.responseJSON[i].idmarqueur,
-						resultat.responseJSON[i].idlignefront
-					);
-					listePoint[unPoint['idpoint']]=unPoint;
-				}
-				console.debug('nb point=' +listePoint.length);
 			}	
         }
     });
-	
 }
 
 
@@ -385,6 +276,64 @@ var Front={
 		
 		return paramCarte;
 	},
+    appelAjax:function(action, param, monDataType){
+		if(param.length>0){
+			madata='action='+action+'/'+param;
+			console.log ('action = '+madata);
+		}else{
+			madata='action='+action
+		}
+		monDataType===''? monDataType='json' : monDataType=monDataType;
+		$.ajax({
+		   url : 'index.php',
+		   type : 'GET',
+		   async: false,
+		   data : madata, 			
+		   dataType : monDataType,
+		   success : function(resultat, statut){
+				if (resultat==="Success"){
+					console.log('OK');
+				}
+				console.debug('resultat = '+resultat);
+				return resultat;
+			},
+		   error : function(resultat, statut, erreur){
+				//alert ('erreur : '+action);
+				console.log('erreur deb : '+erreur);
+				console.log('statut deb : '+statut);
+				
+				console.debug(resultat);
+				//console.debug(erreur);
+				console.log('erreur fin : '+action);
+		   },
+		   complete : function(resultat, statut){
+				//alert('complete ');
+				console.log('front');
+				console.debug(resultat);
+				if(typeof(resultat.responseJSON) !== "undefined"){
+					console.log('nb fronts prévu :'+resultat.responseJSON.length);
+					for (var f=0;f<resultat.responseJSON.length;f++){
+						console.log('fronts JSON '+resultat.responseJSON[f].idfront);
+						var unFront=Object.create(Front);
+						unFront.init(
+							resultat.responseJSON[f].idfront,
+							resultat.responseJSON[f].nom,
+							resultat.responseJSON[f].zoom,
+							resultat.responseJSON[f].lat,
+							resultat.responseJSON[f].lng,
+							resultat.responseJSON[f].valide,
+							resultat.responseJSON[f].idauteur,
+							resultat.responseJSON[f].description
+						);
+						listeFronts[unFront['idfront']]=unFront;
+						console.log('id front =' + unFront['idfront']);
+					}
+				}
+				console.log('nb front =' +listeFronts.length);
+				console.log('liste de fronts'+listeFronts);
+		    }
+		});
+	},
 	getModifEnCours:function(){
 		return this.modifEnCours;
 	},
@@ -444,6 +393,7 @@ var Front={
 		centreFront.bindPopup("<b>"+this.nom+" <i>"+this.idfront+"</i></b><br />"+this.description);
 		
 	}, 
+	
 	addFront:function(){
 		//alert ('add front');
 		var rep='';
@@ -510,7 +460,96 @@ var DateFront={
 	setModifEnCours:function(etat){
 		this.modifEnCours=etat;
 	},
+    appelAjax:function(action, param, monDataType){
+		if(param.length>0){
+			madata='action='+action+'/'+param;
+			console.log ('action = '+madata);
+		}else{
+			madata='action='+action
+		}
+		monDataType===''? monDataType='json' : monDataType=monDataType;
+		$.ajax({
+		   url : 'index.php',
+		   type : 'GET',
+		   async: false,
+		   data : madata, 			
+		   dataType : monDataType,
+		   success : function(resultat, statut){
+				if (resultat==="Success"){
+					console.log('OK');
+				}
+				console.debug('resultat = '+resultat);
+				return resultat;
+			},
+		    error : function(resultat, statut, erreur){
+				//alert ('erreur : '+action);
+				console.log('erreur deb : '+erreur);
+				console.log('statut deb : '+statut);
+				
+				console.debug(resultat);
+				//console.debug(erreur);
+				console.log('erreur fin : '+action);
+		    },
+		    complete : function(resultat, statut){
+				//alert('complete ');
+				console.log('nb dates  avt :'+listeDates.length);
+				listeDates.splice(0,listeDates.length);
+				console.log('nb dates  apr :'+listeDates.length);
+				console.log('date');
+				console.debug(resultat);
+				//if(typeof resultat.responseJSON.length !== "undefined"){ 
+				var nbDate=resultat.responseJSON.length;
+				console.log('nb dates prévues :'+nbDate);
+				for (var d=0;d<nbDate;d++){
+					console.log('Dates JSON '+resultat.responseJSON[d].iddate);
+					var uneDateFront=Object.create(DateFront);
+					uneDateFront.init(
+						resultat.responseJSON[d].iddate,
+						resultat.responseJSON[d].description,
+						resultat.responseJSON[d].valide,
+						resultat.responseJSON[d].numordre,
+						resultat.responseJSON[d].date,
+						resultat.responseJSON[d].idfront
+					);
+					listeDates[uneDateFront['iddate']]=uneDateFront;
+				}
+				//}	
+				removeOptions(document.getElementById("dateLigne"));
+				$('#btnCommande').css({display:'inline-block'});
+				if(nbDate>0){
+					listeDates.forEach(function(madate){
+						console.log('clic date = '+madate.getIddate());
+						var newOption = new Option(madate.getDate(), madate.getIddate(), false, false);
+						$('.dateLigne').css({display:'inline-block'});
+						$('#dateLigne').append(newOption).trigger('change');
+						$('.addDateLigne').css({display:'none'});
+						$('#infoDateLigne').css({display:'inline-block'});
+					});
+				}else{
+					console.log('clic date : pas de date');
+					$('.dateLigne').css({display:'none'});
+					$('.addDateLigne').css({display:'none'});
+					$('.dateFront-save-button').css({display:'inline-block'});
+					$('#infoDateLigne').css({display:'none'});
+					console.log("Mode ajout commencé");
+				}
+				console.debug('nb date =' +listeDates.length);
+				return listeDates.length;
+		    }
+		});
+	},
+	centreSurDate:function(idDate){
+		console.debug("centreSurDate id = "+idDate);
+		var monFrontMere=listeDates[idDate];
+		console.log('id front mere '+monFrontMere.idfront);
+		var paramFront=[];
+		paramFront=listeFronts[monFrontMere.idfront].getParamCarteUnFront();
+		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
+		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
+		
+	},
 	donneDernierId:function(){
+		console.log('donneDernier id 1');
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
@@ -518,14 +557,41 @@ var DateFront={
 		   data : 'action=NewIdDateFront/', 			
 		   dataType : 'text',
 		   success : function(resultat, statut){
+				console.log('donneDernier id 2 '+ resultat);
+				sessionStorage['idDate']=resultat.responseText;
 				return resultat;
 			},
 		   error : function(resultat, statut, erreur){
+			    sessionStorage['idDate']=resultat.responseText;
+				console.log('donneDernier id 3 '+ resultat);
 				console.log('erreur fin : '+action);
 		   },
 		   complete : function(resultat, statut){	
+				sessionStorage['idDate']=resultat.responseText;
+				console.log('donneDernier id 4 '+ resultat);
+				return resultat;
 		   }
 		})
+	},
+	effaceFronts:function(){
+		console.log ('------------------------------------------');
+		console.log ('liste des polylines');
+		console.debug(mymap);
+		var mesPolylines=[];
+		mesPolylines=mymap._editablePolylines;
+		console.log(mesPolylines);
+		if(typeof mesPolylines !== "undefined"){
+			console.log ('nombre de polylines 1 : '+mesPolylines.length);
+			while( mesPolylines.length >0){
+				console.log ('polylines supprimé : '+mesPolylines[0]._leaflet_id);
+				mymap.removeLayer(mesPolylines[0]);
+				console.log ('nombre de polylines 2 : '+mesPolylines.length);
+			}
+			
+		}
+		console.log('polylines restants');
+		console.log(mesPolylines);
+		console.log ('------------------------------------------');
 	},
 	addDateFront:function(){
 		var rep='';
@@ -536,9 +602,67 @@ var DateFront={
 		rep += 'idfront>'+this.idfront +'|';		
 		appelAjax('addDateFront','nbFront/1/maDate/'+rep,'','text');
 	},
+	duppliqueDateFront:function(){
+		var rep='';
+		rep += 'date>' + this.date + '|';
+		rep += 'numordre>'+ this.numordre +'|';  // 
+		rep += 'valide>'+ this.valide +'|';  // 
+		rep += 'description>'+this.description +'|';
+		rep += 'idfront>'+this.idfront +'|';		
+		appelAjax('addDateFront','nbFront/1/maDate/'+rep,'','text');
+		alert ('id date ancien = '+ this.iddate);
+		this.donneDernierId();
+		this.iddate=sessionStorage['idDate'];
+
+		alert ('id date nouveau = '+ this.iddate);
+		this.ajouteMesLignes(this.iddate);
+	},
+	
 	deleteDateFront:function(maDate){
 		appelAjax('supprimeDateFront','iddate/'+maDate,'','text');
 		console.log("Mode suppression terminés");		
+	},
+	ajouteMesLignes(maDate){
+		// Ajout des nouvelles lignes
+		if(typeof mymap._editablePolylines !== "undefined"){
+			mymap._editablePolylines.forEach(function(uneLigneFront) {
+				var points = uneLigneFront.getPoints();
+				console.log('uneLigneFront id = '+uneLigneFront._leaflet_id+", type ="+uneLigneFront.options.newPolylineTypeMessage);
+				var maLigneDate=Object.create(LigneFront); 
+				
+				console.debug(uneLigneFront._map._editablePolylines[uneLigneFront._map._editablePolylines.length-1]);
+				var mesOptions=uneLigneFront._map._editablePolylines[uneLigneFront._map._editablePolylines.length-1]._options;
+				console.debug(uneLigneFront);
+				console.debug('la couleur debug ? '+uneLigneFront._path.attributes[1].value); 
+				console.log('la couleur log? '+uneLigneFront._path.attributes[1].value); 
+				
+				var couleur=uneLigneFront._path.attributes[1].value;
+				var type=mesOptions.formeLigne;
+				console.log('Couleur avant interrogation = '+couleur);	
+				//alert('couleur '+couleur);
+				
+				console.log('couleur ligne = '+couleur);
+				console.log('type ligne = '+type);
+				console.log('date ligne = '+maDate);
+				maLigneDate.init(0,couleur,type,false,maDate,0);
+				couleur='';
+				type='';
+				maLigneDate.addLigneDate();	
+				maLigneDate.donneDernierId();
+				
+				var idLigneDate=sessionStorage['idLigneDate'];
+				points.forEach(function(point) {
+					var latLng = point.getLatLng();
+					var monPoint=Object.create(Point);
+					monPoint.init(0,latLng.lat,latLng.lng,'',idLigneDate);
+					monPoint.addPoint();
+				});
+			});
+		};
+	},
+	supprimeMesLignes:function(maDate){
+		var mesLignes=Object.create(LigneFront);
+		mesLignes.supprimeLigne(maDate);
 	},
 	updateDateFront:function(maDate){
 		var refDate=this.iddate;
@@ -551,39 +675,13 @@ var DateFront={
 		rep += 'idfront>'+this.idfront +'|';
 		appelAjax('modifieDateFront','madate/'+rep,'','text');
 		console.log("Mode modification terminé");	
-		var mesLignes=Object.create(LigneFront);
 		var maDate=this.iddate;
-		mesLignes.supprimeLigne(this.iddate);
+		this.supprimeMesLignes(maDate);
 		if(this.iddate=0){
 			this.iddate=this.donneDernierId();
 			console.log('uneLigneFront id = '+ this.iddate);
-		}
-		
-				
-		// Ajout des nouvelles lignes
-		if(typeof mymap._editablePolylines !== "undefined"){
-			mymap._editablePolylines.forEach(function(uneLigneFront) {
-				var points = uneLigneFront.getPoints();
-				console.log('uneLigneFront id = '+uneLigneFront._leaflet_id+", type ="+uneLigneFront.options.newPolylineTypeMessage);
-				var maLigneDate=Object.create(LigneFront);
-				
-				console.debug(uneLigneFront._map._editablePolylines[uneLigneFront._map._editablePolylines.length-1]);
-				var mesOptions=uneLigneFront._map._editablePolylines[uneLigneFront._map._editablePolylines.length-1]._options
-				var couleur = mesOptions.color;
-				var type = mesOptions.type;
-				console.log('couleur ligne = '+FormeLigne[uneLigneFront.options.newPolylineTypeMessage]);
-				console.log('type ligne = '+type);
-				console.log('date ligne = '+maDate);
-				maLigneDate.init(0,couleur,type,false,maDate,0);
-				var idLigneDate=maLigneDate.addLigneDate();					
-				points.forEach(function(point) {
-					var latLng = point.getLatLng();
-					var monPoint=Object.create(Point);
-					monPoint.init(0,latLng.lat,latLng.lng,'',idLigneDate);
-					monPoint.addPoint();
-				});
-			});
 		};
+		this.ajouteMesLignes(maDate);
 	}
 };
 	/*******************************************
@@ -604,6 +702,64 @@ var LigneFront={
 	},
 	getIddatefront:function(){
 		return this.iddatefront;
+	},
+    appelAjax:function(action, param, monDataType){
+		if(param.length>0){
+			madata='action='+action+'/'+param;
+			console.log ('action = '+madata);
+		}else{
+			madata='action='+action
+		}
+		monDataType===''? monDataType='json' : monDataType=monDataType;
+		$.ajax({
+		   url : 'index.php',
+		   type : 'GET',
+		   async: false,
+		   data : madata, 			
+		   dataType : monDataType,
+		   success : function(resultat, statut){
+				if (resultat==="Success"){
+					console.log('OK');
+				}
+				console.debug('resultat = '+resultat);
+				return resultat;
+			},
+		    error : function(resultat, statut, erreur){
+				//alert ('erreur : '+action);
+				console.log('erreur deb : '+erreur);
+				console.log('statut deb : '+statut);
+				
+				console.debug(resultat);
+				//console.debug(erreur);
+				console.log('erreur fin : '+action);
+		    },
+		    complete : function(resultat, statut){
+				console.log('nb ligne avt :'+listeLigneFront.length);
+				listeLigneFront.splice(0,listeLigneFront.length);
+				listePoint.splice(0,listePoint.length);
+				console.log('nb dates  apr :'+listeLigneFront.length);
+				console.log('ligne date');
+				console.debug(resultat);
+				console.log('nb lignes dates prévues :'+resultat.responseJSON.length);
+				if(resultat.responseJSON.length>0){
+					for (var i=0;i<resultat.responseJSON.length;i++){
+						console.log('Ligne de front JSON '+resultat.responseJSON[i].idlignefront);
+						var uneLigneFront=Object.create(LigneFront);
+						uneLigneFront.init(
+							resultat.responseJSON[i].idlignefront,
+							resultat.responseJSON[i].couleur,
+							resultat.responseJSON[i].type,
+							resultat.responseJSON[i].valide,
+							resultat.responseJSON[i].iddatefront,
+							resultat.responseJSON[i].idcontributeurfront
+						);
+						listeLigneFront[uneLigneFront['idlignefront']]=uneLigneFront;	
+						console.log('Fin de Ligne de front JSON '+resultat.responseJSON[i].idlignefront);						
+					};
+					listeLigneFront[uneLigneFront['idlignefront']].montreMoi();	
+				};
+			}
+		});
 	},
 	donneCoordonneesMesPoints:function(maLigne){
 		var listeCoordonneesUnFront=[];
@@ -633,7 +789,9 @@ var LigneFront={
 	montreMoi:function(){
 		console.log('recherche des points de la ligne '+ this.idlignefront);
 		listeLigneFront.forEach(function(monLigneFront){
-			appelAjax('listePoint.html', 'idlignefront/'+monLigneFront.idlignefront,'json');
+			console.log('recherche de la ligne '+monLigneFront.iddatefront+' ligne num = '+monLigneFront.idlignefront);
+			var mesPoints=Object.create(Point);			
+			mesPoints.appelAjax('listePoint.html', 'idlignefront/'+monLigneFront.idlignefront,'json');
 			console.log('nombre de points '+listePoint.length);
 			
 			var polylineOptions = {
@@ -645,7 +803,7 @@ var LigneFront={
 				newPolylineTypeMessage: 2,
 				maxMarkers: 100,
 				color: monLigneFront.couleur,
-				formeLigne:monLigneFront.type,
+				formeLigne:monLigneFront.type, 
 				weight: 3,
 				dashArray: '10,7',
 				lineJoin:'round',
@@ -654,30 +812,48 @@ var LigneFront={
 					{ 
 						separator: true
 					}, {
-						text: 'Voir dump',
+						text: 'Modifie la ligne',
 						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
-						callback: this.voirDumpPoint
+						callback: modifieLaLigne
+					}, {
+						text: 'Supprime la ligne',
+						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
+						callback: supprimeUneLigne
 					}
 				]
 			};
 			uneLigneFront = L.Polyline.PolylineEditor(monLigneFront.donneCoordonneesMesPoints(monLigneFront.idlignefront), polylineOptions).addTo(mymap);
-			
-			//uneLigneFront =  L.polyline
-			
 			console.log('id une ligne de front = '+uneLigneFront._leaflet_id);
-			
-			//uneLigneFront.bindPopup("<b>Ligne de front"+" <i>"+uneLigneFront._leaflet_id+"<br /><button class='ligne-delete-button' title='supprime la ligne'/> <img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> </button>").openPopup();	
-			//uneLigneFront.on("popupopen", this.onPopupLigneFrontOpen);
 		});
 		
-		var monFrontMere=listeDates[this.iddatefront].getIdfront();
-		console.log('id front mere '+monFrontMere);
-		var paramFront=[];
-		paramFront=listeFronts[monFrontMere].getParamCarteUnFront();
-		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
-		
-		
-		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
+	},
+	donneDernierId:function(){
+		console.log('-------------------------------'); 
+		console.log('donne dernier ID ligne date pour points ');
+		console.log('-------------------------------'); 
+					
+		$.ajax({
+		   url : 'index.php',
+		   type : 'GET',
+		   async: false,
+		   data : 'action=NewIdLigneFront/', 			
+		   dataType : 'text',
+		   success : function(resultat, statut){
+			},
+		   error : function(resultat, statut, erreur){
+				console.log('erreur fin : '+action);
+				console.log('Resultat maxId '+resultat.responseText);
+				var monResultat=resultat.responseText;
+				sessionStorage['idLigneDate']=resultat.responseText;
+				return monResultat;
+		   },
+		   complete : function(resultat, statut){	
+			    console.log('Resultat maxId '+resultat.responseText);
+				var monResultat=resultat.responseText;
+				sessionStorage['idLigneDate']=resultat.responseText;
+				return monResultat;
+		   }
+		})
 	},
 	addLigneDate:function(){
 		var rep='';
@@ -690,8 +866,18 @@ var LigneFront={
 	},
 	supprimeLigne:function(iddate){
 		// Suppression des lignes existantes pour la date
+		console.log('-------------------------------'); 
+		console.log('Supprime ligne demandée'+iddate);
+		console.log('-------------------------------'); 
 		appelAjax('supprimeLigneDate', 'iddatefront/'+iddate,'json');
 	}	
+};
+var modifieLaLigne= function(e){
+	console.debug('modifie une ligne de front : '+e);
+	
+};
+var  supprimeUneLigne = function(e){
+	console.debug('supprime une ligne de front : '+e);
 };
 
 	/*******************************************
@@ -718,9 +904,58 @@ var Point={
 	getIdlignefront:function(){
 		return this.idlignefront;
 	},
+    appelAjax:function(action, param, monDataType){
+		if(param.length>0){
+			madata='action='+action+'/'+param;
+			console.log ('action = '+madata);
+		}else{
+			madata='action='+action
+		}
+		monDataType===''? monDataType='json' : monDataType=monDataType;
+		$.ajax({
+		   url : 'index.php',
+		   type : 'GET',
+		   async: false,
+		   data : madata, 			
+		   dataType : monDataType,
+		   success : function(resultat, statut){
+				if (resultat==="Success"){
+					console.log('OK');
+				}
+				console.debug('resultat = '+resultat);
+				return resultat;
+			},
+		    error : function(resultat, statut, erreur){
+				//alert ('erreur : '+action);
+				console.log('erreur deb : '+erreur);
+				console.log('statut deb : '+statut);
+				
+				console.debug(resultat);
+				//console.debug(erreur);
+				console.log('erreur fin : '+action);
+		    },
+		    complete : function(resultat, statut){
+				console.log('liste des points');
+				console.debug(resultat);
+				
+				for (var p=0;p<resultat.responseJSON.length;p++){
+					console.log('Points JSON '+resultat.responseJSON[p].idlignefront);
+					var unPoint=Object.create(Point);
+					unPoint.init(
+						resultat.responseJSON[p].idpoint,
+						resultat.responseJSON[p].lat,
+						resultat.responseJSON[p].lng,
+						resultat.responseJSON[p].idmarqueur,
+						resultat.responseJSON[p].idlignefront
+					);
+					listePoint[unPoint['idpoint']]=unPoint;
+				}
+				console.debug('nb point=' +listePoint.length);
+			}
+		});
+	},
 	addPoint:function(){
 		var rep='';
-		rep += 'iddatefront>' + this.iddatefront + '|';
 		rep += 'lat>' + this.lat + '|';
 		rep += 'lng>'+ this.lng+'|';  // 
 		rep += 'idmarqueur>'+ this.idmarqueur +'|';  // 
@@ -742,7 +977,8 @@ window.onload = function () {
 	// chargement des fronts
 	console.log('debut chgt fronts');
 	
-	appelAjax('listeFront.html', '','','json');	
+	monFront=Object.create(Front);
+	monFront.appelAjax('listeFront.html', '','','json');	
 	console.log('fin chgt fronts');
 	
 	//affichage carte
@@ -782,9 +1018,13 @@ window.onload = function () {
 		$("#addDateLigne").val(listeDates[sessionStorage['idDate']].date);
 		var maDate = Object.create(DateFront);
 		if(!maDate.getModifEnCours()){
-			appelAjax('listeLigneDate.html', 'iddatefront/'+sessionStorage['idDate'],'','json');
+			console.log('Efface fronts');
+			maDate.effaceFronts();
+			var maLigneFront=Object.create(LigneFront);
+			maLigneFront.appelAjax('listeLigneDate.html', 'iddatefront/'+sessionStorage['idDate'],'','json');
 			$('#btnAjoutLigne').css({display:'inline-block'});
 			$('.addDateLigne').css({display:'inline-block'});
+			maDate.centreSurDate(sessionStorage['idDate']);
 			console.log("Mode consultation commencé");
 		}
 	});
@@ -794,8 +1034,19 @@ window.onload = function () {
 		maDate.setModifEnCours(true);
 		$('.addDateLigne').css({display:'inline-block'});
 		$('.dateFront-save-button').css({display:'inline-block'});
-		sessionStorage['operationDate']='ajoutDate';
+		sessionStorage['operationDate']='ajoutDate'; 
 		console.log("Mode ajout commencé");
+	});
+	document.getElementById("dateFront-dupplicate-button").addEventListener("click", function(e){
+		$('.addDateLigne').css({display:'none'});
+		$('.dateFront-save-button').css({display:'none'});
+		console.log("Mode dupplication terminé");
+		var maDate = Object.create(DateFront);
+		var iddate=0;
+		//sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= sessionStorage['idDate'];
+		maDate.init(iddate,$('#addDescriptionLigne').val(),false,0,$('#addDateLigne').val(),sessionStorage['idFront']);
+		maDate.duppliqueDateFront() ;
+		maDate.setModifEnCours(false);
 	});
 	document.getElementById("dateFront-update-button").addEventListener("click", function(e){
 		var maDate = Object.create(DateFront);
@@ -805,6 +1056,7 @@ window.onload = function () {
 		sessionStorage['operationDate']='modifDate';
 		console.log("Mode modif commencé");
 	});
+	
 	document.getElementById("dateFront-save-button").addEventListener("click", function(e){
 		$('.addDateLigne').css({display:'none'});
 		$('.dateFront-save-button').css({display:'none'});
@@ -815,6 +1067,18 @@ window.onload = function () {
 		maDate.init(iddate,$('#addDescriptionLigne').val(),false,0,$('#addDateLigne').val(),sessionStorage['idFront']);
 		sessionStorage['operationDate']=='ajoutDate' ? maDate.addDateFront() :  maDate.updateDateFront(sessionStorage['idDate']);
 		maDate.setModifEnCours(false);
+	});
+	
+	document.getElementById("btnOuiLigne").addEventListener("click", function(e){
+		console.log("création ligne validée ");
+		$('#choixLigne').css({display:'none'});
+		sessionStorage['couleurFront']=FormeLigne[$('#typeLigne2').val()].couleur;
+		sessionStorage['typeFront']=FormeLigne[$('#typeLigne2').val()].libelle;
+	});
+	
+	document.getElementById("btnAnnulerLigne").addEventListener("click", function(e){
+		console.log("création ligne  annulée ");
+		$('#choixLigne').css({display:'none'});
 	});
 	
 	document.getElementById("dateFront-delete-button").addEventListener("click", function(e){
