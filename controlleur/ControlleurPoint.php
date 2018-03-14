@@ -7,9 +7,9 @@ class ControlleurPoint  extends Controlleur {
 	}
 	
 	public function addPoint($paramsBrut){
-		echo "<pre>";print_r($paramsBrut);echo"</pre>";
+		//echo "<pre>";print_r($paramsBrut);echo"</pre>";
 		$params=$this->decoupeParam($paramsBrut['monPoint']); 
-		echo "<pre>";print_r($params);echo"</pre>";
+		//echo "<pre>";print_r($params);echo"</pre>";
 		
 		$donnees=array('lat' => $params['lat'],'lng' => $params['lng'],  'idmarqueur'=>'', 'idlignefront'=>$params['idlignefront'] );
 		$monPoint=new PointManager(); 

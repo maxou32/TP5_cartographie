@@ -5,6 +5,11 @@ class ControlleurLigne  extends Controlleur {
 	public function __construct(){
 
 	}
+	public function maxId (){
+		$monLigneFront= new LigneFrontManager();
+		$maxId=$monLigneFront->getMaxId();
+		echo $maxId;		
+	}
 	private function decoupeLigne($ligne){
 		$result=[];
 		
@@ -14,10 +19,10 @@ class ControlleurLigne  extends Controlleur {
 		$supprime = array("),",")"," ","LatLng(");			
 		$latlngTemp=str_replace($supprime, '', $latlngTemp);
 
-		echo "ControlleurLigne decoupe 1: <pre>";print_r($latlngTemp);"</pre>";
+		//echo "ControlleurLigne decoupe 1: <pre>";print_r($latlngTemp);"</pre>";
 		
 		$temp = explode('|',$latlngTemp);
-		echo "<br />ControlleurLigne decoupe 2: <pre>";print_r($temp);"</pre>";
+		//echo "<br />ControlleurLigne decoupe 2: <pre>";print_r($temp);"</pre>";
 		/*for ($i=0; $i<count($temp);$i++){
 			$elem =explode(',',$temp[$i]);
 			echo "<br />ControlleurLigne decoupe 3: <pre>";print_r($elem);"</pre>";
@@ -63,7 +68,6 @@ class ControlleurLigne  extends Controlleur {
 		//	echo"<br />ControlleurLigne erreur création Front";
 		//}else{
 			//2 création de lignes de fronts
-			$type=['blue'=>1,'red'=>2,'green'=>3];
 			//$idFront=$result['idFront'];
 			//$detailLigne=$this->paramLigne($params);
 			//echo"<br />Controlleur Ligne  3: <pre>";print_r($detailLigne);echo"</pre>";
@@ -78,7 +82,7 @@ class ControlleurLigne  extends Controlleur {
 				}
 				echo"<br />Controlleur Ligne 3.5: <pre>";print_r($result);echo"</pre>";
 				*/
-			$donnees=array('couleur' => $params['couleur'],'type' => $params['couleur'], 'valide' => 0, 'idcontributeurfront'=>'5', 'iddatefront'=>$params['iddatefront'] );
+			$donnees=array('couleur' => $params['couleur'],'type' => $params['type'], 'valide' => 0, 'idcontributeurfront'=>'5', 'iddatefront'=>$params['iddatefront'] );
 				//echo "<br />ControlleurLigne 2 : <pre>";print_r($donnees);"</pre>";
 		
 				$maLigne=new LigneFrontManager();
@@ -89,7 +93,7 @@ class ControlleurLigne  extends Controlleur {
 					$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
 					*/
 				}else{
-					echo"Success";
+					echo ("'"."Success"."'");
 					//2 création des points de ligne de fronts
 					/*
 					$result['coord']=$this->decoupeLigne($caractLigne['coord']);
@@ -119,7 +123,7 @@ class ControlleurLigne  extends Controlleur {
 		$maLigne= new LigneFrontManager;
 		$result=$maLigne->delete($params['iddatefront']);
 		if($result){
-			echo ("Success");
+			echo ("'"."Success"."'");
 		}else{
 			echo ("suppression impossible"); 
 		}

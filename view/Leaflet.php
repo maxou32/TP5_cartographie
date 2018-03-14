@@ -2,7 +2,7 @@
 
 class LeafLet extends View
 {	
-	public function __construct(){
+	public function __construct(){ 
 		
 	}
 
@@ -28,7 +28,7 @@ class LeafLet extends View
 					<input class="detailFront" type="text" id="nomDetailFront"/>
 					<label class="detailFront" for="descriptionDetailFront">Description</label>
 					<input class="detailFront" id="descriptionDetailFront" />
-					<button id='detailFront-save-button' class="col s3 detailFront" title='enregistre modification conflit'  /> 
+					<button id='detailFront-save-button' class="col s3 detailFront" title='enregistre modification conflit'> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
 					</button>
 				</div>
@@ -51,11 +51,13 @@ class LeafLet extends View
 					<button id='dateFront-add-button' class="col s3" title='ajoute une nouvelle date'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
 					</button>
-
+					<button id='dateFront-dupplicate-button' class="col s3" title='dupplique une  date'/> 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-copie-32.png'>
+					</button>
 					<button id='dateFront-update-button' class="col s3" title='modifie les caractéristiques de la date'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
 					</button>					
-					<button id='dateFront-delete-button' class="col s3"title='supprime une date'/> 
+					<button id='dateFront-delete-button' class="col s3" title='supprime une date'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
 					</button>
 					<button id='dateFront-save-button' class="col s3 addDateLigne" title='enregistre date' style="display:none" /> 

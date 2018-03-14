@@ -71,7 +71,7 @@ class ControlleurDateFront  extends Controlleur {
 		$monDatesFront= new DatesFrontManager();
 		$result=$monDatesFront->delete($params['iddate']);
 		if($result){
-			echo ("Success");
+			echo ("'".Success."'");
 		}else{
 			echo ("suppression impossible"); 
 		}

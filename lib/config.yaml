@@ -109,15 +109,51 @@ verifUser :
  niveauSecurité : 0
  variable :
   Null
-addLigne:
- classe : ControlleurLigne
- operation : addLigne
+addFront:
+ classe : ControlleurFront
+ operation : addFront
  niveauSecurité : 0
  variable :
   Null
+supprimeFront:
+ classe : ControlleurFront
+ operation : deleteFront
+ niveauSecurité : 0
+ variable :
+  Null 
+modifieFront:
+ classe : ControlleurFront
+ operation : updateFront
+ niveauSecurité : 0
+ variable :
+  Null 
 listeFront.html: 
  classe : ControlleurFront
  operation : LireTousFrontsSeuls
+ niveauSecurité : 0
+ variable :
+  Null 
+addDateFront:
+ classe : ControlleurDateFront
+ operation : addDateFront
+ niveauSecurité : 0
+ variable :
+  Null 
+supprimeDateFront:
+ classe : ControlleurDateFront
+ operation : deleteDateFront
+ niveauSecurité : 0
+ variable :
+  Null 
+modifieDateFront:
+ classe : ControlleurDateFront
+ operation : updateDateFront
+ niveauSecurité : 0
+ variable :
+  Null 
+NewIdDateFront:
+ classe : ControlleurDateFront
+ operation : maxId
  niveauSecurité : 0
  variable :
   Null 
@@ -145,6 +181,12 @@ listePoint.html:
  niveauSecurité : 0
  variable :
   Null 
+creePoint : 
+ classe : ControlleurPoint
+ operation : addPoint
+ niveauSecurité : 0
+ variable :
+  Null 
 lireTousFronts:
  classe : ControlleurFront
  operation : lireTousFronts
@@ -163,15 +205,21 @@ lireFrontsJSON:
  niveauSecurité : 0
  variable :
   Null   
-supprimeFront :
- classe : ControlleurFront
- operation : supprimeFront
- niveauSecurité: 3
+NewIdLigneFront:
+ classe : ControlleurLigne
+ operation : maxId
+ niveauSecurité : 0
  variable :
   Null 
-supprimeLigneFront :
+creeLigneDate :
+ classe : ControlleurLigne
+ operation : addLigne
+ niveauSecurité: 0
+ variable :
+  Null 
+supprimeLigneDate :
  classe : ControlleurLigne
  operation : supprimeLigne
- niveauSecurité: 3
+ niveauSecurité: 0
  variable :
   Null 

@@ -16,9 +16,6 @@ L.Polyline.polylineEditor = L.Polyline.extend({
             console.log('click my map');
             that._map.on('dblclick', function(event) {
                 console.log('click, target=' + (event.target == that._map) + ' type=' + event.type);
-				if(that._map === ''){
-					that._map=donneCarte();
-				}
                 if(that._map.isEditablePolylinesBusy())
                     return;
 
@@ -47,16 +44,14 @@ L.Polyline.polylineEditor = L.Polyline.extend({
 					console.log("ligne oui ");
 					$('#choixLigne').css({display:'none'});
 					that._options.color=FormeLigne[$('#typeLigne2').val()].couleur;
-					that._options.formeLigne=FormeLigne[$('#typeLigne2').val()].libelle;
-					that._path.attributes[1].value=FormeLigne[$('#typeLigne2').val()].couleur;
 					L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
-					
+
 					that._showBoundMarkers();
 					that._changed = true;
 				});
-				document.getElementById("btnAnnulerLigne").addEventListener("click", function(e){
+				document.getElementById("btnAnnuler").addEventListener("click", function(e){
 					
-					console.log("ligne  annulée ");
+					console.log("ligne oui ");
 					$('#choixLigne').css({display:'none'});
 					
 					that._changed = false;

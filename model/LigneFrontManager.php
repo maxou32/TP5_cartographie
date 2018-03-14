@@ -37,11 +37,19 @@ class LigneFrontManager extends Manager{
 			return $result;
 		}	;	
 	}
+	public function getMaxId(){
+		$q = $this->dbConnect()->query('SELECT Max(idlignefront) as idMax from '.$this->prefix.'lignefront');
+		$donnees = $q->fetch(\PDO::FETCH_ASSOC);
+		//echo"<br />datesfrontManager Front<pre>";print_r($donnees);echo"</pre>";
+		$result['idlignefront']= $donnees['idMax'];
+		return $result['idlignefront'];
+	}
 
-	public function delete($idlignefront)  {
+	public function delete($iddatefront)  {
 		try{
-			$idlignefront = (int) $idlignefront;
-			$this->dbConnect()->exec('DELETE FROM '.$this->prefix.'lignefront WHERE idlignefront = '.$idlignefront);
+			$iddatefront = (int) $iddatefront;
+			//echo 'DELETE FROM '.$this->prefix.'lignefront WHERE idlignefront = '.$iddatefront ; 
+			$this->dbConnect()->exec('DELETE FROM '.$this->prefix.'lignefront WHERE iddatefront = '.$iddatefront);
 			return true;			
 		}catch (PDOException  $e){ 
 			echo $e;
