@@ -23,8 +23,7 @@ class _MenuFreeView extends View
 					</a>	
 					<ul id="menuGeneral" class="left hide-on-med-and-down">
 						<li><a href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
-						<li><a href="?action=creerFrontsJSON">Maj Json</a></li>
-						<li><a href="?action=lireTousFronts">Lire JSON</a></li>
+						
 						<li><a href="index.php?askSendMail">Contactez moi</a></li>
 						<li><a href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
 						<li class="divider"></li>

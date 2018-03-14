@@ -70,6 +70,10 @@ class Router{
 			//echo"<br />appel 1 : ".$this->myRoad['classe']." fonction : ".$this->myRoad['operation'];
 			//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
 			$this->myParam=$this->myRequest;
+			if(isset($this->request['userName'])){
+					$this->myParam['userName']=$this->request['userName'];
+					$this->myParam['userPwd']=$this->request['userPwd'];
+			}
 			
 			foreach ($this->myRoad["variable"] as $key => $value){
 				//echo"<br />element : <pre>";print_r($key);echo"</pre>";

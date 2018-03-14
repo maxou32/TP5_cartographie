@@ -65,7 +65,7 @@ function ajoutConflit(e){
 function modifierUnConflit(idfront){
 	var unFront= Object.create(Front);
 	var idfront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
-	alert('modifier le conflit num = '+idfront);
+	//alert('modifier le conflit num = '+idfront);
 	$('.detailFront').css({display:'inline-block'});
 	$('#btnCommande').css({display:'inline-block'});
 	$('.addDateLigne').css({display:'none'});
@@ -76,10 +76,10 @@ function modifierUnConflit(idfront){
 	sessionStorage['idfront']=idfront;
 };
 function supprimerUnConflit(idfront){
-	var unFront= Object.create(Front);
-	alert('supprimer le conflit num = '+listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront']);
-	unFront.deleteFront(listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront']);
-	
+	if(confirm("Confirmez-vous la demande de suppression d'une zone de conflit ?")){
+		var unFront= Object.create(Front);
+		unFront.deleteFront(listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront']);
+	}
 };
 function donneCarte(){
 	return mymap;
@@ -610,17 +610,19 @@ var DateFront={
 		rep += 'description>'+this.description +'|';
 		rep += 'idfront>'+this.idfront +'|';		
 		appelAjax('addDateFront','nbFront/1/maDate/'+rep,'','text');
-		alert ('id date ancien = '+ this.iddate);
+		//alert ('id date ancien = '+ this.iddate);
 		this.donneDernierId();
 		this.iddate=sessionStorage['idDate'];
 
-		alert ('id date nouveau = '+ this.iddate);
+		//alert ('id date nouveau = '+ this.iddate);
 		this.ajouteMesLignes(this.iddate);
 	},
 	
 	deleteDateFront:function(maDate){
-		appelAjax('supprimeDateFront','iddate/'+maDate,'','text');
-		console.log("Mode suppression terminés");		
+		if (confirm("Confirmez-vous la demande de suppression d'une date")){
+			appelAjax('supprimeDateFront','iddate/'+maDate,'','text');
+			console.log("Mode suppression terminé");		
+		}
 	},
 	ajouteMesLignes(maDate){
 		// Ajout des nouvelles lignes
@@ -1082,7 +1084,7 @@ window.onload = function () {
 	});
 	
 	document.getElementById("dateFront-delete-button").addEventListener("click", function(e){
-		alert("Mode suppression engagé");
+		//alert("Mode suppression engagé");
 		var maDate = Object.create(DateFront);
 		maDate.deleteDateFront(sessionStorage['idDate']);
 	});
@@ -1115,12 +1117,5 @@ window.onload = function () {
 		
 	});
 }
-
-
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
 
 

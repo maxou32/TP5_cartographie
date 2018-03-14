@@ -43,13 +43,7 @@ paramGenerauxCarte :
  operation : donneParamGenerauxCartes
  niveauSecurité : 0
  variable :
-  Null
-IGN.html :
- classe : ControlleurCarte
- operation : executeCarte
- niveauSecurité : 0
- variable :
-  cible : IGN
+  Null²
 addCarte.html :
  classe : ControlleurCarte
  operation : executeCarte

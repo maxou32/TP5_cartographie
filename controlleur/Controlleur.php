@@ -46,16 +46,7 @@ class Controlleur{
 				$result[$elem['0']]=$elem['1'] ;
 			}elseif(count($elem)===3){
 				$result[$temp[$i]]=$temp[$i];
-				/*
-				echo "<br />Controlleur decoupeParam 4: <pre>";print_r($elem['0']);echo "----";print_r($elem['1']);echo "----";print_r($elem['2']);"</pre>";
-				$result1[$elem['1']]=$elem['2'];
-				$result0[$elem['0']]=$result1[$elem['1']];
-				echo "<br />Controlleur decoupeParam 5: <pre>";print_r($result0[$elem['0']]);echo"</pre>";
-				$result[$elem['0']]=$result0[$elem['0']];
-				//$result[$elem['1']]=$elem['2'] ;
-				//$result[$elem['0']]=$result[$elem['1']] ;
-				echo "<br />Controlleur decoupeParam 6: <pre>";print_r($result[$elem['0']]);echo"</pre>";
-				*/
+
 			}else{
 				$result[$elem['0']]=Null;
 			}
@@ -65,14 +56,18 @@ class Controlleur{
 	}
 	
 	public function montre($param){
-		//echo"<br />Controlleur 4 ";
+		//echo"<br />Controlleur 1 ";
+		//echo"<pre>";print_r($param);echo"</pre>";
+		
+		
 		$maConfig= new Config();
 		$data['style']=$maConfig->getCouleur();
-		
+		//echo"<br />Controlleur 2 ";
 		$maView = new $param['classe']();
+		//echo"<br />Controlleur 3 ";
 		$fonction=$param['action'];
 		$theView=$maView->$fonction($data);	
-		//echo "<br /> echo de theView <pre>";print_r($theView);echo"</pre>";
+		//echo"<br />Controlleur 4 ";//echo "<br /> echo de theView <pre>";print_r($theView);echo"</pre>";
 		$this->appelleTemplate($theView);
 		
 	}

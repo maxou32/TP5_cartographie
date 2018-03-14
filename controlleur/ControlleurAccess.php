@@ -28,12 +28,12 @@ class ControlleurAccess {
      * @return array contenant le résultat et un libellé éventuel d'erreur
      */
 	public function validAccesReserve($params){
-		//echo"<PRE> COntroller : debut validAccessReserved";print_r($params);echo"</PRE>";
+		//echo"<PRE> COntroller : debut validAccessReserved <br/>";print_r($params);echo"</PRE>";
 			
 		if(isset($params['userName']) && isset($params['userPwd'])) {
 			$monAbonneManager=new AbonneManager;
 			$abonne=$monAbonneManager->get($params['userName']);
-			//echo"<PRE> COntroller :  validAccessReserved abonne";print_r($abonne);echo"</PRE>";
+			//echo"<PRE> COntroller :  validAccessReserved abonne <br/>";print_r($abonne);echo"</PRE>";
 			if(!$abonne){
 				//echo"<PRE> COntroller : validAccessReserved inconnu";echo"</PRE>";
 				$monError=new ControlleurErreur();
@@ -47,7 +47,7 @@ class ControlleurAccess {
 					$monError->setError(array("origine"=> CONTROLLEUR."ControllerAccess", "raison"=>"Inscription non validée", "numberMessage"=>31));
 					header ("Location:?action=accesreserve.html/classe/AccesReserveView/action/show");
 				}else{
-					//echo"<PRE> COntroller : validAccessReserved okay";echo"</PRE>";
+					echo"<PRE> COntroller : validAccessReserved okay";echo"</PRE>";
 					$this->updateSession($abonne);
 					header ("Location:?action=accueil.html");				
 				}
@@ -60,7 +60,7 @@ class ControlleurAccess {
 		}else{
 			$monError=new ControlleurErreur();
 			$monError->setError(array("origine"=> CONTROLLEUR."ControllerAccess", "numberMessage"=>11));
-			header ("Location:?action=accesreserve.html/classe/AccesReserveView/action/show");			
+			//header ("Location:?action=accesreserve.html/classe/AccesReserveView/action/show");			
 		}	
 	}
     
