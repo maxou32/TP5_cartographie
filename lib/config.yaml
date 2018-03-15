@@ -43,7 +43,7 @@ paramGenerauxCarte :
  operation : donneParamGenerauxCartes
  niveauSecurité : 0
  variable :
-  Null²
+  Null
 addCarte.html :
  classe : ControlleurCarte
  operation : executeCarte
@@ -59,12 +59,15 @@ leaflet2.html :
   cible : Leaflet
   proprieteLeaflet : 1
 accueil.html :
- classe : Controlleur
+# classe : Controlleur
+ classe : ControlleurAccueil
  operation : montre
  niveauSecurité : 0
  variable :
   classe : AccueilView
-  action : show  
+  action : show
+  cible : Leaflet
+  proprieteLeaflet : 1  
 inscription.html :
  classe : Controlleur
  operation : montre

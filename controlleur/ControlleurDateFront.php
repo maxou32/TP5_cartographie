@@ -80,8 +80,6 @@ class ControlleurDateFront  extends Controlleur {
 	public function LireDatesSeulesUnFront($params){
 		$monDatesFront= new DatesFrontManager();
 		$mesDatesFronts=$monDatesFront->getListUnFront($params['idfront']);
-		//echo"<pre>";print_r($params);echo"</pre>";
-		//echo"<pre>";print_r($mesDatesFronts);echo"</pre>";
 		$temp=[];
 		for($i=0; $i < count($mesDatesFronts);$i++){
 			//$id=$mesDatesFronts[$i]->getIddate();

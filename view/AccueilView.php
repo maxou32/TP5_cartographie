@@ -12,39 +12,38 @@ class AccueilView extends View
 		<script language="javascript" type="text/javascript">
 			$(document).ready(function(){
 				$('.carousel').carousel();
-				$('.parallax').parallax();
-				//$('.carousel .carousel-slider').carousel({fullWidth: true});
+				$('.carousel.carousel-slider').carousel({fullWidth: true, padding:0},setTimeout(autoplay, 4500));
+				function autoplay() {
+					$('.carousel').carousel('next');
+					setTimeout(autoplay, 4500);
+				}
 			});
-		</script>
-		<div id="btnCommande" style="position: absolute; margin: auto; z-index: 800; background-color: azure; padding : 10px; border-radius: 5px; ">
-
-		</div>
-			<div class="row">
 			
-			<div class ="carousel carousel-slider col s12" data-indicators="true" id="slide">
-				<div class="carousel-fixed-item <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5 center">
-					<button id="addCarte" class=" blue lighten-5 center-align" formmethod ="post" style="width: 250px; height : 200px" formaction="?action=lireTousFronts" type="submit">Voir tous les fronts 
-							<!-- <img src="public/sdk-ol/img/MarkerVert.png">  -->
-					</button>
-					<form method="post" action="?action=leaflet2.html/cible/Leaflet2">
-						<input type="submit" name="sousAction"  value="Ajouter ce chapitre">
-					</form>
+		</script>
+				
+			<div class ="carousel carousel-slider" id="slide">
+				<div class="carousel-item ">
+					<img src="public/media/FontsBrun1.jpg">
 				</div> 
-				<div class="carousel-item center">
-					<!-- <h2>1° étape</h2>
-					<p >Rechercher les cartes ou les textes représentant le front</p> -->
-					<img src="public/media/Carte05_Pompey_Toulv2.jpg" style="width:100%;">
-				</div> 
-				<div class="carousel-item  center" >
-					<img src="public/media/FrontsBrun.jpg" style="width:100%;">
+				<div class="carousel-item" >
+					<img src="public/media/FontsBrun2.jpg">
 				</div> 
 				<div class="carousel-item">
-					<img src="public/media/FrontsChambrey.jpg" style="width:100%;">
+					<img src="public/media/FontsBrun3.jpg">
+				</div> 
+				<div class="carousel-item">
+					<img src="public/media/FontsBrun4.jpg">
+				</div> 
+				<div class="carousel-item">
+					<img src="public/media/FontsBrun5.jpg">
 				</div> 
 			</div>
-				
-		</div>
+		
 		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">les dernières réalisations</h2>
+		<div id="laCarte">
+			<?= $datas['maCarte'] ?>
+		</div>
+		<!--
 		<div class="row">
 			<div class ="col s12" id="panneauCartesRecentes">
 				<div class ="col m4 s12" id="panneau1">					
@@ -84,26 +83,29 @@ class AccueilView extends View
 					</div>
 				</div>
 			</div>
-			<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Contact</h2>
+		</div>
+		-->
+		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Contact</h2>
+		<div class="row">
 			<div class ="col s12" >
 				<div class= "col s1 offset-s2 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="Contact">
-					<i class="large material-icons">email</i>
+					<a href="index.php?askSendMail"><i class="large material-icons">email</i></a>
 				
 				</div>	
 				<div class ="col  s1 offset-s3 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="sInscrire">
-					<i class="large  material-icons">person_add</i>
+					<a href="?action=inscription.html/classe/InscriptionView/action/show"><i class="large  material-icons">person_add</i> </a>
 				
 				</div>
 				<div class ="col  s1 offset-s3 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="accesReserve">
-					<i class="large material-icons">photo</i>
-				
+					<a href="?action=accesreserve.html/classe/AccesReserveView/action/show" ><i class="large material-icons">photo</i></a>
 				</div>				
 			</div>
-			<div class= "col s12"  id="reseauSociaux">
-			</div>
-			<div id='resultat'>
-			</div>
 		</div>
+		<div class= "col s12"  id="reseauSociaux">
+		</div>
+		<div id='resultat'>
+		</div>
+		
 		<?php
 		
 		$accueilView=ob_get_clean();

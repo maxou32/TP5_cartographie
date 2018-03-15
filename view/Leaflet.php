@@ -8,20 +8,22 @@ class LeafLet extends View
 
 	
 	public function show($datas){
+		//echo "<pre>";print_r($datas);echo"</pre>";
 		ob_start(); 
 		?>
 		<script src="public/leaflet/leaflet.js"></script>
 		<script src="public/js/leaflet-editable-polyline.js"></script> 
 		<script src="public/js/leaflet-contextmenu-min.js"></script> 
 		<script data-key="hz2zuzccg4dyv6kacncfnbxj" src="public/sdk-ol/GpPluginLeaflet.js"></script>
-		<script src="view/js/carteLeaflet.js"></script> 
+		<script src="view/js/carteLeaflet.php"></script> 
 		<title>Cartographie</title>
 		<div class="row">
 			
 			<div class="col m12 s12">
 				<div id="mapid" style="width: 100%; height: 600px;"></div>
 			</div>
-
+			<input id="levelUser" type="hidden" value="<?= $datas['levelUser'] ?>" >
+			
 			<div id="btnCommande" style="position: absolute; top: 150px; left: 0px; z-index: 600; background-color: azure; padding : 10px; margin: 10px; border-radius: 5px; width:270px; display:none">
 				<div class="detailFront col s12" style="display:none" >		
 					<label class="detailFront" for="nomDetailFront">Nom</label>
@@ -48,21 +50,23 @@ class LeafLet extends View
 					<button id='dateFront-show-button' class="col s3" title='affiche le détail de la journée'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
 					</button>
-					<button id='dateFront-add-button' class="col s3" title='ajoute une nouvelle date'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
-					</button>
-					<button id='dateFront-dupplicate-button' class="col s3" title='dupplique une  date'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-copie-32.png'>
-					</button>
-					<button id='dateFront-update-button' class="col s3" title='modifie les caractéristiques de la date'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
-					</button>					
-					<button id='dateFront-delete-button' class="col s3" title='supprime une date'/> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
-					</button>
-					<button id='dateFront-save-button' class="col s3 addDateLigne" title='enregistre date' style="display:none" /> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
-					</button>
+					<div class="admin">
+						<button id='dateFront-add-button' class="col s3" title='ajoute une nouvelle date'/> 
+							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
+						</button>
+						<button id='dateFront-dupplicate-button' class="col s3" title='dupplique une  date'/> 
+							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-copie-32.png'>
+						</button>
+						<button id='dateFront-update-button' class="col s3" title='modifie les caractéristiques de la date'/> 
+							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
+						</button>					
+						<button id='dateFront-delete-button' class="col s3" title='supprime une date'/> 
+							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
+						</button>
+						<button id='dateFront-save-button' class="col s3 addDateLigne" title='enregistre date' style="display:none" /> 
+							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
+						</button>
+					</div>
 				</div>
 
 				<div id="Front-action" class="col s12" style="display:none" >					

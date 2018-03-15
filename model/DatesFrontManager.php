@@ -70,7 +70,7 @@ class DatesFrontManager extends Manager{
 		try{
 			$datesfront=[] ;
 			$idFront = (int) $idFront;
-			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, date,  description, idfront FROM '.$this->prefix.'datesFront WHERE idfront = '.$idFront);
+			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, DATE_FORMAT( date, \'%d/%m/%Y\') as date,  description, idfront FROM '.$this->prefix.'datesFront WHERE idfront = '.$idFront.' ORDER BY date DESC');
 			
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){

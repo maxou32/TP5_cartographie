@@ -9,29 +9,9 @@ class ControlleurCarte extends Controlleur{
 	public function executeCarte($params){
 		$maCible=$params['cible'];
 		$maView = new $maCible();
-		/*
-		$maConfig= new Config();
-		
-		if (isset($params['proprieteLeaflet'])){
-			if($params['proprieteLeaflet']){
-				$paramView['zoom']=$maConfig->getProprieteLeaflet()['zoom'];
-				$paramView['latCentre']=$maConfig->getProprieteLeaflet()['latCentre'];
-				$paramView['lngCentre']=$maConfig->getProprieteLeaflet()['lngCentre'];
-				$paramView['maxZoom']=$maConfig->getProprieteLeaflet()['maxZoom'];
-				$paramView['tileSize']=$maConfig->getProprieteLeaflet()['tileSize'];
-				$paramView['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
-				$paramView['attribution']=$maConfig->getProprieteLeaflet()['attribution'];
-				$paramView['layer']=$maConfig->getProprieteLeaflet()['layer'];
-				//echo "<pre>";print_r($paramView);echo"</pre>";
-			}
-		}
-		*/
+
 		$mesFronts= new ControlleurFront();
-		//$paramView['fronts']=$mesFronts->LireTousFrontsSeuls();
-		//$paramView['mesCartes']=$this->LireToutesCartes();
-		//$paramView['paramGeneraux']=$this->donneParamGenerauxCartes();
 		$carte=$maView->show(Null);	
-		//$carte=$maView->show(Null);	
 		
 		$this->appelleTemplate($carte);
 		
@@ -47,9 +27,6 @@ class ControlleurCarte extends Controlleur{
 			$param['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
 			$param['attribution']=$maConfig->getProprieteLeaflet()['attribution'];
 			$param['layer']=$maConfig->getProprieteLeaflet()['layer'];
-
-			//echo "<pre>";print_r($paramView);echo"</pre>";
-		//echo '{"zoom":5,"latCentre":48.777006,"lngCentre":6.354958,"maxZoom":18,"tileSize":256,"boxZoom":1,"attribution":"Web-Max &copy; https:\/\/web-max.fr","layer":"GEOGRAPHICALGRIDSYSTEMS.MAPS"}';
 
 		echo json_encode($param);	
 		//echo $param;	
