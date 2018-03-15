@@ -27,7 +27,7 @@ class ControlleurCarte extends Controlleur{
 			$param['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
 			$param['attribution']=$maConfig->getProprieteLeaflet()['attribution'];
 			$param['layer']=$maConfig->getProprieteLeaflet()['layer'];
-
+			$param['synchrone']=$maConfig->getProprieteLeaflet()['synchrone'];
 		echo json_encode($param);	
 		//echo $param;	
 	}

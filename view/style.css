@@ -7,16 +7,16 @@
 	background-color:white;
 	border: 0px solide white;
 }
+.leaflet-top .leaflet-left
+{
+	background-color: yellow;
+}
 
 #^GPshowSearchEngineOpen
 {
 	background-color:blue;	
 }
 .admin
-{
-	display:none;
-}
-#sidenav-overlay
 {
 	display:none;
 }

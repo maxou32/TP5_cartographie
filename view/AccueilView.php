@@ -39,8 +39,7 @@ class AccueilView extends View
 				</div> 
 			</div>
 		
-		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">les dernières réalisations</h2>
-		<div id="laCarte">
+		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Implantation des différents conflits. </h2>
 			<?= $datas['maCarte'] ?>
 		</div>
 		<!--
@@ -85,7 +84,7 @@ class AccueilView extends View
 			</div>
 		</div>
 		-->
-		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Contact</h2>
+		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Contact et accès réservé</h2>
 		<div class="row">
 			<div class ="col s12" >
 				<div class= "col s1 offset-s2 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="Contact">

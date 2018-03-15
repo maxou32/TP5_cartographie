@@ -1,7 +1,7 @@
 ﻿#**************************************
-# media 
+# ajax
 #*************************************
-#background : public/media/alaska.jpg
+synchrone : 0
 #**************************************
 # propriétés de la carte
 #*************************************
@@ -59,7 +59,6 @@ leaflet2.html :
   cible : Leaflet
   proprieteLeaflet : 1
 accueil.html :
-# classe : Controlleur
  classe : ControlleurAccueil
  operation : montre
  niveauSecurité : 0
