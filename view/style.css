@@ -7,10 +7,6 @@
 	background-color:white;
 	border: 0px solide white;
 }
-.leaflet-top .leaflet-left
-{
-	background-color: yellow;
-}
 
 #^GPshowSearchEngineOpen
 {
@@ -19,4 +15,25 @@
 .admin
 {
 	display:none;
+}
+#sidenav-overlay
+{
+	display:none;
+}
+.slideshow {
+   width: 700px;
+   height: 400px;
+   overflow: hidden;
+   border: 3px solid #F2F2F2;
+}
+
+.slideshow ul {
+    /* 4 images donc 4 x 100% */
+   width: 500%;
+   height: 400px;
+   padding:0; margin:0;
+   list-style: none;
+}
+.slideshow li {
+   float: left;
 }

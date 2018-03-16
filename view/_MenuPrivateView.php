@@ -20,7 +20,7 @@ class _MenuPrivateView extends View
 		<div >
 			<ul id="menuMobile" class="side-nav active" >
 				<li ><a class="no-padding" href="?action=accueil.html/classe/AccueilView/action/show"  ><i class="material-icons left">home</i>Accueil</a></li>
-				<li ><a class="no-padding" href="?action=leaflet2.html/cible/Leaflet3" >Zones de conflit</a></li>
+				<li ><a class="no-padding" href="?action=leaflet2.html" >Zones de conflit</a></li>
 				<li >
 					<ul class="collapsible collapsible-accordion">
 						<li><a class="collapsible-header no-padding" href="#">Validation<i class="material-icons right">arrow_drop_down</i></a>
@@ -83,7 +83,7 @@ class _MenuPrivateView extends View
 					</a>	
 					<ul id="menuGeneral" class="right hide-on-med-and-down">
 						<li><a href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
-						<li><a href="?action=leaflet2.html/cible/Leaflet3" >Zones de conflits</a></li>
+						<li><a href="?action=leaflet2.html" >Zones de conflits</a></li>
 						<li><a data-activates="dropdown-1" class="dropdown-button" href="#">Validation<i class="material-icons right">arrow_drop_down</i></a></li>
 						<li><a data-activates="dropdown-2" class="dropdown-button" href="#">json<i class="material-icons right">arrow_drop_down</i></a></li>
 						<li><a data-activates="dropdown-3" class="dropdown-button" href="#">Bonjour, <?= $datas['nom'] ?><i class="material-icons right">arrow_drop_down</i></a></li>

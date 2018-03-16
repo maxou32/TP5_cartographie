@@ -47,7 +47,7 @@ class ControlleurAccess {
 					$monError->setError(array("origine"=> CONTROLLEUR."ControllerAccess", "raison"=>"Inscription non validée", "numberMessage"=>31));
 					header ("Location:?action=accesreserve.html/classe/AccesReserveView/action/show");
 				}else{
-					echo"<PRE> COntroller : validAccessReserved okay";echo"</PRE>";
+					//echo"<PRE> COntroller : validAccessReserved okay";echo"</PRE>";
 					$this->updateSession($abonne);
 					header ("Location:?action=accueil.html");				
 				}

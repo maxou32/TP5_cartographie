@@ -7,14 +7,21 @@ class ControlleurCarte extends Controlleur{
 		}
 		
 	public function executeCarte($params){
+		//echo "debut controlleur carte-> execute carte<pre>";print_r($params);echo"</pre>";
 		$maCible=$params['cible'];
 		$maView = new $maCible();
 
 		$mesFronts= new ControlleurFront();
-		$carte=$maView->show(Null);	
+		$temp['front']=$mesFronts->lireTousFronts();
 		
-		$this->appelleTemplate($carte);
+		$temp['paramGeneraux']=$this->LireParamGeneraux();
+		isset($_SESSION['niveau']) ? $temp['levelUser']=$_SESSION['niveau'] : $temp['levelUser']=0;
 		
+		if($params['ChargementCarte']){
+			$carte=$maView->show($temp);			
+			$this->appelleTemplate($carte);
+		}
+		return $temp;
 	}
 	public function donneParamGenerauxCartes(){
 		$maConfig= new Config();
@@ -71,28 +78,21 @@ class ControlleurCarte extends Controlleur{
 		return $maCarte; 
 	}
 	
-	public function LireToutesCartesSeules(){
-		$monCarteManager = new CarteManager();
-		$mesCartes=$monCarteManager->getListAll();
-		
-		
-		for($i=0; $i < count($mesCartes);$i++){
-			$id=$mesCartes[$i]->getIdFront();
+	public function LireParamGeneraux(){
+		//echo "LireParamGeneraux";
+		$maConfig= new Config();
+		$param=[];
+			$param['zoom']=$maConfig->getProprieteLeaflet()['zoom'];
+			$param['latCentre']=$maConfig->getProprieteLeaflet()['latCentre'];
+			$param['lngCentre']=$maConfig->getProprieteLeaflet()['lngCentre'];
+			$param['maxZoom']=$maConfig->getProprieteLeaflet()['maxZoom'];
+			$param['tileSize']=$maConfig->getProprieteLeaflet()['tileSize']; 
+			$param['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
+			$param['attribution']=$maConfig->getProprieteLeaflet()['attribution'];
+			$param['layer']=$maConfig->getProprieteLeaflet()['layer'];
+			$param['synchrone']=$maConfig->getProprieteLeaflet()['synchrone'];
 			
-			//echo "<br /> id = ".$id;
-			
-			//$temp[$i]=[];
-			$temp[$i]['idcarte']=$mesCartes[$i]->getIdCartes();
-			$temp[$i]['zoom']=$mesCartes[$i]->getZoom();
-			$temp[$i]['lat']=$mesCartes[$i]->getLat();
-			$temp[$i]['lng']=$mesCartes[$i]->getLng();
-			$temp[$i]['projection']=$mesCartes[$i]->getProjection();
-			$temp[$i]['layeroption']=$mesCartes[$i]->getLayeroption();
-			$temp[$i]['nom']=$mesCartes[$i]->getNom();
-			$temp[$i]['idfront']=$mesCartes[$i]->getIdFront();
-
-		}
-		echo json_encode($temp);	
+		return $param;		
 	}
 	
 	public function LireToutesCartes(){

@@ -28,9 +28,22 @@ var FormeLigne={
 		icone: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-canon-24.png'	//icons8-poing-serrÃ©-48.png
 	}
 };
+
 	/*******************************************
 		fonctions
 	********************************************/
+function afficheActionMaj(){
+	var userLevel=0;
+	var monUser=Object.create(User);
+	
+	userLevel= listeUser[0].userLevel;
+	console.log ("niveau user = "+ listeUser[0].userLevel);
+	return userLevel  > 0 ? true : false;
+};
+function frontDraggable(){
+	return afficheActionMaj()  > 0 ? true : false;
+};
+
 function removeOptions(selectbox){
 	for(var i = selectbox.options.length - 1 ; i >= 1 ; i--){
 		selectbox.remove(i);
@@ -67,7 +80,8 @@ function modifierUnConflit(idfront){
 	var idfront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
 	//alert('modifier le conflit num = '+idfront);
 	$('.detailFront').css({display:'inline-block'});
-	$('#btnCommande').css({display:'inline-block'});
+	var monParam=Object.create(paramGeneraux);
+	monParam.afficheBtnCommande(true);
 	$('.addDateLigne').css({display:'none'});
 	$('#dateFront-show').css({display:'none'});
 	$("#descriptionDetailFront").val(listeFronts[idfront].description);
@@ -86,61 +100,14 @@ function donneCarte(){
 };
 
 
-
-function voirDumpPoint (e){
-	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-	console.log('dump fonction');
-	
-	if(typeof mymap._editablePolylines !== "undefined"){
-		mymap._editablePolylines.forEach(function(uneLigneFront) {
-			var points = uneLigneFront.getPoints();
-			console.log('uneLigneFront id = '+uneLigneFront._leaflet_id+", type ="+uneLigneFront.options.newPolylineTypeMessage);
-			
-			points.forEach(function(point) {
-				var latLng = point.getLatLng();
-				console.debug('context du point =' + point.context);
-				pointsTextArea.innerHTML += 
-					'originalPointNo=' + (point.context ? point.context.originalPointNo : null)
-					+ ' originalPolylineNo=' + (point.context ? point.context.originalPolylineNo : null)
-					+ ' (' + latLng.lat + ',' + latLng.lng + ')\n';
-					+ '\n';
-			});
-			pointsTextArea.innerHTML += '----------------------------------------------------------------------------------------------------\n';
-		});
-	}
-
-// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-}
-
 function ouvrirCarte(){
-	appelAjax('paramGenerauxCarte','','json');
-	
+
 	mymap = L.map("mapid",{
 		center : [ ParamGeneraux[0]['latCentre'],ParamGeneraux[0]['lngCentre'] ],
 		zoom: ParamGeneraux[0]['zoom'],
 		contextmenu: true,
-		contextmenuWidth: 140,
-		contextmenuItems: [
-			{
-				text: 'Créer une nouvelle zone de fronts',
-				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
-				callback: ajoutConflit
-			},{ 
-				separator: true
-			}, {
-				text: 'Centrer la carte ici',
-				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-centrer-32.png',
-				callback: centerMap
-			}, {
-				text: 'Aggrandir',
-				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
-				callback: zoomIn
-			}, {
-				text: 'Réduire',
-				icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
-				callback: zoomOut
-			}]
+		contextmenuWidth: 200,
+		contextmenuItems: donneMenuContext('gene')
 		}
 	);
 
@@ -155,8 +122,77 @@ function ouvrirCarte(){
 	etatMajor.addTo(mymap);	
 	//alert('fin chgt carte');
 	//return mymap;
-}
+};
 
+function donneMenuContext(menu){
+	var menuGene=[];
+	var menuFront=[];	
+	var menuGeneAdmin=[
+		{
+			text: 'Créer une nouvelle zone de fronts',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+			callback: ajoutConflit
+		},{ 
+			separator: true
+		}
+		];
+	var menuGeneVisiteur=[{
+			text: 'Centrer la carte ici',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-centrer-32.png',
+			callback: centerMap
+		}, {
+			text: 'Aggrandir',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+			callback: zoomIn
+		}, {
+			text: 'Réduire',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+			callback: zoomOut
+		}];
+
+	var menuFrontAdmin=[{
+			text: 'gérer les dates du conflit',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png',
+			callback: gererlesDates,
+			index: 0
+		},{
+			text: 'Modifier un conflit',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png',
+			callback: modifierUnConflit,
+			index: 1
+		},{
+			text: 'Supprimer un conflit',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
+			callback: supprimerUnConflit,
+			index: 2
+		}
+	];
+	var menuFrontVisiteur=[{
+			text: 'voir les dates du conflit',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png',
+			callback: gererlesDates,
+			index: 0
+		},
+		{ 
+			separator: true,
+			index :1
+		}
+	];
+	console.log('affiche admin ? '+afficheActionMaj());
+	if(afficheActionMaj()){
+		menuGene=menuGeneAdmin.concat(menuGeneVisiteur);
+		menuFront=menuFrontAdmin;
+		console.log ('Menu Front = '+menuFront);
+	}else{
+		menuGene=menuGeneVisiteur;
+		menuFront=menuFrontVisiteur;
+	};
+	if(menu==='gene'){
+		return menuGene;
+	}else{
+		return menuFront;
+	}
+};
 
 function appelAjax(action, param, monDataType){
 	if(param.length>0){
@@ -189,24 +225,7 @@ function appelAjax(action, param, monDataType){
 			console.log('erreur fin : '+action);
        },
        complete : function(resultat, statut){
-		    //alert('complete ');
-			if(action==="paramGenerauxCarte"){
-				console.log('param');
-				console.debug(resultat);
-				var tempParam=Object.create(paramGeneraux);
-				tempParam.init(
-					resultat.responseJSON.zoom,
-					resultat.responseJSON.latCentre,
-					resultat.responseJSON.lngCentre,
-					resultat.responseJSON.maxZoom,
-					resultat.responseJSON.tileSize,
-					resultat.responseJSON.boxZoom,
-					resultat.responseJSON.attribution,
-					resultat.responseJSON.layer
-				);
-				ParamGeneraux.push(tempParam);
-				console.debug(ParamGeneraux[0]);
-			}	
+		   
         }
     });
 }
@@ -226,14 +245,14 @@ var Leaflet={
 	getIdFront:function(){
 		return this.idFront;
 	}
-};	
-
+};
+			
 	/*******************************************
 		param généraux
 	********************************************/
 ParamGeneraux=[];
 var paramGeneraux={
-	init:function(zoom, latCentre,lngCentre,maxZoom,tileSize,boxZoom,attribution,layer){
+	init:function(zoom, latCentre,lngCentre,maxZoom,tileSize,boxZoom,attribution,layer,synchrone){
 	this.zoom=zoom;
 	this.latCentre=latCentre;
 	this.lngCentre=lngCentre;
@@ -242,7 +261,35 @@ var paramGeneraux={
 	this.boxZoom=boxZoom;
 	this.attribution=attribution;
 	this.layer=layer;
+	this.synchrone=synchrone;
+	},
+afficheBtnCommande: function(affiche){
+
+	if(affiche){
+		var positionTopCarte= $('#mapid').offset().top;
+		$('#btnCommande').css({display:'inline-block', top:positionTopCarte+100});
+		
+	}else{
+		$('#btnCommande').css({display:'none'});
 	}
+},
+ajaxSynchrone:function(){
+	return this.synchrone;
+}
+
+};
+	/*******************************************
+		Gestion des utilisateurs
+	********************************************/
+var listeUser=[];
+var User={
+	init:function(userLevel){
+		this.userLevel=userLevel;
+		console.log ('user niveau : '+this.userLevel);
+	},
+	getUserLevel(){
+		return this.userLevel;
+	}	
 };
 	/*******************************************
 		liste de fronts
@@ -276,64 +323,6 @@ var Front={
 		
 		return paramCarte;
 	},
-    appelAjax:function(action, param, monDataType){
-		if(param.length>0){
-			madata='action='+action+'/'+param;
-			console.log ('action = '+madata);
-		}else{
-			madata='action='+action
-		}
-		monDataType===''? monDataType='json' : monDataType=monDataType;
-		$.ajax({
-		   url : 'index.php',
-		   type : 'GET',
-		   async: false,
-		   data : madata, 			
-		   dataType : monDataType,
-		   success : function(resultat, statut){
-				if (resultat==="Success"){
-					console.log('OK');
-				}
-				console.debug('resultat = '+resultat);
-				return resultat;
-			},
-		   error : function(resultat, statut, erreur){
-				//alert ('erreur : '+action);
-				console.log('erreur deb : '+erreur);
-				console.log('statut deb : '+statut);
-				
-				console.debug(resultat);
-				//console.debug(erreur);
-				console.log('erreur fin : '+action);
-		   },
-		   complete : function(resultat, statut){
-				//alert('complete ');
-				console.log('front');
-				console.debug(resultat);
-				if(typeof(resultat.responseJSON) !== "undefined"){
-					console.log('nb fronts prévu :'+resultat.responseJSON.length);
-					for (var f=0;f<resultat.responseJSON.length;f++){
-						console.log('fronts JSON '+resultat.responseJSON[f].idfront);
-						var unFront=Object.create(Front);
-						unFront.init(
-							resultat.responseJSON[f].idfront,
-							resultat.responseJSON[f].nom,
-							resultat.responseJSON[f].zoom,
-							resultat.responseJSON[f].lat,
-							resultat.responseJSON[f].lng,
-							resultat.responseJSON[f].valide,
-							resultat.responseJSON[f].idauteur,
-							resultat.responseJSON[f].description
-						);
-						listeFronts[unFront['idfront']]=unFront;
-						console.log('id front =' + unFront['idfront']);
-					}
-				}
-				console.log('nb front =' +listeFronts.length);
-				console.log('liste de fronts'+listeFronts);
-		    }
-		});
-	},
 	getModifEnCours:function(){
 		return this.modifEnCours;
 	},
@@ -347,7 +336,7 @@ var Front={
 		var centreFront = L.marker( 
 			[this.lat,this.lng], 
 			{
-				draggable: true, 
+				draggable: frontDraggable(), 
 				contextmenu: true,
 				icon:  L.icon({
 					iconUrl:formeligne,		//FormeLigne[4].icone
@@ -358,27 +347,11 @@ var Front={
 				riseOnHover:true,
 				alt: 'Point central du front',
 				title: this.nom,
-				contextmenuItems: [
-					{
-						text: 'gérer les dates du conflit',
-						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png',
-						callback: gererlesDates,
-						index: 0
-					},{
-						text: 'Modifier un conflit',
-						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png',
-						callback: modifierUnConflit,
-						index: 1
-					},{
-						text: 'Supprimer un conflit',
-						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
-						callback: supprimerUnConflit,
-						index: 1
-					}
-				]
+				contextmenuItems: donneMenuContext('front')
 			}
 		).addTo(mymap);	
 		this.creePointeur(centreFront);
+		console.log ('Front traité = '+this.nom);
 		return centreFront;
 	},
 	creePointeur:function(centreFront){
@@ -471,7 +444,7 @@ var DateFront={
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: false,
+		   async: ajaxSynchrone(),
 		   data : madata, 			
 		   dataType : monDataType,
 		   success : function(resultat, statut){
@@ -497,7 +470,6 @@ var DateFront={
 				console.log('nb dates  apr :'+listeDates.length);
 				console.log('date');
 				console.debug(resultat);
-				//if(typeof resultat.responseJSON.length !== "undefined"){ 
 				var nbDate=resultat.responseJSON.length;
 				console.log('nb dates prévues :'+nbDate);
 				for (var d=0;d<nbDate;d++){
@@ -513,9 +485,9 @@ var DateFront={
 					);
 					listeDates[uneDateFront['iddate']]=uneDateFront;
 				}
-				//}	
+				console.debug(listeDates);
 				removeOptions(document.getElementById("dateLigne"));
-				$('#btnCommande').css({display:'inline-block'});
+				
 				if(nbDate>0){
 					listeDates.forEach(function(madate){
 						console.log('clic date = '+madate.getIddate());
@@ -524,6 +496,7 @@ var DateFront={
 						$('#dateLigne').append(newOption).trigger('change');
 						$('.addDateLigne').css({display:'none'});
 						$('#infoDateLigne').css({display:'inline-block'});
+						
 					});
 				}else{
 					console.log('clic date : pas de date');
@@ -532,6 +505,15 @@ var DateFront={
 					$('.dateFront-save-button').css({display:'inline-block'});
 					$('#infoDateLigne').css({display:'none'});
 					console.log("Mode ajout commencé");
+				}
+				var monParam=Object.create(paramGeneraux);
+				monParam.afficheBtnCommande(true);
+				if(afficheActionMaj()){
+					console.log("admin montré");
+					$('.admin').css({display:'inline-block'});
+				}else{
+					console.log("admin caché");
+					$('.admin').css({display:'none'});
 				}
 				console.debug('nb date =' +listeDates.length);
 				return listeDates.length;
@@ -553,7 +535,7 @@ var DateFront={
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: false,
+		   async: ajaxSynchrone(),
 		   data : 'action=NewIdDateFront/', 			
 		   dataType : 'text',
 		   success : function(resultat, statut){
@@ -641,7 +623,6 @@ var DateFront={
 				var couleur=uneLigneFront._path.attributes[1].value;
 				var type=mesOptions.formeLigne;
 				console.log('Couleur avant interrogation = '+couleur);	
-				//alert('couleur '+couleur);
 				
 				console.log('couleur ligne = '+couleur);
 				console.log('type ligne = '+type);
@@ -716,7 +697,7 @@ var LigneFront={
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: false,
+		   async: ajaxSynchrone(),
 		   data : madata, 			
 		   dataType : monDataType,
 		   success : function(resultat, statut){
@@ -780,7 +761,7 @@ var LigneFront={
 	autoriseCreation:function(){
 		var polylineOptions = {
 			// The user can add new polylines by clicking anywhere on the map:
-			newPolylines: true,
+			newPolylines: frontDraggable(),
 			contextmenu: true,
 			newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici 	?',
 			// Show editable markers only if less than this number are in map bounds:
@@ -795,6 +776,12 @@ var LigneFront={
 			var mesPoints=Object.create(Point);			
 			mesPoints.appelAjax('listePoint.html', 'idlignefront/'+monLigneFront.idlignefront,'json');
 			console.log('nombre de points '+listePoint.length);
+			var monMaxMarkers=1;
+			if(frontDraggable()){				
+				monMaxMarkers=100;
+				console.log('frontDraggable = '+frontDraggable());				
+			}
+			console.log('monMaxMarkers = '+monMaxMarkers);
 			
 			var polylineOptions = {
 				// The user can add new polylines by clicking anywhere on the map:
@@ -803,10 +790,10 @@ var LigneFront={
 				newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici 	?',
 				// Show editable markers only if less than this number are in map bounds:
 				newPolylineTypeMessage: 2,
-				maxMarkers: 100,
+				maxMarkers: monMaxMarkers,
 				color: monLigneFront.couleur,
 				formeLigne:monLigneFront.type, 
-				weight: 3,
+				weight: 5,
 				dashArray: '10,7',
 				lineJoin:'round',
 				maxMarkers: 100,
@@ -837,7 +824,7 @@ var LigneFront={
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: false,
+		   async: ajaxSynchrone(),
 		   data : 'action=NewIdLigneFront/', 			
 		   dataType : 'text',
 		   success : function(resultat, statut){
@@ -917,7 +904,7 @@ var Point={
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: false,
+		   async: ajaxSynchrone(),
 		   data : madata, 			
 		   dataType : monDataType,
 		   success : function(resultat, statut){
@@ -979,9 +966,6 @@ window.onload = function () {
 	// chargement des fronts
 	console.log('debut chgt fronts');
 	
-	monFront=Object.create(Front);
-	monFront.appelAjax('listeFront.html', '','','json');	
-	console.log('fin chgt fronts');
 	
 	//affichage carte
 	//console.log('nombre de cartes ='+listeCartes.length);
@@ -1010,6 +994,7 @@ window.onload = function () {
 			console.log('date ligne option value = '+t);
 		sessionStorage['idDate']=v;
 		console.log("Choix date ligne en cours");
+
 	});
 	
 	document.getElementById("dateFront-show-button").addEventListener("click", function(e){
@@ -1091,7 +1076,8 @@ window.onload = function () {
 	
 	document.getElementById("detailFront-save-button").addEventListener("click", function(e){
 		$('.detailFront').css({display:'none'});
-		$('#btnCommande').css({display:'none'});
+		var monParam=Object.create(paramGeneraux);
+		monParam.afficheBtnCommande(false);
 		console.log("Mode modif terminé");
 		var monFront = Object.create(Front);
 		var idfront=0;

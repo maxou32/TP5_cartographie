@@ -1,7 +1,7 @@
 ﻿#**************************************
 # ajax
 #*************************************
-synchrone : 0
+synchrone : 1
 #**************************************
 # propriétés de la carte
 #*************************************
@@ -58,6 +58,7 @@ leaflet2.html :
  variable :
   cible : Leaflet
   proprieteLeaflet : 1
+  ChargementCarte : 1
 accueil.html :
  classe : ControlleurAccueil
  operation : montre
@@ -66,7 +67,8 @@ accueil.html :
   classe : AccueilView
   action : show
   cible : Leaflet
-  proprieteLeaflet : 1  
+  proprieteLeaflet : 1 
+  ChargementCarte : 0 
 inscription.html :
  classe : Controlleur
  operation : montre

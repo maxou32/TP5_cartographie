@@ -68,6 +68,7 @@ class Config{
 		$resultat['tileSize']= $this->data['tileSize'];
 		$resultat['attribution']= $this->data['attribution'];
 		$resultat['layer']= $this->data['layer'];
+		$resultat['synchrone']= $this->data['synchrone'];
 		return $resultat;
 	}
     /**
@@ -100,9 +101,14 @@ class Config{
 		return $this->data['secu']["mail"];
 	}
     
+	/**
+		 * donne le chemin du fichier json
+		 * @return string 
+     */
 	public function getFichierJSON(){
 		return $this->data['secu']["frontJSON"];
 	}
+	
 	
 	/**
 	 * recherche les éléments de la route demandée

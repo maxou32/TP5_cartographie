@@ -9,19 +9,21 @@ class ControlleurAccueil extends Controlleur{
 		//echo"<br />Controlleur 1 ";
 		//echo"<pre>";print_r($param);echo"</pre>";
 		
+		$maCible=$param['cible'];
+		$maCarte = new $maCible();
 		$fonction=$param['action'];
+		
+		//chargement de la carte
+		$monControleurCarte= new ControlleurCarte();
+		$data=$monControleurCarte->executeCarte($param);
+		
+		//chargement des parametres d'affichage
 		$maConfig= new Config();
 		$data['style']=$maConfig->getCouleur();
 		
-		$maCible=$param['cible'];
-		$maCarte = new $maCible();
-		
 		//$mesFronts= new ControlleurFront();
-		//$carte=$maView->show(Null);	
-		
-		isset($_SESSION['niveau']) ? $data['levelUser']=$_SESSION['niveau'] : $data['levelUser']=0;
-		//echo "niveau utilisateur = ". $data['levelUser'] ;
-		
+			
+		// chargement du jeu de données dans le data de la vue
 		$data['maCarte']=$maCarte->$fonction($data);
 		//echo"<br />Controlleur 2 ";
 		$maView = new $param['classe']();

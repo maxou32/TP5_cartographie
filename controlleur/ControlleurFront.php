@@ -114,29 +114,27 @@ class ControlleurFront  extends Controlleur {
 		for($i=0; $i < count($mesFronts);$i++){
 			$id=$mesFronts[$i]->getIdFront();
 			
-			echo "<br /> id = ".$id;
+			//echo "<br /> id = ".$id;
 			
 			$temp[$i]=[];
 			$temp[$i]['idfront']=$mesFronts[$i]->getIdFront();
 			$temp[$i]['idauteur']=$mesFronts[$i]->getIdAuteur();
-			$temp[$i]['dateDebut']=$mesFronts[$i]->getDateDebut();
-			$temp[$i]['dateFin']=$mesFronts[$i]->getDateFin();
+			$temp[$i]['zoom']=$mesFronts[$i]->getZoom();
+			$temp[$i]['lat']=$mesFronts[$i]->getLat();
+			$temp[$i]['lng']=$mesFronts[$i]->getLng();
 			$temp[$i]['nom']=$mesFronts[$i]->getNom();
 			$temp[$i]['description']=$mesFronts[$i]->getDescription();
 			$temp[$i]['valide']=$mesFronts[$i]->getValide();
 			
-			
-			$monControlleurCarte= new ControlleurCarte;
-			$temp[$i]['carte']=$monControlleurCarte->LireUneCarte($id);
 			//echo "<br />ControlleurFront 3 : <pre>";print_r($temp[$i]);"</pre>";
 			//$temp[$i]['carte']
 			
-			
+			/*
 			$monControlleurLigne= new ControlleurLigne;
 			$temp[$i]['ligne']=$monControlleurLigne->LireLignesUnFront($id);
-			
+			*/
 		}
-		echo "<br />ControlleurFront 3 : <pre>";print_r($temp);"</pre>";
+		//echo "<br />ControlleurFront 3 : <pre>";print_r($temp);"</pre>";
 		return $temp;
 	}
 	
