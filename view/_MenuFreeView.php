@@ -27,7 +27,7 @@ class _MenuFreeView extends View
 						<li><a href="index.php?askSendMail">Contactez moi</a></li>
 						<li><a href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
 						<li class="divider"></li>
-						<li><a href="?action=accesreserve.html/classe/AccesReserveView/action/show" >Les coulisses</a></li>
+						<li><a href="?action=accesreserve.html/classe/AccesReserveView/action/show" >Les lignes arrières</a></li>
 					
 					</ul>
 					<ul id="menuMobile" class="side-nav active" >
@@ -35,7 +35,7 @@ class _MenuFreeView extends View
 						<li><a class="no-padding" href="index.php?askSendMail">Contactez moi</a></li>
 						<li><a class="no-padding" href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
 						<li class="divider"></li>
-						<li><a class="no-padding" href="?action=accesreserve.html/classe/AccesReserveView/action/show" >La logistique</a></li>
+						<li><a class="no-padding" href="?action=accesreserve.html/classe/AccesReserveView/action/show" >Les lignes arrières</a></li>
 					</ul>
 					<a href="http://web-max.fr" id= "logo" class="right  brand-logo">	
 						<img src="public/media/WMlogo.png"	alt="web-max" style="height:65px;">		

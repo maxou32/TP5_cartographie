@@ -21,7 +21,6 @@ class DatesFrontManager extends Manager{
 			if($result['iddate']==0){
 				$q = $this->dbConnect()->query('SELECT Max(iddate) as idMax from '.$this->prefix.'datesFront');
 				$donnees = $q->fetch(\PDO::FETCH_ASSOC);
-				//echo"<br />datesfrontManager Front<pre>";print_r($donnees);echo"</pre>";
 				$result['iddate']= $donnees['idMax'];
 			}
 			$result['resultat']=true;
@@ -53,7 +52,7 @@ class DatesFrontManager extends Manager{
 	public function get($iddatesfront)  {
 		try{
 			$iddatesfront = (int) $iddatesfront;
-			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, date,  description,  idfront FROM '.$this->prefix.'datesFront WHERE idDate = '.$iddatesfront);
+			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, DATE_FORMAT( date, \'%d/%m/%Y\') as date,  description,  idfront FROM '.$this->prefix.'datesFront WHERE idDate = '.$iddatesfront);
 			$donnees = $q->fetch(\PDO::FETCH_ASSOC);
 			
 			if($donnees) {
@@ -70,7 +69,7 @@ class DatesFrontManager extends Manager{
 		try{
 			$datesfront=[] ;
 			$idFront = (int) $idFront;
-			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, DATE_FORMAT( date, \'%d/%m/%Y\') as date,  description, idfront FROM '.$this->prefix.'datesFront WHERE idfront = '.$idFront.' ORDER BY date DESC');
+			$q = $this->dbConnect()->query('SELECT idDate, valide, numordre, DATE_FORMAT( date, \'%d/%m/%Y\') as date,  description, idfront FROM '.$this->prefix.'datesFront WHERE idfront = '.$idFront.' ORDER BY date ASC');
 			
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){

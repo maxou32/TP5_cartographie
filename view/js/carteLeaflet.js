@@ -64,10 +64,14 @@ function zoomOut (e) {
 };
 
 function gererlesDates(idfront){
-	var idFront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
-	sessionStorage['idFront']=idFront;
+	var monIdFront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
+	sessionStorage['idFront']=monIdFront;
+	alert('mise à zero de date active');
+	sessionStorage['dateActive']=0;
 	var maDate=Object.create(DateFront);
-	maDate.appelAjax('listeDate.html', 'idfront/'+idFront,'json');
+	console.log('gesrerlesDates idfront = '+ monIdFront);
+	maDate.setIdFront(monIdFront);
+	maDate.recoitListeDate();
 };
 
 function ajoutConflit(e){
@@ -101,7 +105,8 @@ function donneCarte(){
 
 
 function ouvrirCarte(){
-
+	appelAjax('paramGenerauxCarte','','json');
+	console.log(donneMenuContext('gene'));
 	mymap = L.map("mapid",{
 		center : [ ParamGeneraux[0]['latCentre'],ParamGeneraux[0]['lngCentre'] ],
 		zoom: ParamGeneraux[0]['zoom'],
@@ -146,7 +151,7 @@ function donneMenuContext(menu){
 			callback: zoomIn
 		}, {
 			text: 'Réduire',
-			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-moins-32.png',
 			callback: zoomOut
 		}];
 
@@ -169,7 +174,7 @@ function donneMenuContext(menu){
 	];
 	var menuFrontVisiteur=[{
 			text: 'voir les dates du conflit',
-			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png',
+			icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png',
 			callback: gererlesDates,
 			index: 0
 		},
@@ -193,7 +198,6 @@ function donneMenuContext(menu){
 		return menuFront;
 	}
 };
-
 function appelAjax(action, param, monDataType){
 	if(param.length>0){
 		madata='action='+action+'/'+param;
@@ -202,18 +206,21 @@ function appelAjax(action, param, monDataType){
 		madata='action='+action
 	}
 	monDataType===''? monDataType='json' : monDataType=monDataType;
+	var monParamgeneral= Object.create(paramGeneraux);
 	$.ajax({
-       url : 'index.php',
-       type : 'GET',
-	   async: false,
+	   url : 'index.php',
+	   type : 'GET',
+	   async: ParamGeneraux[0]['synchrone'],
 	   data : madata, 			
        dataType : monDataType,
        success : function(resultat, statut){
-		    if (resultat==="Success"){
-				console.log('OK');
+		    if(action!=='listeDate.html'){
+				if (resultat==="Success"){
+					console.log('OK');
+				}
+				console.log('resultat = '+resultat.length+' '+resultat);
+				return resultat;
 			}
-			console.debug('resultat = '+resultat);
-			return resultat;
 		},
        error : function(resultat, statut, erreur){
 			//alert ('erreur : '+action);
@@ -225,7 +232,26 @@ function appelAjax(action, param, monDataType){
 			console.log('erreur fin : '+action);
        },
        complete : function(resultat, statut){
-		   
+		    if(action==='listeDate.html'){
+			   console.log('retour liste date = '+resultat.responseJSON);
+				var nbDate=resultat.responseJSON.length;
+				console.log('nb dates prévues :'+nbDate);
+				for (var d=0;d<nbDate;d++){
+					console.log('Dates JSON '+resultat.responseJSON[d].iddate);
+					var uneDateFront=Object.create(DateFront);
+					uneDateFront.init(
+						resultat.responseJSON[d].iddate,
+						resultat.responseJSON[d].description,
+						resultat.responseJSON[d].valide,
+						resultat.responseJSON[d].numordre,
+						resultat.responseJSON[d].date,
+						resultat.responseJSON[d].idfront
+					);
+					listeDates.push(uneDateFront);
+				};
+				console.debug(listeDates);
+				removeOptions(document.getElementById("dateLigne"));
+		    }		   
         }
     });
 }
@@ -283,9 +309,13 @@ ajaxSynchrone:function(){
 	********************************************/
 var listeUser=[];
 var User={
-	init:function(userLevel){
+	init:function(idUser, userLevel){
+		this.idUser=idUser;
 		this.userLevel=userLevel;
 		console.log ('user niveau : '+this.userLevel);
+	},
+	getIdUser(){
+		return this.idUser;
 	},
 	getUserLevel(){
 		return this.userLevel;
@@ -323,6 +353,7 @@ var Front={
 		
 		return paramCarte;
 	},
+
 	getModifEnCours:function(){
 		return this.modifEnCours;
 	},
@@ -351,7 +382,6 @@ var Front={
 			}
 		).addTo(mymap);	
 		this.creePointeur(centreFront);
-		console.log ('Front traité = '+this.nom);
 		return centreFront;
 	},
 	creePointeur:function(centreFront){
@@ -374,6 +404,7 @@ var Front={
 		rep += 'lat>'+ this.lat +'|';  // 
 		rep += 'lng>'+ this.lng +'|';  // 
 		rep += 'nom>'+ this.nom +'|';
+		rep += 'idauteur>'+ this.idauteur +'|';
 		rep += 'description>'+this.description +'|';
 		//rep += 'nbLignesFront>'+ mesFront.length +'|';
 		appelAjax('addFront','nbFront/1/mesFronts/'+rep,'','text');
@@ -411,6 +442,7 @@ var DateFront={
 		this.date=date;
 		this.idfront=idfront;
 		this.modifEnCours=false;
+		this.dateActive=0;
 	},
 	getIddate:function(){
 		return this.iddate;
@@ -421,11 +453,11 @@ var DateFront={
 	getDescription:function(){
 		return this.description;
 	},
-	getDate:function(){
-		return this.date;
-	},
 	getIdfront:function(){
 		return this.idfront;
+	},
+	setIdFront:function(idfront){
+		this.idfront = idfront;
 	},
 	getModifEnCours:function(){
 		return this.modifEnCours;
@@ -433,109 +465,107 @@ var DateFront={
 	setModifEnCours:function(etat){
 		this.modifEnCours=etat;
 	},
-    appelAjax:function(action, param, monDataType){
-		if(param.length>0){
-			madata='action='+action+'/'+param;
-			console.log ('action = '+madata);
-		}else{
-			madata='action='+action
+	getDateActive:function(){
+		return this.dateActive;
+	},
+	
+	prev:function(){
+		this.dateActive=parseInt(sessionStorage['dateActive']);
+		this.dateActive > 0 ? this.dateActive-- : this.dateActive=0;
+		var d=this.dateActive;
+		this.init(listeDates[d].iddate,listeDates[d].description,listeDates[d].valide,listeDates[d].numordre,listeDates[d].date,listeDates[d].idfront);
+		sessionStorage['idDate']=listeDates[d].iddate;
+		
+		this.donneDateFront(listeDates[d].iddate);
+		
+		d === 0 ? $('#btnNavDatePrev').css({display:'none'}) :  $('#btnNavDatePrev').css({display:'inline-block'});
+		d === listeDates.length  ? $('#btnNavDateNext').css({display:'none'}) :  $('#btnNavDateNext').css({display:'inline-block'});
+		sessionStorage['dateActive']=d;
+	},
+	next:function(){
+		this.dateActive = parseInt(sessionStorage['dateActive']);
+		this.dateActive < listeDates.length ?	this.dateActive++ :	this.dateActive=0;
+		
+		var d=this.dateActive;
+		this.init(listeDates[d].iddate,listeDates[d].description,listeDates[d].valide,listeDates[d].numordre,listeDates[d].date,listeDates[d].idfront);
+		sessionStorage['idDate']=listeDates[d].iddate;
+		this.donneDateFront(listeDates[d].iddate);
+		d === listeDates.length  ? $('#btnNavDateNext').css({display:'none'}) :  $('#btnNavDateNext').css({display:'inline-block'});
+		d === 0  ? $('#btnNavDatePrev').css({display:'none'}) :  $('#btnNavDatePrev').css({display:'inline-block'});
+		sessionStorage['dateActive']=d;
+		console.log('nb dates '+listeDates.length+ ' Next '+sessionStorage['dateActive']);
+	},
+	rechercheDate:function(idDate){
+		for(var d=0;d< listeDates.length;d++){
+			if (listeDates[d].iddate===idDate){
+				this.init(listeDates[d].iddate,listeDates[d].description,listeDates[d].valide,listeDates[d].numordre,listeDates[d].date,listeDates[d].idfront);
+			}
 		}
-		monDataType===''? monDataType='json' : monDataType=monDataType;
-		$.ajax({
-		   url : 'index.php',
-		   type : 'GET',
-		   async: ajaxSynchrone(),
-		   data : madata, 			
-		   dataType : monDataType,
-		   success : function(resultat, statut){
-				if (resultat==="Success"){
-					console.log('OK');
-				}
-				console.debug('resultat = '+resultat);
-				return resultat;
-			},
-		    error : function(resultat, statut, erreur){
-				//alert ('erreur : '+action);
-				console.log('erreur deb : '+erreur);
-				console.log('statut deb : '+statut);
-				
-				console.debug(resultat);
-				//console.debug(erreur);
-				console.log('erreur fin : '+action);
-		    },
-		    complete : function(resultat, statut){
-				//alert('complete ');
-				console.log('nb dates  avt :'+listeDates.length);
-				listeDates.splice(0,listeDates.length);
-				console.log('nb dates  apr :'+listeDates.length);
-				console.log('date');
-				console.debug(resultat);
-				var nbDate=resultat.responseJSON.length;
-				console.log('nb dates prévues :'+nbDate);
-				for (var d=0;d<nbDate;d++){
-					console.log('Dates JSON '+resultat.responseJSON[d].iddate);
-					var uneDateFront=Object.create(DateFront);
-					uneDateFront.init(
-						resultat.responseJSON[d].iddate,
-						resultat.responseJSON[d].description,
-						resultat.responseJSON[d].valide,
-						resultat.responseJSON[d].numordre,
-						resultat.responseJSON[d].date,
-						resultat.responseJSON[d].idfront
-					);
-					listeDates[uneDateFront['iddate']]=uneDateFront;
-				}
-				console.debug(listeDates);
-				removeOptions(document.getElementById("dateLigne"));
-				
-				if(nbDate>0){
-					listeDates.forEach(function(madate){
-						console.log('clic date = '+madate.getIddate());
-						var newOption = new Option(madate.getDate(), madate.getIddate(), false, false);
-						$('.dateLigne').css({display:'inline-block'});
-						$('#dateLigne').append(newOption).trigger('change');
-						$('.addDateLigne').css({display:'none'});
-						$('#infoDateLigne').css({display:'inline-block'});
-						
-					});
-				}else{
-					console.log('clic date : pas de date');
-					$('.dateLigne').css({display:'none'});
-					$('.addDateLigne').css({display:'none'});
-					$('.dateFront-save-button').css({display:'inline-block'});
-					$('#infoDateLigne').css({display:'none'});
-					console.log("Mode ajout commencé");
-				}
-				var monParam=Object.create(paramGeneraux);
-				monParam.afficheBtnCommande(true);
-				if(afficheActionMaj()){
-					console.log("admin montré");
-					$('.admin').css({display:'inline-block'});
-				}else{
-					console.log("admin caché");
-					$('.admin').css({display:'none'});
-				}
-				console.debug('nb date =' +listeDates.length);
-				return listeDates.length;
-		    }
-		});
+		
 	},
 	centreSurDate:function(idDate){
-		console.debug("centreSurDate id = "+idDate);
-		var monFrontMere=listeDates[idDate];
-		console.log('id front mere '+monFrontMere.idfront);
+		this.rechercheDate(idDate);
+		console.debug("centreSurDate id = "+this.idfront);
 		var paramFront=[];
-		paramFront=listeFronts[monFrontMere.idfront].getParamCarteUnFront();
+		paramFront=listeFronts[this.idfront].getParamCarteUnFront();
 		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
 		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
 		
 	},
+	recoitListeDate:function(){
+		console.log('recoitListeDate idfront ='+this.idfront);
+		console.log('nb dates  avt :'+listeDates.length);
+		listeDates.splice(0,listeDates.length);
+		console.log('nb dates  apr :'+listeDates.length);
+		appelAjax('listeDate.html', 'idfront/'+this.idfront,'json');
+		
+		var nbDate=listeDates.length;
+		if(nbDate>0){
+			listeDates.forEach(function(madate){
+				console.log('clic date = '+madate.getIddate());
+				//var date= new Date(madate.getDate());
+				var newOption = new Option(madate.getDate(), madate.getIddate(), false, false);
+				
+				$('#btnNavDate').css({display:'inline-block'});
+				$('.dateLigne').css({display:'inline-block'});
+				$('#dateLigne').append(newOption).trigger('change');
+				$('.addDateLigne').css({display:'none'});
+				$('#infoDateLigne').css({display:'inline-block'});
+				
+			});
+			$('#btnNavDatePrev').css({display:'none'});
+			$('#btnNavDateNext').css({display:'inline-block'});
+			console.log(listeDates);	
+			this.donneDateFront(listeDates[0].idDate);
+				
+		}else{
+			console.log('clic date : pas de date');
+			$('.dateLigne').css({display:'none'});
+			$('.addDateLigne').css({display:'none'});
+			$('.dateFront-save-button').css({display:'inline-block'});
+			$('#infoDateLigne').css({display:'none'});
+			console.log("Mode ajout commencé");
+		}
+		var monParam=Object.create(paramGeneraux);
+		monParam.afficheBtnCommande(true);
+		if(afficheActionMaj()){
+			console.log("admin montré");
+			$('.admin').css({display:'inline-block'});
+		}else{
+			console.log("admin caché");
+			$('.admin').css({display:'none'});
+		}
+		console.debug('nb date =' +listeDates.length);
+		return listeDates.length;
+				
+	},
 	donneDernierId:function(){
 		console.log('donneDernier id 1');
+		var monParamgeneral= Object.create(paramGeneraux);
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: ajaxSynchrone(),
+		   async: ParamGeneraux[0]['synchrone'],
 		   data : 'action=NewIdDateFront/', 			
 		   dataType : 'text',
 		   success : function(resultat, statut){
@@ -583,6 +613,7 @@ var DateFront={
 		rep += 'description>'+this.description +'|';
 		rep += 'idfront>'+this.idfront +'|';		
 		appelAjax('addDateFront','nbFront/1/maDate/'+rep,'','text');
+		this.recoitListeDate();
 	},
 	duppliqueDateFront:function(){
 		var rep='';
@@ -598,15 +629,28 @@ var DateFront={
 
 		//alert ('id date nouveau = '+ this.iddate);
 		this.ajouteMesLignes(this.iddate);
+		this.recoitListeDate();
 	},
-	
+	donneDateFront:function(laDate){
+		if(!this.getModifEnCours()){
+			console.log('Efface fronts');
+			this.effaceFronts();
+			var maLigneFront=Object.create(LigneFront);
+			maLigneFront.appelAjax('listeLigneDate.html', 'iddatefront/'+sessionStorage['idDate'],'','json');
+			//$('#btnAjoutLigne').css({display:'inline-block'});
+			$('.addDateLigne').css({display:'inline-block'});
+			this.centreSurDate(sessionStorage['idDate']);
+			console.log("Mode consultation commencé");
+		}
+	},
 	deleteDateFront:function(maDate){
 		if (confirm("Confirmez-vous la demande de suppression d'une date")){
 			appelAjax('supprimeDateFront','iddate/'+maDate,'','text');
+			maDate.recoitListeDate();
 			console.log("Mode suppression terminé");		
 		}
 	},
-	ajouteMesLignes(maDate){
+	ajouteMesLignes:function(maDate){
 		// Ajout des nouvelles lignes
 		if(typeof mymap._editablePolylines !== "undefined"){
 			mymap._editablePolylines.forEach(function(uneLigneFront) {
@@ -665,6 +709,7 @@ var DateFront={
 			console.log('uneLigneFront id = '+ this.iddate);
 		};
 		this.ajouteMesLignes(maDate);
+		
 	}
 };
 	/*******************************************
@@ -694,10 +739,12 @@ var LigneFront={
 			madata='action='+action
 		}
 		monDataType===''? monDataType='json' : monDataType=monDataType;
+
+		var monParamgeneral= Object.create(paramGeneraux);
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: ajaxSynchrone(),
+		   async: ParamGeneraux[0]['synchrone'],
 		   data : madata, 			
 		   dataType : monDataType,
 		   success : function(resultat, statut){
@@ -747,7 +794,7 @@ var LigneFront={
 	donneCoordonneesMesPoints:function(maLigne){
 		var listeCoordonneesUnFront=[];
 		var uneCoordonnee;
-		console.log('id front ='+maLigne);
+		console.log('id front ='+maLigne+' nombre de points '+listePoint.length);
 		listePoint.forEach(function(monPoint){
 			console.log('id front ='+maLigne+' point id = '+monPoint.getIdlignefront());
 			if(monPoint.getIdlignefront()===maLigne){
@@ -777,16 +824,14 @@ var LigneFront={
 			mesPoints.appelAjax('listePoint.html', 'idlignefront/'+monLigneFront.idlignefront,'json');
 			console.log('nombre de points '+listePoint.length);
 			var monMaxMarkers=1;
-			if(frontDraggable()){				
+			if(frontDraggable()){
 				monMaxMarkers=100;
-				console.log('frontDraggable = '+frontDraggable());				
+				console.log('front draggable = '+ frontDraggable());
 			}
-			console.log('monMaxMarkers = '+monMaxMarkers);
-			
 			var polylineOptions = {
 				// The user can add new polylines by clicking anywhere on the map:
 				newPolylines: true,
-				contextmenu: true,
+				contextmenu: false,
 				newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici 	?',
 				// Show editable markers only if less than this number are in map bounds:
 				newPolylineTypeMessage: 2,
@@ -795,22 +840,9 @@ var LigneFront={
 				formeLigne:monLigneFront.type, 
 				weight: 5,
 				dashArray: '10,7',
-				lineJoin:'round',
-				maxMarkers: 100,
-				contextmenuItems: [
-					{ 
-						separator: true
-					}, {
-						text: 'Modifie la ligne',
-						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
-						callback: modifieLaLigne
-					}, {
-						text: 'Supprime la ligne',
-						icon: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png',
-						callback: supprimeUneLigne
-					}
-				]
+				lineJoin:'round'				
 			};
+			console.log ('coordonnées de me points = '+monLigneFront.donneCoordonneesMesPoints(monLigneFront.idlignefront));
 			uneLigneFront = L.Polyline.PolylineEditor(monLigneFront.donneCoordonneesMesPoints(monLigneFront.idlignefront), polylineOptions).addTo(mymap);
 			console.log('id une ligne de front = '+uneLigneFront._leaflet_id);
 		});
@@ -821,10 +853,11 @@ var LigneFront={
 		console.log('donne dernier ID ligne date pour points ');
 		console.log('-------------------------------'); 
 					
+		var monParamgeneral= Object.create(paramGeneraux);
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: ajaxSynchrone(),
+		   async: ParamGeneraux[0]['synchrone'],
 		   data : 'action=NewIdLigneFront/', 			
 		   dataType : 'text',
 		   success : function(resultat, statut){
@@ -901,10 +934,11 @@ var Point={
 			madata='action='+action
 		}
 		monDataType===''? monDataType='json' : monDataType=monDataType;
+		var monParamgeneral= Object.create(paramGeneraux);
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
-		   async: ajaxSynchrone(),
+		   async: ParamGeneraux[0]['synchrone'],
 		   data : madata, 			
 		   dataType : monDataType,
 		   success : function(resultat, statut){
@@ -966,9 +1000,7 @@ window.onload = function () {
 	// chargement des fronts
 	console.log('debut chgt fronts');
 	
-	
-	//affichage carte
-	//console.log('nombre de cartes ='+listeCartes.length);
+	console.log('fin chgt fronts');
 	
 	//positionnement des combats
 	listeFronts.forEach(function(unFront){
@@ -1003,37 +1035,42 @@ window.onload = function () {
 		
 		$("#addDescriptionLigne").val(listeDates[sessionStorage['idDate']].description);
 		$("#addDateLigne").val(listeDates[sessionStorage['idDate']].date);
+		
+		var maDateTexte= listeDates[sessionStorage['idDate']].date.split("/");
+		
+		$("#addDateLigne").val(maDateTexte[2]+'-'+(maDateTexte[1])+'-'+maDateTexte[0]);
+		console.log ('nouvelle date = '+maDateTexte[2]+'-'+(maDateTexte[1])+'-'+maDateTexte[0]);
+		
 		var maDate = Object.create(DateFront);
-		if(!maDate.getModifEnCours()){
-			console.log('Efface fronts');
-			maDate.effaceFronts();
-			var maLigneFront=Object.create(LigneFront);
-			maLigneFront.appelAjax('listeLigneDate.html', 'iddatefront/'+sessionStorage['idDate'],'','json');
-			$('#btnAjoutLigne').css({display:'inline-block'});
-			$('.addDateLigne').css({display:'inline-block'});
-			maDate.centreSurDate(sessionStorage['idDate']);
-			console.log("Mode consultation commencé");
-		}
+		maDate.donneDateFront(sessionStorage['idDate']);
+	});
+	
+	document.getElementById("btnNavDatePrev").addEventListener("click", function(e){
+		var maDate= Object.create(DateFront);
+		maDate.prev();		
+	});
+	document.getElementById("btnNavDateNext").addEventListener("click", function(e){
+		var maDate= Object.create(DateFront);
+		maDate.next();			
 	});
 	
 	document.getElementById("dateFront-add-button").addEventListener("click", function(e){
 		var maDate = Object.create(DateFront);
-		maDate.setModifEnCours(true);
+		maDate.inline-block(true);
 		$('.addDateLigne').css({display:'inline-block'});
 		$('.dateFront-save-button').css({display:'inline-block'});
 		sessionStorage['operationDate']='ajoutDate'; 
 		console.log("Mode ajout commencé");
 	});
 	document.getElementById("dateFront-dupplicate-button").addEventListener("click", function(e){
-		$('.addDateLigne').css({display:'none'});
-		$('.dateFront-save-button').css({display:'none'});
+		
 		console.log("Mode dupplication terminé");
 		var maDate = Object.create(DateFront);
+		maDate.setModifEnCours(true);
 		var iddate=0;
+		$('.addDateLigne').css({display:'inline-block !important'});
+		$('.dateFront-save-button').css({display:'inline-block'});		
 		//sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= sessionStorage['idDate'];
-		maDate.init(iddate,$('#addDescriptionLigne').val(),false,0,$('#addDateLigne').val(),sessionStorage['idFront']);
-		maDate.duppliqueDateFront() ;
-		maDate.setModifEnCours(false);
 	});
 	document.getElementById("dateFront-update-button").addEventListener("click", function(e){
 		var maDate = Object.create(DateFront);
@@ -1052,7 +1089,13 @@ window.onload = function () {
 		var iddate=0;
 		sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= sessionStorage['idDate'];
 		maDate.init(iddate,$('#addDescriptionLigne').val(),false,0,$('#addDateLigne').val(),sessionStorage['idFront']);
-		sessionStorage['operationDate']=='ajoutDate' ? maDate.addDateFront() :  maDate.updateDateFront(sessionStorage['idDate']);
+		if(sessionStorage['operationDate']=='ajoutDate'){
+			maDate.addDateFront() 
+		}else if(sessionStorage['operationDate']=='modifDate'){
+     		maDate.updateDateFront(sessionStorage['idDate']);
+		}else{
+			maDate.duppliqueDateFront() ;
+		}
 		maDate.setModifEnCours(false);
 	});
 	
@@ -1079,11 +1122,12 @@ window.onload = function () {
 		var monParam=Object.create(paramGeneraux);
 		monParam.afficheBtnCommande(false);
 		console.log("Mode modif terminé");
+		var monUser=Object.create(User);
 		var monFront = Object.create(Front);
 		var idfront=0;
 		var monCentre=donneCarte().getCenter();
 		sessionStorage['operationFront']=='update' ? idfront=sessionStorage['idfront'] : idfront= 0;
-		monFront.init(idfront,$('#nomDetailFront').val(),donneCarte().getZoom(),String(monCentre.lat),String(monCentre.lng),false,'',$('#descriptionDetailFront').val());
+		monFront.init(idfront,$('#nomDetailFront').val(),donneCarte().getZoom(),String(monCentre.lat),String(monCentre.lng),false,monUser.getIdUser(),$('#descriptionDetailFront').val());
 		sessionStorage['operationFront']=='update' ? monFront.updateFront(sessionStorage['idfront']) : monFront.updateFront() ;
 		monFront.setModifEnCours(false);
 	});	

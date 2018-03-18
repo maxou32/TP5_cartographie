@@ -49,7 +49,7 @@ class ControlleurAccess {
 				}else{
 					//echo"<PRE> COntroller : validAccessReserved okay";echo"</PRE>";
 					$this->updateSession($abonne);
-					header ("Location:?action=accueil.html");				
+					header ("Location:?action=leaflet2.html");				
 				}
 			}else{
 				//echo"<PRE> COntroller :  validAccessReserved mdp faux";print_r($abonne);echo"</PRE>";

@@ -16,6 +16,7 @@ class ControlleurAccueil extends Controlleur{
 		//chargement de la carte
 		$monControleurCarte= new ControlleurCarte();
 		$data=$monControleurCarte->executeCarte($param);
+		//echo "<br /> echo de controlleur carte <pre>";print_r($data);echo"</pre>";
 		
 		//chargement des parametres d'affichage
 		$maConfig= new Config();
@@ -30,7 +31,7 @@ class ControlleurAccueil extends Controlleur{
 		//echo"<br />Controlleur 3 ";
 		
 		$theView=$maView->$fonction($data);	
-		//echo"<br />Controlleur 4 ";//echo "<br /> echo de theView <pre>";print_r($theView);echo"</pre>";
+		//echo"<br />Controlleur 4 ";
 		$this->appelleTemplate($theView);
 		
 	}

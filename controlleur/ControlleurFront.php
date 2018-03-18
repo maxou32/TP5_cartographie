@@ -26,7 +26,7 @@ class ControlleurFront  extends Controlleur {
 		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
 		
 		
-		$donnees=array('nom' => $params['nom'], 'description' => $params['description'],'zoom'=> $params['zoom'], 'lat' => $params['lat'], 'lng'=> $params['lng'], 'valide'=>false, 'idauteur'=>5);
+		$donnees=array('nom' => $params['nom'], 'description' => $params['description'],'zoom'=> $params['zoom'], 'lat' => $params['lat'], 'lng'=> $params['lng'], 'valide'=>false, 'idauteur'=>$params['idauteur']);
 		
 		
 		$monFront= new FrontManager();

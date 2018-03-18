@@ -8,7 +8,7 @@ class LeafLet extends View
 
 	
 	public function show($datas){
-		//echo "<pre>";print_r($datas);echo"</pre>";
+		//echo "<pre>";print_r($datas);echo"</pre>"; 
 		ob_start(); 
 		
 		include ('leafletNew.php');

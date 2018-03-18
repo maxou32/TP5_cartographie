@@ -57,31 +57,28 @@ class AccueilView extends View
 				<div class ="slideshow col m6 s12"> 
 					<div>
 						<img src="public/media/FontsBrun1.jpg" alt="1° jour" width="700" height="400" />
-							<p class="controls"><a href="#2" class="next">Next</a></p>
+							<p class="controls"><a href="#2" class="next"><a href="#3" class="next"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
 					</div>
 					<div>
 						<img src="public/media/FontsBrun2.jpg" alt="2° jour" width="700" height="400" />
-						<p class="controls"><a href="#1" class="prev">Prev</a> /
-							<a href="#3" class="next">Next</a></p>
+						<p class="controls"><a href="#1" class="prev"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#3" class="next"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></p>
 					</div>
 					<div>
 						<img src="public/media/FontsBrun3.jpg" alt="3° jour" width="700" height="400" />
-						<p class="controls"><a href="#2" class="prev">Prev</a>/
-							<a href="#4" class="next">Next</a></p>
+						<p class="controls"><a href="#2" class="prev"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#4" class="next"><a href="#3" class="next"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
 					</div>
 					<div>
 						<img src="public/media/FontsBrun4.jpg" alt="4° jour" width="700" height="400" />
-						<p class="controls"><a href="#3" class="prev">Prev</a>/
-							<a href="#5" class="next">Next</a></p>
+						<p class="controls"><a href="#3" class="prev"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#5" class="next"><a href="#3" class="next"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
 					</div>
 					<div>
 						<img src="public/media/FontsBrun5.jpg" alt="5° jour" width="700" height="400" />
-						<p class="controls"><a href="#4" class="prev">Prev</a>
+						<p class="controls"><a href="#4" class="prev"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a>
 					</div>
 				</div>
 				
 				<div class="col m6 s12">
-					<h3 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Bonjour sur le site de gestion des fronts.</h3>
+					<h3 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Site de présentation de fronts.</h3>
 					<p>Inscrivez-vous pour pouvoir créer et faire évoluer les conflits que vous étudiez.</p>
 					<p>Après avoir défini, la zone dans laquelle le conflit s'est déroulé vous pourrez enregistrer les évolutions des fronts jours après jour.
 					Ainsi, il vous sera possible de présenter vos exposés à l'aide de ce support pédagogique moderne.</p>
@@ -100,19 +97,16 @@ class AccueilView extends View
 			<div class ="col s12" >
 				<div class= "col s1 offset-s2 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="Contact">
 					<a href="index.php?askSendMail"><i class="large material-icons">email</i></a>
-				
 				</div>	
-				<div class ="col  s1 offset-s3 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="sInscrire">
+				<div class ="col s1 offset-s3 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="sInscrire">
 					<a href="?action=inscription.html/classe/InscriptionView/action/show"><i class="large  material-icons">person_add</i> </a>
-				
 				</div>
-				<div class ="col  s1 offset-s3 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="accesReserve">
+				<div class ="col s1 offset-s3 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-4" id="accesReserve">
 					<a href="?action=accesreserve.html/classe/AccesReserveView/action/show" ><i class="large material-icons">photo</i></a>
 				</div>				
 			</div>
 		</div>
-		<div class= "col s12"  id="reseauSociaux">
-		</div>
+		
 		<div id='resultat'>
 		</div>
 		

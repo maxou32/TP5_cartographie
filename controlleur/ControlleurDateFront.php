@@ -109,7 +109,7 @@ class ControlleurDateFront  extends Controlleur {
 			$id=$mesFronts[$i]->getIdFront();
 			
 			echo "<br /> id = ".$id;
-			
+			/*
 			$temp[$i]=[];
 			$temp[$i]['idfront']=$mesFronts[$i]->getIdFront();
 			$temp[$i]['idauteur']=$mesFronts[$i]->getIdAuteur();
@@ -119,7 +119,7 @@ class ControlleurDateFront  extends Controlleur {
 			$temp[$i]['description']=$mesFronts[$i]->getDescription();
 			$temp[$i]['valide']=$mesFronts[$i]->getValide();
 			
-			
+			*/
 			$monControlleurCarte= new ControlleurCarte;
 			$temp[$i]['carte']=$monControlleurCarte->LireUneCarte($id);
 			//echo "<br />ControlleurFront 3 : <pre>";print_r($temp[$i]);"</pre>";

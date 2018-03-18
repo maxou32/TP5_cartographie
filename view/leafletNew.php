@@ -6,7 +6,7 @@
 		<script>
 			// a mettre en bas si possible 
 			var monUser=Object.create(User);
-			monUser.init(<?= $datas['levelUser'] ?>);
+			monUser.init(<?= $datas['idAbonne'] ?>,<?= $datas['levelUser'] ?>);
 			listeUser.push(monUser);
 			console.log('user level from view :'+listeUser[0].userLevel);
 			
@@ -65,6 +65,11 @@
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
 					</button>
 				</div>
+				<div id="btnNavDate" col s12">
+					<p>Faites défiler la frise du temps</p>
+					<a id="btnNavDatePrev"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a>
+					<a id="btnNavDateNext"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a>
+				</div>
 				<div id="infoDateLigne col s12" >
 					<label class="dateLigne" for="dateLigne">Date des lignes</label>
 					<select class="dateLigne" id="dateLigne" style="display:inline-block">
@@ -73,7 +78,7 @@
 					<label class="addDateLigne" for="addDateLigne">Date</label>
 					<input class="addDateLigne" type="date" id="addDateLigne"/>
 					<label class="addDateLigne" for="addDescriptionLigne">Description</label>
-					<input class="addDateLigne" id="addDescriptionLigne" />
+					<input class="addDateLigne" id="addDescriptionLigne" /> 
 										
 				</div>					
 				<div id="dateFront-show" class="col s12" style="display:inline-block" >					

@@ -16,6 +16,7 @@ class ControlleurCarte extends Controlleur{
 		
 		$temp['paramGeneraux']=$this->LireParamGeneraux();
 		isset($_SESSION['niveau']) ? $temp['levelUser']=$_SESSION['niveau'] : $temp['levelUser']=0;
+		isset($_SESSION['IdAbonne']) ? $temp['idAbonne']=$_SESSION['IdAbonne'] : $temp['idAbonne']=0;
 		
 		if($params['ChargementCarte']){
 			$carte=$maView->show($temp);			
