@@ -23,7 +23,7 @@ class _MenuFreeView extends View
 					</a>	
 					<ul id="menuGeneral" class="left hide-on-med-and-down">
 						<li><a href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
-						
+						<li><a href="?action=leaflet2.html" >Zones de conflit</a></li>
 						<li><a href="index.php?askSendMail">Contactez moi</a></li>
 						<li><a href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
 						<li class="divider"></li>
@@ -32,6 +32,7 @@ class _MenuFreeView extends View
 					</ul>
 					<ul id="menuMobile" class="side-nav active" >
 						<li><a class="no-padding" href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
+						<li><a class="no-padding" href="?action=leaflet2.html" >Zones de conflit</a></li>
 						<li><a class="no-padding" href="index.php?askSendMail">Contactez moi</a></li>
 						<li><a class="no-padding" href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
 						<li class="divider"></li>

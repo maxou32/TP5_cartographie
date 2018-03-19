@@ -12,7 +12,7 @@ class _FooterView extends View
 
 		ob_start(); 
 		?>
-			<footer id="footer" class=" <?= $datas ?> darken-1  grey-text darken-text-5 ">
+			<footer id="footer" class="page-footer <?= $datas ?> darken-1  grey-text darken-text-5 ">
 				
 					<div class="row row_footer">
 						<div class="col l6 s12">

@@ -53,39 +53,45 @@
 			<div class="col m12 s12">
 				<div id="mapid" style="width: 100%; height: 600px;"></div>
 			</div>
-			<input id="levelUser" type="hidden" value="<?= $datas['levelUser'] ?>" >
 			
-			<div id="btnCommande" style="position: absolute; top: 150px; left: 0px; z-index: 600; background-color: azure; padding : 10px; margin: 10px; border-radius: 5px; width:270px; display:none">
+			<div id="btnCommande" style="position: absolute; top: 150px; left: 0px; z-index: 600; background-color: azure; padding : 0px; margin: 20px; border-radius: 5px; width:270px; display:none">
+				<div id="fermeCommande" 	style="background-color:red; width:15px; padding-left:2px; border-radius:5px; margin:0px; float:right">
+					<a  href="#" style="color:yellow" >X</a>
+				</div>
 				<div class="detailFront col s12" style="display:none" >		
 					<label class="detailFront" for="nomDetailFront">Nom</label>
 					<input class="detailFront" type="text" id="nomDetailFront"/>
 					<label class="detailFront" for="descriptionDetailFront">Description</label>
 					<input class="detailFront" id="descriptionDetailFront" />
 					<button id='detailFront-save-button' class="col s3 detailFront" title='enregistre modification conflit'> 
-						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
+						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' alt="Enregistre" > 
 					</button>
 				</div>
-				<div id="btnNavDate" col s12">
-					<p>Faites défiler la frise du temps</p>
+				<div class="textDescriptifLigne col s12" style="display:none">
+					<p id="textDescriptifLigne" class="textDescriptifLigne">descriptif date</p>
+				</div>
+				<div id="btnNavDate" class="col s12">
+					<p>Faites défiler le temps : </p>
 					<a id="btnNavDatePrev"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a>
 					<a id="btnNavDateNext"><img src="https://web-max.fr/gesFront/public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a>
 				</div>
-				<div id="infoDateLigne col s12" >
+				<div id="infoDateLigne" class= "col s12" >
 					<label class="dateLigne" for="dateLigne">Date des lignes</label>
-					<select class="dateLigne" id="dateLigne" style="display:inline-block">
+					<select class="dateLigne" id="dateLigne" style="display:inline-block; margin-bottom:10px ">
 						<option value="" >Choisissez une date</option> 	<!-- disabled selected  -->
 					</select>
-					<label class="addDateLigne" for="addDateLigne">Date</label>
-					<input class="addDateLigne" type="date" id="addDateLigne"/>
-					<label class="addDateLigne" for="addDescriptionLigne">Description</label>
-					<input class="addDateLigne" id="addDescriptionLigne" /> 
+					<label class="addDateLigne infoligne" for="addDateLigne">Date</label>
+					<input class="addDateLigne infoligne" type="date" id="addDateLigne"/>
+					<label class="addDateLigne infoligne" for="addDescriptionLigne">Description</label>
+					<input class="addDateLigne infoligne" id="addDescriptionLigne" /> 
 										
 				</div>					
-				<div id="dateFront-show" class="col s12" style="display:inline-block" >					
-					
+				<div id="dateFront-show" class="col s12" >					
+					<!--
 					<button id='dateFront-show-button' class="col s3" title='affiche le détail de la journée'/> 
 						<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-visible-32.png'>
 					</button>
+					-->
 					<div class="admin">
 						<button id='dateFront-add-button' class="col s3" title='ajoute une nouvelle date'/> 
 							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
@@ -130,34 +136,7 @@
 				</div>
 			</div>
 			
-			
-			
-			<div id="btnControle" style="position: absolute; top: 100px; right: 0px; z-index: 600; background-color: azure; padding : 10px; margin: 10px; border-radius: 5px; width:270px; height : 150px; display:none">
-				<div class="col s12">
-					<div class="row center-align">
-						<button id="addPoint" class=" col s4 blue lighten-5 center-align" style="width: 75px;"><img src="public/sdk-ol/img/MarkerVert.png"></button>
-						<button id="addLigne" class=" col s4  blue lighten-5 center-align" style="width: 75px;"><img src="public/sdk-ol/img/CircuitVert.png"></button>
-					</div> 
-				</div>
-				<div id="divEnreg" class="col s12 center-align row" style="display:none">
-					<button id="enregLigne" class="btn center-align col s6" ><i class="material-icons">save</i> ligne</button>
-					<button id="enregPage" class="btn center-align col s6" ><i class="material-icons">save</i> page</button>
-				</div>  
-				
-			
-				<div id="front"  class="col s12">
-					<div >
-						<label for="typeLigne">Type de ligne</label>
-						<select id="typeLigne">
-							<option value="" disabled selected>Choisissez</option>
-							<option value="1">Ami</option>
-							<option value="2">Ennemi</option>
-							<option value="3">Neutre</option>
-						</select>
-						
-					</div>
-				</div>
-			</div>
+
 			<p id="resultat"></p>
 			
 			<div id="confirmation" class="row" style="position:absolute; top:100px;left:45%; display:none; z-index:700; background-color:white;text-align:center">

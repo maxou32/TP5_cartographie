@@ -79,18 +79,19 @@ class AccueilView extends View
 				
 				<div class="col m6 s12">
 					<h3 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Site de présentation de fronts.</h3>
-					<p>Inscrivez-vous pour pouvoir créer et faire évoluer les conflits que vous étudiez.</p>
-					<p>Après avoir défini, la zone dans laquelle le conflit s'est déroulé vous pourrez enregistrer les évolutions des fronts jours après jour.
-					Ainsi, il vous sera possible de présenter vos exposés à l'aide de ce support pédagogique moderne.</p>
-					<p>Dans un premier temps, consultez ci-dessous les zones de conflit déjà explorées à l'aide de la carte interactive.  Une fois inscrit vous pourrez créer l'évolution des fronts que vous étudiez.</p>
-					<p>Faites défiler les images ci-jointes pour voir évoluer le front à côté de Brin sur Seille (évolution purement fictive).</p>
 					
+					<p>Après avoir défini, la zone dans laquelle le conflit s'est déroulé vous pourrez enregistrer les évolutions des fronts jours après jours.
+					Ainsi, il vous sera possible de présenter vos exposés à l'aide de ce support pédagogique moderne.</p>
+					<p>Dans un premier temps, consultez <a href="?action=leaflet2.html"> les zones de conflit déjà explorées</a> à l'aide de la carte interactive. </p>
+					<p>Faites défiler les images ci-jointes pour voir évoluer le front à côté de Brin sur Seille (évolution purement fictive).</p>
+					<p>Pour pouvoir créer et faire évoluer des conflits <a href="?action=inscription.html/classe/InscriptionView/action/show">demandez votre inscription.</a></p>
 					
 				</div>
 			</div>
+		<!--
 		<h2 class="center col s12 <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Implantation des différents conflits. </h2>
-			<?= $datas['maCarte'] ?>
-		
+			< ?= //$datas['maCarte'] ? >
+		-->
 
 		<h2 class="center <?= $datas['style']['couleurFormeLibre'] ?>-text darken-text-5">Contact et accès réservé</h2>
 		<div class="row">

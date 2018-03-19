@@ -10,7 +10,7 @@ class ControlleurAccueil extends Controlleur{
 		//echo"<pre>";print_r($param);echo"</pre>";
 		
 		$maCible=$param['cible'];
-		$maCarte = new $maCible();
+		isset( $maCible) ? $maCarte = new $maCible() : $maCarte=Null;
 		$fonction=$param['action'];
 		
 		//chargement de la carte
@@ -25,7 +25,7 @@ class ControlleurAccueil extends Controlleur{
 		//$mesFronts= new ControlleurFront();
 			
 		// chargement du jeu de données dans le data de la vue
-		$data['maCarte']=$maCarte->$fonction($data);
+		//$data['maCarte']=$maCarte->$fonction($data);
 		//echo"<br />Controlleur 2 ";
 		$maView = new $param['classe']();
 		//echo"<br />Controlleur 3 ";

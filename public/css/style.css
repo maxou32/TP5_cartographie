@@ -1,3 +1,28 @@
+html
+{
+	height:100%;
+}
+body
+{
+	display : flex;
+	min-height:100%;
+	flex-direction: column;
+	margin : 0;
+}
+main
+{
+	flex : 1 0 auto;
+}
+#footer
+{
+	position : fixed;
+	width:100%;
+	bottom:0PX !important;
+}
+.page-footer
+{
+	padding-top:5px !important;	
+}
 .carousel
 {
 	min-height:700px !important;
@@ -43,4 +68,9 @@
 .addDateLigne
 {
 	display:none;
+}
+#btnNavDate
+{
+	display : flex;
+	align-items:center;
 }

@@ -66,8 +66,8 @@ accueil.html :
  variable :
   classe : AccueilView
   action : show
-  cible : Leaflet
-  proprieteLeaflet : 1 
+  cible : Null   #Leaflet
+#  proprieteLeaflet : 1 
   ChargementCarte : 0 
 inscription.html :
  classe : Controlleur

@@ -9,8 +9,8 @@ class ControlleurCarte extends Controlleur{
 	public function executeCarte($params){
 		//echo "debut controlleur carte-> execute carte<pre>";print_r($params);echo"</pre>";
 		$maCible=$params['cible'];
-		$maView = new $maCible();
-
+		isset( $maCible) ? $maView = new $maCible() : $maView=Null;
+		
 		$mesFronts= new ControlleurFront();
 		$temp['front']=$mesFronts->lireTousFronts();
 		

@@ -8,7 +8,7 @@ class InscriptionView extends View
 	}
 	public function show($datas){
 		ob_start(); 
-		echo "<br />Inscription View avant obStart<pre>";print_r($datas);echo"</pre>";
+		//echo "<br />Inscription View avant obStart<pre>";print_r($datas);echo"</pre>";
 		?>
 			<script language="javascript" type="text/javascript">
 				function verifPwd() {
