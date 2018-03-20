@@ -54,7 +54,7 @@
 				<div id="mapid" style="width: 100%; height: 600px;"></div>
 			</div>
 			
-			<div id="btnCommande" style="position: absolute; top: 150px; left: 0px; z-index: 600; background-color: azure; padding : 0px; margin: 20px; border-radius: 5px; width:270px; display:none">
+			<div id="btnCommande" >
 				<div id="fermeCommande" 	style="background-color:red; width:15px; padding-left:2px; border-radius:5px; margin:0px; float:right">
 					<a  href="#" style="color:yellow" >X</a>
 				</div>
@@ -82,7 +82,8 @@
 					</select>
 					<label class="addDateLigne infoligne" for="addDateLigne">Date</label>
 					<input class="addDateLigne infoligne" type="date" id="addDateLigne"/>
-					<label class="addDateLigne infoligne" for="addDescriptionLigne">Description</label>
+					<label class="
+					infoligne" for="addDescriptionLigne">Description</label>
 					<input class="addDateLigne infoligne" id="addDescriptionLigne" /> 
 										
 				</div>					
@@ -93,21 +94,28 @@
 					</button>
 					-->
 					<div class="admin">
-						<button id='dateFront-add-button' class="col s3" title='ajoute une nouvelle date'/> 
-							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
-						</button>
-						<button id='dateFront-dupplicate-button' class="col s3" title='dupplique une  date'/> 
-							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-copie-32.png'>
-						</button>
-						<button id='dateFront-update-button' class="col s3" title='modifie les caractéristiques de la date'/> 
-							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
-						</button>					
-						<button id='dateFront-delete-button' class="col s3" title='supprime une date'/> 
-							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
-						</button>
-						<button id='dateFront-save-button' class="col s3 addDateLigne" title='enregistre date' style="display:none" /> 
-							<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
-						</button>
+						<div class="row">
+							<button id='dateFront-add-button' class="dateFrontAction col s3" title='ajoute une nouvelle date'/> 
+								<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-add-new-32.png'>
+							</button>
+							<button id='dateFront-dupplicate-button' class="dateFrontAction col s3" title='dupplique une  date'/> 
+								<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-copie-32.png'>
+							</button>
+							<button id='dateFront-update-button' class="dateFrontAction col s3" title='modifie les caractéristiques de la date'/> 
+								<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-modifier-32.png'>
+							</button>					
+							<button id='dateFront-delete-button' class="dateFrontAction col s3" title='supprime une date'/> 
+								<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-poubelle-32.png'> 
+							</button>
+						</div>
+						<div class="row dateFront-save-cancel" style='display:none'>
+							<button id='dateFront-save-button' class="col s3 offset-s3" title='enregistre date'  /> 
+								<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-sauvegarder-32.png' > 
+							</button>
+							<button id='dateFront-cancel-button' class="col s3" title='annule action'  /> 
+								<img src='https://web-max.fr/gesFront/public/sdk-ol/img/icons8-annuler-32.png' > 
+							</button>
+						</div>
 					</div>
 				</div>
 

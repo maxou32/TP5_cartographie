@@ -95,6 +95,7 @@ class AbonneManager extends Manager{
 			$q->bindValue(':idavatar', $abonne->getIdavatar(), \PDO::PARAM_INT);
 			$q->bindValue(':email', $abonne->getEmail(), \PDO::PARAM_STR);
 			$q->bindValue(':mdp', $abonne->getMdp(), \PDO::PARAM_STR);
+			$q->bindValue(':idniveau', $abonne->getIdNiveau(), \PDO::PARAM_INT);
 			
 			$q->execute();
 			return true;

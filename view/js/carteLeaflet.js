@@ -34,14 +34,16 @@ var FormeLigne={
 	********************************************/
 function afficheActionMaj(){
 	var userLevel=0;
-	var monUser=Object.create(User);
-	
+	var monUser=Object.create(User);	
 	userLevel= listeUser[0].userLevel;
 	console.log ("niveau user = "+ listeUser[0].userLevel);
 	return userLevel  > 0 ? true : false;
 };
-function frontDraggable(){
-	return afficheActionMaj()  > 0 ? true : false;
+
+function frontDraggable(){	
+	var mesParamsGeneraux=Object.create(ParamGeneraux); 
+	//return (afficheActionMaj()  > 0) && mesParamsGeneraux.getMajLigneEnCours() ? true : false;
+	return (afficheActionMaj()  > 0) && ParamGeneraux[0].majLigneEnCours ? true : false;
 };
 
 function removeOptions(selectbox){
@@ -49,7 +51,6 @@ function removeOptions(selectbox){
 		selectbox.remove(i);
 	}
 };
-
 
 function centerMap (e) {
 	mymap.panTo(e.latlng);
@@ -66,12 +67,32 @@ function zoomOut (e) {
 function gererlesDates(idfront){
 	var monIdFront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
 	sessionStorage['idFront']=monIdFront;
-	alert('mise à zero de date active');
 	sessionStorage['dateActive']=0;
 	var maDate=Object.create(DateFront);
+	listeDates.splice(0,listeDates.length);	
+	listeLigneFront.splice(0,listeLigneFront.length);	
+	listePoint.splice(0,listePoint.length);	
+
+	maDate.effaceFronts();
 	console.log('gesrerlesDates idfront = '+ monIdFront);
-	maDate.setIdFront(monIdFront);
+	maDate.setIdFront(monIdFront);	
 	maDate.recoitListeDate();
+	
+	if(afficheActionMaj()){
+		$('.dateLigne').css({display:'inline-block'});
+		$('.detailFront').css({display:'none'});
+		$('.infoligne').css({display:'none'});
+		$('#dateFront-show').css({display:'none'});
+		$('.dateFront-save-cancel').css({display:'none'});
+		$('#btnNavDate').css({display:'none'});
+		$('#infoDateLigne').css({display:'inline-block'});
+	}else{
+		var v = maDate.prev();
+		$("#textDescriptifLigne").html(maDate.donneDescriptif());
+		$('#btnNavDate').css({display:'flex'});
+		$('#infoDateLigne').css({display:'none'});
+		$('.textDescriptifLigne').css({display:'inline-block'});
+	}
 };
 
 function ajoutConflit(e){
@@ -82,12 +103,16 @@ function ajoutConflit(e){
 function modifierUnConflit(idfront){
 	var unFront= Object.create(Front);
 	var idfront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
+	var monFront=Object.create(Front);
+	monFront.zoomFront(idfront);
 	//alert('modifier le conflit num = '+idfront);
 	$('.detailFront').css({display:'inline-block'});
 	var monParam=Object.create(paramGeneraux);
 	monParam.afficheBtnCommande(true);
 	$('.addDateLigne').css({display:'none'});
+	$('#btnNavDate').css({display:'none'});
 	$('#dateFront-show').css({display:'none'});
+	$('#infoDateLigne').css({display:'none'});
 	$("#descriptionDetailFront").val(listeFronts[idfront].description);
 	$("#nomDetailFront").val(listeFronts[idfront].nom);
 	sessionStorage['operationFront']='update';
@@ -125,8 +150,6 @@ function ouvrirCarte(){
 			attribution : ParamGeneraux[0]['attribution']
 		});
 	etatMajor.addTo(mymap);	
-	//alert('fin chgt carte');
-	//return mymap;
 };
 
 function donneMenuContext(menu){
@@ -278,7 +301,7 @@ var Leaflet={
 	********************************************/
 ParamGeneraux=[];
 var paramGeneraux={
-	init:function(zoom, latCentre,lngCentre,maxZoom,tileSize,boxZoom,attribution,layer,synchrone){
+	init:function(zoom, latCentre,lngCentre,maxZoom,tileSize,boxZoom,attribution,layer,synchrone,majLigneEnCours){
 	this.zoom=zoom;
 	this.latCentre=latCentre;
 	this.lngCentre=lngCentre;
@@ -288,21 +311,28 @@ var paramGeneraux={
 	this.attribution=attribution;
 	this.layer=layer;
 	this.synchrone=synchrone;
+	this.majLigneEnCours=false;
+	this.actionEnCours=''
 	},
-afficheBtnCommande: function(affiche){
+	afficheBtnCommande: function(affiche){
 
-	if(affiche){
-		var positionTopCarte= $('#mapid').offset().top;
-		$('#btnCommande').css({display:'inline-block', top:positionTopCarte+100});
-		
-	}else{
-		$('#btnCommande').css({display:'none'});
+		if(affiche){
+			var positionTopCarte= $('#mapid').offset().top;
+			$('#btnCommande').css({display:'inline-block', top:positionTopCarte+100});
+			
+		}else{
+			$('#btnCommande').css({display:'none'});
+		}
+	},
+	ajaxSynchrone:function(){
+		return this.synchrone;
+	},
+	setModifEnCours:function(majLigneEnCours){
+		ParamGeneraux[0].majLigneEnCours=majLigneEnCours;
+	},
+	getMajLigneEnCours:function(){
+		return ParamGeneraux[0].majLigneEnCours;
 	}
-},
-ajaxSynchrone:function(){
-	return this.synchrone;
-}
-
 };
 	/*******************************************
 		Gestion des utilisateurs
@@ -360,7 +390,19 @@ var Front={
 	setModifEnCours:function(etat){
 		this.modifEnCours=etat;
 	},
-
+	montreTout:function(){
+		markerFrontGroup = new L.LayerGroup();
+		mymap.addLayer(markerFrontGroup);
+		listeFronts.forEach(function(unFront){
+			this.centreMonFront=unFront.montreMoi(FormeLigne[4].icone);
+		})
+	},
+	zoomFront:function(idFront){
+		var paramFront=[];
+		paramFront=listeFronts[idFront].getParamCarteUnFront();
+		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
+		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
+	},
 	montreMoi:function(formeligne){
 		console.log('prepare context menu id '+this.idfront+ ' lat = '+this.lat+' lng = '+this.lng);
 		sessionStorage['idFront']=this.idfront;
@@ -380,7 +422,7 @@ var Front={
 				title: this.nom,
 				contextmenuItems: donneMenuContext('front')
 			}
-		).addTo(mymap);	
+		).addTo(markerFrontGroup);	
 		this.creePointeur(centreFront);
 		return centreFront;
 	},
@@ -411,6 +453,10 @@ var Front={
 		
 	},
 	deleteFront:function(monFront){
+		listeFronts.splice(monFront,1);
+		markerFrontGroup.clearLayers();
+		delete(listeFronts.monFront);
+		this.montreTout();
 		appelAjax('supprimeFront','idfront/'+monFront,'','text');
 		console.log("Mode suppression terminés");
 	},
@@ -481,24 +527,27 @@ var DateFront={
 		d === 0 ? $('#btnNavDatePrev').css({display:'none'}) :  $('#btnNavDatePrev').css({display:'inline-block'});
 		d === listeDates.length  ? $('#btnNavDateNext').css({display:'none'}) :  $('#btnNavDateNext').css({display:'inline-block'});
 		sessionStorage['dateActive']=d;
+		return d;
 	},
 	next:function(){
 		this.dateActive = parseInt(sessionStorage['dateActive']);
-		this.dateActive < listeDates.length ?	this.dateActive++ :	this.dateActive=0;
+		this.dateActive < listeDates.length-1 ?	this.dateActive++ :	false;
 		
 		var d=this.dateActive;
 		this.init(listeDates[d].iddate,listeDates[d].description,listeDates[d].valide,listeDates[d].numordre,listeDates[d].date,listeDates[d].idfront);
 		sessionStorage['idDate']=listeDates[d].iddate;
 		this.donneDateFront(listeDates[d].iddate);
-		d === listeDates.length  ? $('#btnNavDateNext').css({display:'none'}) :  $('#btnNavDateNext').css({display:'inline-block'});
+		d === listeDates.length -1  ? $('#btnNavDateNext').css({display:'none'}) :  $('#btnNavDateNext').css({display:'inline-block'});
 		d === 0  ? $('#btnNavDatePrev').css({display:'none'}) :  $('#btnNavDatePrev').css({display:'inline-block'});
 		sessionStorage['dateActive']=d;
 		console.log('nb dates '+listeDates.length+ ' Next '+sessionStorage['dateActive']);
+		return d;
 	},
 	rechercheDate:function(idDate){
 		for(var d=0;d< listeDates.length;d++){
 			if (listeDates[d].iddate===idDate){
 				this.init(listeDates[d].iddate,listeDates[d].description,listeDates[d].valide,listeDates[d].numordre,listeDates[d].date,listeDates[d].idfront);
+				return d;
 			}
 		}
 		
@@ -506,14 +555,11 @@ var DateFront={
 	centreSurDate:function(idDate){
 		this.rechercheDate(idDate);
 		console.debug("centreSurDate id = "+this.idfront);
-		var paramFront=[];
-		paramFront=listeFronts[this.idfront].getParamCarteUnFront();
-		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
-		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
-		
+		var monFront=Object.create(Front);
+		monFront.zoomFront(this.idfront);
 	},
 	recoitListeDate:function(){
-		console.log('recoitListeDate idfront ='+this.idfront);
+		//alert('recoitListeDate idfront ='+this.idfront);
 		console.log('nb dates  avt :'+listeDates.length);
 		listeDates.splice(0,listeDates.length);
 		console.log('nb dates  apr :'+listeDates.length);
@@ -523,37 +569,33 @@ var DateFront={
 		if(nbDate>0){
 			listeDates.forEach(function(madate){
 				console.log('clic date = '+madate.getIddate());
-				//var date= new Date(madate.getDate());
-				var newOption = new Option(madate.getDate(), madate.getIddate(), false, false);
-				
-				$('#btnNavDate').css({display:'inline-block'});
+				var newOption = new Option(madate.getDate(), madate.getIddate(), false, false);				
+				afficheActionMaj() ? $('#btnNavDate').css({display:'none'}) : $('#btnNavDate').css({display:'flex'});
 				$('.dateLigne').css({display:'inline-block'});
 				$('#dateLigne').append(newOption).trigger('change');
-				$('.addDateLigne').css({display:'none'});
-				$('#infoDateLigne').css({display:'inline-block'});
-				
+				$('.addDateLigne').css({display:'none'});			
 			});
 			$('#btnNavDatePrev').css({display:'none'});
 			$('#btnNavDateNext').css({display:'inline-block'});
 			console.log(listeDates);	
-			this.donneDateFront(listeDates[0].idDate);
-				
 		}else{
 			console.log('clic date : pas de date');
 			$('.dateLigne').css({display:'none'});
 			$('.addDateLigne').css({display:'none'});
-			$('.dateFront-save-button').css({display:'inline-block'});
-			$('#infoDateLigne').css({display:'none'});
-			console.log("Mode ajout commencé");
+			$('.dateFront-save-cancel').css({display:'inline'});
 		}
 		var monParam=Object.create(paramGeneraux);
 		monParam.afficheBtnCommande(true);
 		if(afficheActionMaj()){
 			console.log("admin montré");
-			$('.admin').css({display:'inline-block'});
+			$('.admin').css({display:'inline'});
+			$('#infoDateLigne').css({display:'inline-block'});
+			$('#dateFront-show').css({display:'inline-block'});
 		}else{
 			console.log("admin caché");
 			$('.admin').css({display:'none'});
+			$('#infoDateLigne').css({display:'none'});
+			$('#dateFront-show').css({display:'none'});
 		}
 		console.debug('nb date =' +listeDates.length);
 		return listeDates.length;
@@ -584,6 +626,10 @@ var DateFront={
 				return resultat;
 		   }
 		})
+	},
+	donneDescriptif:function(){
+		var libelle= "Lignes de front du "+this.getDate()+" nommé : "+this.getDescription();
+		return libelle;
 	},
 	effaceFronts:function(){
 		console.log ('------------------------------------------');
@@ -625,23 +671,23 @@ var DateFront={
 		appelAjax('addDateFront','nbFront/1/maDate/'+rep,'','text');
 		//alert ('id date ancien = '+ this.iddate);
 		this.donneDernierId();
-		this.iddate=sessionStorage['idDate'];
+		this.iddate=parseInt(sessionStorage['idDate']);
 
 		//alert ('id date nouveau = '+ this.iddate);
 		this.ajouteMesLignes(this.iddate);
 		this.recoitListeDate();
 	},
 	donneDateFront:function(laDate){
-		if(!this.getModifEnCours()){
+		//alert('modif 2');
+		//if(!this.getModifEnCours()){
+			//alert('modif 3');
 			console.log('Efface fronts');
 			this.effaceFronts();
 			var maLigneFront=Object.create(LigneFront);
 			maLigneFront.appelAjax('listeLigneDate.html', 'iddatefront/'+sessionStorage['idDate'],'','json');
-			//$('#btnAjoutLigne').css({display:'inline-block'});
-			$('.addDateLigne').css({display:'inline-block'});
-			this.centreSurDate(sessionStorage['idDate']);
+			this.centreSurDate(laDate);
 			console.log("Mode consultation commencé");
-		}
+		//}
 	},
 	deleteDateFront:function(maDate){
 		if (confirm("Confirmez-vous la demande de suppression d'une date")){
@@ -655,22 +701,13 @@ var DateFront={
 		if(typeof mymap._editablePolylines !== "undefined"){
 			mymap._editablePolylines.forEach(function(uneLigneFront) {
 				var points = uneLigneFront.getPoints();
-				console.log('uneLigneFront id = '+uneLigneFront._leaflet_id+", type ="+uneLigneFront.options.newPolylineTypeMessage);
-				var maLigneDate=Object.create(LigneFront); 
 				
-				console.debug(uneLigneFront._map._editablePolylines[uneLigneFront._map._editablePolylines.length-1]);
+				var maLigneDate=Object.create(LigneFront); 
 				var mesOptions=uneLigneFront._map._editablePolylines[uneLigneFront._map._editablePolylines.length-1]._options;
-				console.debug(uneLigneFront);
-				console.debug('la couleur debug ? '+uneLigneFront._path.attributes[1].value); 
-				console.log('la couleur log? '+uneLigneFront._path.attributes[1].value); 
 				
 				var couleur=uneLigneFront._path.attributes[1].value;
 				var type=mesOptions.formeLigne;
-				console.log('Couleur avant interrogation = '+couleur);	
 				
-				console.log('couleur ligne = '+couleur);
-				console.log('type ligne = '+type);
-				console.log('date ligne = '+maDate);
 				maLigneDate.init(0,couleur,type,false,maDate,0);
 				couleur='';
 				type='';
@@ -739,8 +776,9 @@ var LigneFront={
 			madata='action='+action
 		}
 		monDataType===''? monDataType='json' : monDataType=monDataType;
-
+		listeLigneFront.splice(0,listeLigneFront.length);		
 		var monParamgeneral= Object.create(paramGeneraux);
+		
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
@@ -824,16 +862,15 @@ var LigneFront={
 			mesPoints.appelAjax('listePoint.html', 'idlignefront/'+monLigneFront.idlignefront,'json');
 			console.log('nombre de points '+listePoint.length);
 			var monMaxMarkers=1;
+			var newAutorise=false;
 			if(frontDraggable()){
-				monMaxMarkers=100;
+				monMaxMarkers=1000;
 				console.log('front draggable = '+ frontDraggable());
 			}
 			var polylineOptions = {
-				// The user can add new polylines by clicking anywhere on the map:
 				newPolylines: true,
 				contextmenu: false,
-				newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici 	?',
-				// Show editable markers only if less than this number are in map bounds:
+				newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici ?',
 				newPolylineTypeMessage: 2,
 				maxMarkers: monMaxMarkers,
 				color: monLigneFront.couleur,
@@ -935,6 +972,7 @@ var Point={
 		}
 		monDataType===''? monDataType='json' : monDataType=monDataType;
 		var monParamgeneral= Object.create(paramGeneraux);
+		listePoint.splice(0,listePoint.length);
 		$.ajax({
 		   url : 'index.php',
 		   type : 'GET',
@@ -1003,9 +1041,11 @@ window.onload = function () {
 	console.log('fin chgt fronts');
 	
 	//positionnement des combats
-	listeFronts.forEach(function(unFront){
-		centreMonFront=unFront.montreMoi( FormeLigne[4].icone);
-	});
+	mesFronts=Object.create(Front);
+	mesFronts.montreTout();
+	//listeFronts.forEach(function(unFront){
+	//	centreMonFront=unFront.montreMoi( FormeLigne[4].icone);
+	//});
 	
 	
 	
@@ -1013,8 +1053,9 @@ window.onload = function () {
 			gestion des evenements de la feuille
 		********************************************/
 		
+
+
 	document.getElementById("dateLigne").addEventListener("change", function(e){
-		$('#dateFront-action').css({display:'inline-block'});
 		
 		// objet jQuery contenant l'option sélectionnée
 		var jObj = $("option", this).filter(":selected"), 
@@ -1024,79 +1065,158 @@ window.onload = function () {
 			t = jObj.text(); // texte
 			console.log('date ligne option value = '+v);
 			console.log('date ligne option value = '+t);
-		sessionStorage['idDate']=v;
+		sessionStorage['idDate']=parseInt(v);
 		console.log("Choix date ligne en cours");
-
-	});
-	
-	document.getElementById("dateFront-show-button").addEventListener("click", function(e){
-		console.log('id Date = '+sessionStorage['idDate'] +'dans liste = '+listeDates[sessionStorage['idDate']].description);
-		console.log('id Date = '+sessionStorage['idDate'] +'dans liste = '+listeDates[sessionStorage['idDate']].date);
+		maDate=Object.create(DateFront);
+		var indice=maDate.rechercheDate(parseInt(v));
+		console.log('id Date = '+sessionStorage['idDate'] +'dans liste = '+maDate.description);
+		console.log('id Date = '+sessionStorage['idDate'] +'dans liste = '+maDate.date);
+		$('#dateFront-show').css({display:'inline-block'});
+		$('.dateFront-save-cancel').css({display:'none'});
+		$('.detailFront').css({display:'none'});
+		$("#addDescriptionLigne").val(maDate.description);
+		$("#textDescriptifLigne").html(maDate.donneDescriptif());
+		$('.textDescriptifLigne').css({display:'inline-block'});
 		
-		$("#addDescriptionLigne").val(listeDates[sessionStorage['idDate']].description);
-		$("#addDateLigne").val(listeDates[sessionStorage['idDate']].date);
-		
-		var maDateTexte= listeDates[sessionStorage['idDate']].date.split("/");
+		var maDateTexte= maDate.date.split("/");
 		
 		$("#addDateLigne").val(maDateTexte[2]+'-'+(maDateTexte[1])+'-'+maDateTexte[0]);
 		console.log ('nouvelle date = '+maDateTexte[2]+'-'+(maDateTexte[1])+'-'+maDateTexte[0]);
 		
 		var maDate = Object.create(DateFront);
-		maDate.donneDateFront(sessionStorage['idDate']);
+		maDate.donneDateFront(parseInt(sessionStorage['idDate']));
+
 	});
-	
+
 	document.getElementById("btnNavDatePrev").addEventListener("click", function(e){
 		var maDate= Object.create(DateFront);
-		maDate.prev();		
+		var v = maDate.prev();	
+		var indice=maDate.rechercheDate(parseInt(v));
+		$('.detailFront').css({display:'none'});
+		$("#textDescriptifLigne").html(maDate.donneDescriptif());
+		$('.textDescriptifLigne').css({display:'inline-block'});	
 	});
+	
 	document.getElementById("btnNavDateNext").addEventListener("click", function(e){
 		var maDate= Object.create(DateFront);
-		maDate.next();			
+		var v = maDate.next();
+		var indice=maDate.rechercheDate(parseInt(v));
+		$('.detailFront').css({display:'none'});
+		$("#textDescriptifLigne").html(maDate.donneDescriptif());
+		$('.textDescriptifLigne').css({display:'inline-block'});			
+	});
+	
+	document.getElementById("fermeCommande").addEventListener("click", function(e){
+		var maDate= Object.create(DateFront);
+		maDate.effaceFronts();
+		maCarte=donneCarte();
+		maCarte.setView([ParamGeneraux[0]['latCentre'],ParamGeneraux[0]['lngCentre'] ],ParamGeneraux[0]['zoom']);
+		$('#btnCommande').css({display:'none'});
 	});
 	
 	document.getElementById("dateFront-add-button").addEventListener("click", function(e){
 		var maDate = Object.create(DateFront);
-		maDate.inline-block(true);
-		$('.addDateLigne').css({display:'inline-block'});
-		$('.dateFront-save-button').css({display:'inline-block'});
-		sessionStorage['operationDate']='ajoutDate'; 
+		maDate.setModifEnCours(true);
+		$('.dateFrontAction').css({display:'none'});
+		$('.dateLigne').css({display:'none'});
+		$('.textDescriptifLigne').css({display:'none'});
+		$('#infoDateLigne').css({display:'inline-block'});
+		$('.dateFront-save-cancel').css({display:'inline'});
+		$('#addDateLigne').css({display:'inline-block'});
+		$('#addDescriptionLigne').css({display:'inline-block'});
+		$('.addDateLigne').css({display:'inline-block !important'});
+		//$('.dateFront-save-button').css({display:'inline-block'});
+		var mesParamsGeneraux=Object.create(ParamGeneraux);
+		ParamGeneraux[0].actionEnCours='ajoutDate'; 
 		console.log("Mode ajout commencé");
 	});
-	document.getElementById("dateFront-dupplicate-button").addEventListener("click", function(e){
-		
+	document.getElementById("dateFront-dupplicate-button").addEventListener("click", function(e){		
 		console.log("Mode dupplication terminé");
 		var maDate = Object.create(DateFront);
 		maDate.setModifEnCours(true);
+		var mesParamsGeneraux=Object.create(ParamGeneraux);
+		ParamGeneraux[0].majLigneEnCours=true;
+		ParamGeneraux[0].actionEnCours='dupplicationDate'; 
+		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
 		var iddate=0;
+		$('.dateFrontAction').css({display:'none'});
+		$('.textDescriptifLigne').css({display:'none'});
+		$('.dateLigne').css({display:'none'});
+		$('.dateFront-save-cancel').css({display:'inline'});		
+		$('#infoDateLigne').css({display:'inline-block'});
+		//$('#dateFront-save-button').css({display:'inline-block'});		
+		$('#addDateLigne').css({display:'inline-block'});
+		$('#addDescriptionLigne').css({display:'inline-block'});
 		$('.addDateLigne').css({display:'inline-block !important'});
-		$('.dateFront-save-button').css({display:'inline-block'});		
-		//sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= sessionStorage['idDate'];
 	});
+	
 	document.getElementById("dateFront-update-button").addEventListener("click", function(e){
 		var maDate = Object.create(DateFront);
 		maDate.setModifEnCours(true);
-		$('.addDateLigne').css({display:'inline-block'});
-		$('.dateFront-save-button').css({display:'inline-block'});
-		sessionStorage['operationDate']='modifDate';
+		var mesParamsGeneraux=Object.create(ParamGeneraux);
+		//mesParamsGeneraux.setMajLigneEnCours(true);
+		ParamGeneraux[0].majLigneEnCours=true;
+		ParamGeneraux[0].actionEnCours='modifDate'; 
+		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
+		$('.dateFrontAction').css({display:'none'});
+		$('.addDateLigne').css({display:'inline-block !important'});
+		$('.dateLigne').css({display:'none'});
+		$('.dateFront-save-cancel').css({display:'inline'});
+		$('#infoDateLigne').css({display:'inline-block'});
+		$('#addDateLigne').css({display:'inline-block'});
+		$('#addDescriptionLigne').css({display:'inline-block'});
+		$('.textDescriptifLigne').css({display:'none'});
 		console.log("Mode modif commencé");
+		
 	});
 	
-	document.getElementById("dateFront-save-button").addEventListener("click", function(e){
+	document.getElementById("dateFront-delete-button").addEventListener("click", function(e){
+		var maDate = Object.create(DateFront);
+		maDate.deleteDateFront(sessionStorage['idDate']);
+	});
+	
+	document.getElementById("dateFront-cancel-button").addEventListener("click", function(e){
+		$('.dateFrontAction').css({display:'inline-block'});
+		$('.dateLigne').css({display:'inline-block'});
 		$('.addDateLigne').css({display:'none'});
-		$('.dateFront-save-button').css({display:'none'});
-		console.log("Mode ajout et modif terminés");
+		$('.dateFront-save-cancel').css({display:'none'});
+		console.log("Mode ajout et modif annulés");
+		var maDate = Object.create(DateFront);
+		//var iddate=0;
+		sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= parseInt(sessionStorage['idDate']);
+		maDate.init(iddate,$('#addDescriptionLigne').val(),false,0,$('#addDateLigne').val(),sessionStorage['idFront']);
+		//var mesParamsGeneraux=Object.create(ParamGeneraux);
+		maDate.setModifEnCours(false);		
+		//mesParamsGeneraux.setMajLigneEnCours(false);
+		ParamGeneraux[0].actionEnCours="";
+		ParamGeneraux[0].majLigneEnCours=false;
+		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
+	});
+	document.getElementById("dateFront-save-button").addEventListener("click", function(e){
+		$('.dateFrontAction').css({display:'inline-block'});
+		$('.dateLigne').css({display:'inline-block'});
+		$('.addDateLigne').css({display:'none'});
+		$('.dateFront-save-cancel').css({display:'none'});
+			console.log("Mode ajout et modif terminés");
 		var maDate = Object.create(DateFront);
 		var iddate=0;
-		sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= sessionStorage['idDate'];
+		sessionStorage['operationDate']=='ajoutDate' ? iddate=0 : iddate= parseInt(sessionStorage['idDate']);
 		maDate.init(iddate,$('#addDescriptionLigne').val(),false,0,$('#addDateLigne').val(),sessionStorage['idFront']);
-		if(sessionStorage['operationDate']=='ajoutDate'){
+		var mesParamsGeneraux=Object.create(ParamGeneraux);
+		if(ParamGeneraux[0].actionEnCours==='ajoutDate'){
 			maDate.addDateFront() 
-		}else if(sessionStorage['operationDate']=='modifDate'){
-     		maDate.updateDateFront(sessionStorage['idDate']);
+		}else if(ParamGeneraux[0].actionEnCours==='modifDate'){
+     		maDate.updateDateFront(parseInt(sessionStorage['idDate']));
 		}else{
 			maDate.duppliqueDateFront() ;
 		}
 		maDate.setModifEnCours(false);
+		
+		//mesParamsGeneraux.setMajLigneEnCours(false);
+		ParamGeneraux[0].actionEnCours="";
+		ParamGeneraux[0].majLigneEnCours=false;
+		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
+		
 	});
 	
 	document.getElementById("btnOuiLigne").addEventListener("click", function(e){
@@ -1111,26 +1231,23 @@ window.onload = function () {
 		$('#choixLigne').css({display:'none'});
 	});
 	
-	document.getElementById("dateFront-delete-button").addEventListener("click", function(e){
-		//alert("Mode suppression engagé");
-		var maDate = Object.create(DateFront);
-		maDate.deleteDateFront(sessionStorage['idDate']);
-	});
-	
+
 	document.getElementById("detailFront-save-button").addEventListener("click", function(e){
 		$('.detailFront').css({display:'none'});
 		var monParam=Object.create(paramGeneraux);
 		monParam.afficheBtnCommande(false);
 		console.log("Mode modif terminé");
 		var monUser=Object.create(User);
+		
 		var monFront = Object.create(Front);
 		var idfront=0;
 		var monCentre=donneCarte().getCenter();
 		sessionStorage['operationFront']=='update' ? idfront=sessionStorage['idfront'] : idfront= 0;
-		monFront.init(idfront,$('#nomDetailFront').val(),donneCarte().getZoom(),String(monCentre.lat),String(monCentre.lng),false,monUser.getIdUser(),$('#descriptionDetailFront').val());
+		monFront.init(idfront,$('#nomDetailFront').val(),donneCarte().getZoom(),String(monCentre.lat),String(monCentre.lng),false,listeUser[0].getIdUser(),$('#descriptionDetailFront').val());
 		sessionStorage['operationFront']=='update' ? monFront.updateFront(sessionStorage['idfront']) : monFront.updateFront() ;
 		monFront.setModifEnCours(false);
 	});	
+	
 	document.getElementById("btnOuiFront").addEventListener("click", function(e){
 		console.log("front oui ");
 		$('#addFront').css({display:'none'});

@@ -13,6 +13,10 @@ main
 {
 	flex : 1 0 auto;
 }
+#content
+{
+	height:90%;
+}
 #footer
 {
 	position : fixed;
@@ -73,4 +77,28 @@ main
 {
 	display : flex;
 	align-items:center;
+}
+#btnCommande
+{
+	position: absolute; 
+	top: 150px; 
+	left: 0px; 
+	z-index: 600; 
+	background-color: azure; 
+	padding : 0px; 
+	margin: 20px; 
+	border-radius: 5px; 
+	width:270px; 
+	display:none;
+}
+@media screen and (max-width: 800px)
+{
+	#btnCommande
+	{
+		position: relative;
+		top: 0px; 
+		left: 0px; 
+		margin-top:10px;
+		margin-left:10px;
+	}
 }
