@@ -7,17 +7,57 @@ class ControlleurFront  extends Controlleur {
 		}
 		
 	public function executeCarte($params){
-		//echo"<br />FRONT: <pre>";print_r($params);echo"</pre>";
-		$maView= new View($params['zone']);		
-		$maView->render();
+		//echo "debut controlleur carte-> execute carte<pre>";print_r($params);echo"</pre>";
+		$maView = new AdminFrontView();
+		
+		$monFront= new FrontManager();
+		$temp['front']=$monFront->getListAll();
+		$temp['valide']=$this->prepareValide();
+		//echo "debut controlleur front-> execute carte<pre>";print_r($temp['front']);echo"</pre>";
+		isset($_SESSION['niveau']) ? $temp['levelUser']=$_SESSION['niveau'] : $temp['levelUser']=0;
+		isset($_SESSION['IdAbonne']) ? $temp['idAbonne']=$_SESSION['IdAbonne'] : $temp['idAbonne']=0;
+		
+		$contentView=$maView->show($temp);			
+		
+		$this->appelleTemplate($contentView);
 	}
 	
-	public function executeUtilisateur(){
-		$maView= new View($utilisateur);
-		$maView->render();
+	private function prepareValide(){
+		$valide[1]='Valide';
+		$valide[0]='à valider';
+		
+		return $valide;
 	}
-	
-	
+	    /**
+     * pour chaque triplet (chapitre, status, numéro) modifie les chapitres
+     * 
+     * @param  array $params couples à modifier
+     * @return boolean resultat de la modification 
+     */
+    public function validFront($params){	
+		//echo"<PRE>CONTROLLER : validStatusChapters 1 ";print_r($params);echo"</PRE>";
+		$frontManager= new FrontManager();
+		if(isset($params['brut']['actionAFaire'])){
+			foreach ($params['brut']['actionAFaire'] as $key => $value){	
+				if (isset($params['brut']["D".$value])){
+					//echo"delete front ".$value;
+					$resultat["result"]=$abonneManager->delete($value);
+				}else{
+					//echo (" front = ".$value." valide= ".$params['brut']["V".$value]);
+					$donnees=array('idfront'=>$value,'valide'=>$params['brut']["V".$value]);
+					$newFront = new Front($donnees);
+					$resultat["result"]=$frontManager->updateValide($newFront);
+				}
+			}
+			if ($resultat["result"]){
+				
+				$monError=new ControlleurErreur();
+				$monError->setError(array("origine"=> "web_max\Gesfront\controlleurAbonne\validFront", "raison"=>"Mise à jour de la liste des conflits", "libelle"=>"Vos modifications sont prises en compte"));
+			}		
+		}
+		header ("Location:?action=adminFront.html");
+		//return $resultat["result"];		
+	}	
 	
 	public function addFront($params){
 		//echo "<br />ControlleurLigne 0 : <pre>";print_r($paramsBrut);"</pre>";
@@ -55,9 +95,8 @@ class ControlleurFront  extends Controlleur {
 		echo"<br />ControlleurFront<pre>";print_r($result);echo"</pre>";
 		if (!$result['resultat']){
 			//echo"<br />ControlleurDateFront erreur création ";
-			/*$monError=new ControlleurErreur();
-			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurFront", "raison"=>"Ajoût d'un nouveau front", "numberMessage"=>21));
-			*/
+				$monError=new ControlleurErreur();
+				$monError->setError(array("origine"=> "web_max\Gesfront\controlleurAbonne\validFront", "raison"=>"Mise à jour des fronts", "libelle"=>"Vos modifications ne sont pas prises en compte"));
 		}else{
 			echo"Success";
 		}			
@@ -75,13 +114,14 @@ class ControlleurFront  extends Controlleur {
 		if($result){
 			echo ("Success");
 		}else{
-			echo ("suppression impossible"); 
+			$monError=new ControlleurErreur();
+			$monError->setError(array("origine"=> "web_max\Gesfront\controlleurAbonne\validFront", "raison"=>"Suppresion de fronts", "libelle"=>"Vos modifications ne sont pas prises en compte"));
 		}
 	}
 	
 	public function LireTousFrontsSeuls(){
 		$monFrontManager = new FrontManager();
-		$mesFronts=$monFrontManager->getListAll();
+		$mesFronts=$monFrontManager->getListValide();
 		
 		
 		for($i=0; $i < count($mesFronts);$i++){
@@ -107,7 +147,11 @@ class ControlleurFront  extends Controlleur {
 	
 	public function lireTousFronts(){
 		$monFrontManager = new FrontManager();
-		$mesFronts=$monFrontManager->getListAll();
+		if (isset($_SESSION['niveau'])){
+			$_SESSION['niveau'] === 4 ? $mesFronts=$monFrontManager->getListAll() : $mesFronts=$monFrontManager->getListValide();
+		}else{
+			$mesFronts=$monFrontManager->getListValide();
+		}
 		
 		
 		for($i=0; $i < count($mesFronts);$i++){

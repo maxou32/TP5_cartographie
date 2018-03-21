@@ -26,7 +26,7 @@ class _MenuPrivateView extends View
 						<li><a class="collapsible-header no-padding" href="#">Validation<i class="material-icons right">arrow_drop_down</i></a>
 							<div class="collapsible-body">
 								<ul>
-									<li><a href="#">Validation des conflits</a></li>
+									<li><a href="?action=adminFront.html">Validation des conflits</a></li>
 									<li><a href="?action=adminAbonne.html" >Gestion des habilitations</a></li>
 								</ul>
 							</div>				  
@@ -61,7 +61,7 @@ class _MenuPrivateView extends View
 			</ul>
 			<!--      -->
 			<ul  class="dropdown-content active" id="dropdown-1">
-				<li><a href="#">Validation des conflits</a></li>
+				<li><a href="?action=adminFront.html">Validation des conflits</a></li>
 				<li><a href="?action=adminAbonne.html">Gestion des habilitations</a></li>
 			</ul>
 			<ul  class="dropdown-content active" id="dropdown-2">
@@ -86,7 +86,7 @@ class _MenuPrivateView extends View
 						<li><a href="?action=leaflet2.html" >Zones de conflits</a></li>
 						<li><a data-activates="dropdown-1" class="dropdown-button" href="#">Validation<i class="material-icons right">arrow_drop_down</i></a></li>
 						<li><a data-activates="dropdown-2" class="dropdown-button" href="#">json<i class="material-icons right">arrow_drop_down</i></a></li>
-						<li><a data-activates="dropdown-3" class="dropdown-button" href="#">Bonjour, <?= $datas['nom'] ?><i class="material-icons right">arrow_drop_down</i></a></li>
+						<li><a data-activates="dropdown-3" class="dropdown-button" href="#">Bonjour, <?= htmlspecialchars($datas['nom']) ?><i class="material-icons right">arrow_drop_down</i></a></li>
 					</ul>
 				</div>
 

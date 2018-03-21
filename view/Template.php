@@ -24,28 +24,27 @@ class Template extends view{
 				<!-- Ligne à ajouter si on veut un favicon		-->
 				<link rel="icon" type="image/jpeg" href="public\media\WM.png">
 
-				<meta name="description" content="Le récit de mes dernières aventures en Alaska !" />	<!-- description pour les moteurs -->
-				<meta name="keywords" content="aventure, Alaska" />										<!-- description des mots clefs -->
+				<meta name="description" content="Protype de présentation des conflits !" />	<!-- description pour les moteurs -->
+				<meta name="keywords" content="conflit, carte, guerre, front, bataille" />										<!-- description des mots clefs -->
 				<meta name="robots" content="none"> 													<!-- dire au moteur de passer leur chemin -->
 				<meta name="content-language" content="french">											<!-- language du site -->
-				<meta name="author" content="Toto le héros">											<!-- nom de l'auteur -->
+				<meta name="author" content="web-max">											<!-- nom de l'auteur -->
 				<meta name="distribution" content="local"> 												<!-- distribtion locale ou générale -->
 				<meta name="rating" content="general">													<!-- public visé tous, averti ou restreint -->
 				
-				<meta name="robots" content="noindex, nofollow">
+				<meta name="robots" content="index, follow">
 				
 				<!-- facebook		-->
-				<meta property="og:title" content="Alaska, mon périple" />
-				<meta property="og:url" content="https://web-max.fr/ecrivain/index.php"/>
+				<meta property="og:title" content="Présentation de l'évolution des fronts pendant un conflit" />
+				<meta property="og:url" content="https://web-max.fr/gesfront/index.php"/>
 				<meta property="og:site_name" content="web-max.fr"/>
-				<meta property="og:description" content="Mon périple en Alaska au milieu du PHP entouré de MVC menaçants.">
+				<meta property="og:description" content="Dessin, évolution en vue de la présentation de l'évolution des fronts pendant un conflit">
 				<meta property="og:image" content="public\media\WMlogo.png">
 				<!-- Twitter  		-->
-				<meta name="twitter:card" content="Alaska, mon périple">
+				<meta name="twitter:card" content="Présentation de l'évolution des fronts pendant un conflit">
 				<meta name="twitter:site" content="@Web-max">
 				<meta name="twitter:title" content="Web-max">
-				<meta name="twitter:description" content="Mon périple en Alaska au milieu du PHP entouré de MVC menaçants.">
-				<meta name="twitter:creator" content="@moi_meme">
+				<meta name="twitter:description" content="Dessin, évolution en vue de la présentation de l'évolution des fronts pendant un conflit"><meta name="twitter:creator" content="@moi_meme">
 				<!-- Twitter Summary card images must be at least 120x120px -->
 				<meta name="twitter:image" content="public\media\icone.png">
 				
@@ -68,7 +67,8 @@ class Template extends view{
 								
 				<!-- Let browser know website is optimized for mobile -->
 				<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+				
+				<!-- a activer ultérieurement 
 				<script src="public/js/tinymce/tinymce.min.js"></script>
 				<script>
 				tinymce.init({
@@ -81,6 +81,7 @@ class Template extends view{
 					
 					});
 				</script>
+				-->
 			</head>
 			<body class="grey lighten-2">	 
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>

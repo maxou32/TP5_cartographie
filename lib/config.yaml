@@ -18,11 +18,11 @@ layer : GEOGRAPHICALGRIDSYSTEMS.MAPS
 #*************************************
 style :
  couleurFondLibre: blue-grey
- couleurFondReservee: red
+ couleurFondReservee: grey
  couleurTexteLibre: grey-text
- couleurTexteReserve: white-text
+ couleurTexteReserve: lue-grey-text
  couleurFormeLibre: blue-grey
- couleurFormeReservee: red
+ couleurFormeReservee: grey
 #**************************************
 #routes à suivre
 #**************************************
@@ -230,6 +230,18 @@ adminAbonne.html :
 validabonnes :
  classe : ControlleurAbonne
  operation : validAbonne
+ niveauSecurité: 4
+ variable :
+  Null
+adminFront.html :
+ classe : ControlleurFront
+ operation : executeCarte
+ niveauSecurité: 4
+ variable :
+  Null
+validfront :
+ classe : ControlleurFront
+ operation : validFront
  niveauSecurité: 4
  variable :
   Null

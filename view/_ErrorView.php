@@ -37,9 +37,9 @@ class _ErrorView {
 
 		<div id="modal1" class="modal card-panel hoverable">
 			<div class="modal-content orange lighten-5">
-				<h5><i class="material-icons">info</i>  <?php echo ($this->laRaison) ?></h5>
+				<h5><i class="material-icons">info</i>  <?php echo (htmlspecialchars($this->laRaison) )?></h5>
 				<div class="divider"></div>
-				<p><?php echo ($this->leMessage) ?></p>
+				<p><?php echo (htmlspecialchars($this->leMessage)) ?></p>
 			</div>
 			<div class="progress orange lighten-5">
 				<div class="indeterminate"></div>

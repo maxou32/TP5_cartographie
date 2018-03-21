@@ -28,4 +28,27 @@ class ControlleurMenu{
 			return $menuFree->show($data);
 		}
 	}
+	public function getFooter(){
+		//echo"<PRE> COntroller : fin upDateSession";print_r($_SESSION);echo"</PRE>";
+		$maConfig= new Config();
+		$data['style']=$maConfig->getCouleur();
+		
+		$monControle= new ControlleurAccess();
+		if(isset($_SESSION['nom'])){
+			if($monControle->estConnu($_SESSION['nom'])){
+				//echo"<PRE> COntroller : réservé ";print_r($data);echo"</PRE>";
+				$data['nom']=$_SESSION['nom'];
+				$footerPrivate= new _FooterPrivateView();
+				return $footerPrivate->show($data);
+			}else{
+				//echo"<PRE> COntroller : libre ";print_r($data);echo"</PRE>";
+				$footerFree= new _FooterFreeView();
+				return $footerFree->show($data);
+			}
+		}else{
+			//echo"<PRE> COntroller : libre ";print_r($data);echo"</PRE>";
+			$footerFree= new	_FooterFreeView();
+		return $footerFree->show($data);;
+		}
+	}
 }

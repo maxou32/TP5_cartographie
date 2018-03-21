@@ -19,8 +19,8 @@ class Controlleur{
 		}else{
 			$fond="blue-grey";
 		}
-		$monFooterView = new _footerView();
-		return $monFooterView->show($fond);
+		$monControlleurMenu = new ControlleurMenu();
+		return $monControlleurMenu->getFooter();
 	}
 	
 	protected function appelleTemplate($contenu){

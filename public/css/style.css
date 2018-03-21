@@ -1,14 +1,16 @@
-html
-{
-	height:100%;
+html, body {
+	height: 100%;
+	margin: 0; padding: 0;
 }
-body
-{
-	display : flex;
-	min-height:100%;
-	flex-direction: column;
-	margin : 0;
+body {
+	display : table;
+	width: 100%;
 }
+footer {
+	display : table-row;
+	height: 50px; 
+}
+
 main
 {
 	flex : 1 0 auto;
@@ -17,12 +19,7 @@ main
 {
 	height:90%;
 }
-#footer
-{
-	position : fixed;
-	width:100%;
-	bottom:0PX !important;
-}
+
 .page-footer
 {
 	padding-top:5px !important;	
@@ -56,14 +53,13 @@ main
    	overflow: hidden;
    	border: 3px solid #F2F2F2;
 }
-
-.slideshow ul {
+.imgFront
+{
     	/* 4 images donc 4 x 100% */
-  	 width: 500%;
-   	height: 450px;
-  	padding:0; margin:0;
-   	list-style: none;
+  	width: 700px;
+   	height: 400px;
 }
+
 .controls
 {
    	text-align:center;
@@ -78,6 +74,34 @@ main
 	display : flex;
 	align-items:center;
 }
+.dateFront-save-cancel, dateLigne
+{
+	display:inline;
+	margin-bottom:10px;
+}
+#dateFront-save-button
+{
+	display:inline;
+	margin-bottom:10px;
+}
+#mapid
+{
+	width: 100%; 
+	height: 600px;
+}
+#fermeCommande
+{
+	background-color:red;
+	width:15px; 
+	padding-left:2px; 
+	border-radius:5px; 
+	margin:0px; 
+	float:right;
+}
+#fermeCommande a
+{
+	 color:yellow;
+}
 #btnCommande
 {
 	position: absolute; 
@@ -90,6 +114,26 @@ main
 	border-radius: 5px; 
 	width:270px; 
 	display:none;
+}
+
+#Front-action
+{
+	display:none;
+}
+#defFront
+{
+	display : none;
+	background-color: azure;
+}
+#choixLigne, #confirmation, #addFront
+{
+	position:absolute; 
+	top:100px;
+	left:45%; 
+	display: none; 
+	z-index:700; 
+	background-color:white;
+	text-align:center;
 }
 @media screen and (max-width: 800px)
 {

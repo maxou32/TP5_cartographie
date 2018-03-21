@@ -79,6 +79,21 @@ class FrontManager extends Manager{
 		}	;
 	}
 
+	public function getListValide()  {
+		try{
+			$front = [];
+			$q = $this->dbConnect()->query('SELECT  idfront, idauteur, zoom, lat, lng,  valide, nom, description FROM '.$this->prefix.'front WHERE valide = 1 ORDER BY Nom ASC');
+			
+			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
+				$front[] = new Front($donnees);
+			}
+
+			return $front;
+		}catch (PDOException  $e){ 
+			return 'Erreur : '.$e->getMessage();
+		}	;
+	}
+
 	public function update(Front $front)  {
 		try{
 			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'front SET zoom = :zoom, lat= :lat, lng = :lng,  valide = :valide, nom = :nom,  description= :description,  idauteur = :idauteur WHERE idfront = :idfront');
@@ -92,6 +107,19 @@ class FrontManager extends Manager{
 			$q->bindValue(':description', $front->getDescription(), \PDO::PARAM_STR);
 			$q->bindValue(':idauteur', $front->getIdAuteur(), \PDO::PARAM_INT);
 			
+			$q->execute();
+			return true;
+		}catch (PDOException  $e){ 
+			return 'Erreur : '.$e->getMessage();
+		}	;
+	}
+	
+	public function updateValide(Front $front)  {
+		try{
+			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'front SET valide = :valide WHERE idfront = :idfront');
+
+			$q->bindValue(':idfront', $front->getIdFront(), \PDO::PARAM_INT);
+			$q->bindValue(':valide', $front->getValide(), \PDO::PARAM_STR);
 			$q->execute();
 			return true;
 		}catch (PDOException  $e){ 

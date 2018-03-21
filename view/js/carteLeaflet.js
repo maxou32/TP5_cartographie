@@ -25,7 +25,12 @@ var FormeLigne={
 	4:{
 		couleur:'gray',
 		libelle :'Centre',
-		icone: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-canon-24.png'	//icons8-poing-serrÃ©-48.png
+		icone: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-canon-24.png'
+	},
+	5:{
+		couleur:'gray',
+		libelle :'Centre',
+		icone: 'https://web-max.fr/gesFront/public/sdk-ol/img/icons8-canon-gris.png'	
 	}
 };
 
@@ -383,7 +388,9 @@ var Front={
 		
 		return paramCarte;
 	},
-
+	getEstValide:function(){
+		return this.valide;
+	},
 	getModifEnCours:function(){
 		return this.modifEnCours;
 	},
@@ -394,8 +401,8 @@ var Front={
 		markerFrontGroup = new L.LayerGroup();
 		mymap.addLayer(markerFrontGroup);
 		listeFronts.forEach(function(unFront){
-			this.centreMonFront=unFront.montreMoi(FormeLigne[4].icone);
-		})
+			this.centreMonFront=unFront.montreMoi();
+		});
 	},
 	zoomFront:function(idFront){
 		var paramFront=[];
@@ -403,23 +410,29 @@ var Front={
 		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
 		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
 	},
-	montreMoi:function(formeligne){
+	montreMoi:function(){
 		console.log('prepare context menu id '+this.idfront+ ' lat = '+this.lat+' lng = '+this.lng);
 		sessionStorage['idFront']=this.idfront;
+		var nomConflit=this.nom;
+		var numIcone=4;
+		if(!this.valide){
+			numIcone= 5;
+			nomConflit=nomConflit+', à valider';
+		}
 		var centreFront = L.marker( 
 			[this.lat,this.lng], 
 			{
 				draggable: frontDraggable(), 
 				contextmenu: true,
 				icon:  L.icon({
-					iconUrl:formeligne,		//FormeLigne[4].icone
+					iconUrl:FormeLigne[numIcone].icone,		//FormeLigne[4].icone
 					iconSize: [24,24],
 					iconAnchor: [12,12],
 					popupAnchor:  [0,-24]
 					}),
 				riseOnHover:true,
 				alt: 'Point central du front',
-				title: this.nom,
+				title: nomConflit,
 				contextmenuItems: donneMenuContext('front')
 			}
 		).addTo(markerFrontGroup);	
@@ -863,21 +876,31 @@ var LigneFront={
 			console.log('nombre de points '+listePoint.length);
 			var monMaxMarkers=1;
 			var newAutorise=false;
+			var polylineOptions;
 			if(frontDraggable()){
-				monMaxMarkers=1000;
+				var polylineOptions = {
+					newPolylines: true,
+					contextmenu: false,
+					newPolylineTypeMessage: 2,
+					maxMarkers: 1000,
+					color: monLigneFront.couleur,
+					formeLigne:monLigneFront.type, 
+					weight: 5,
+					dashArray: '10,7',
+					lineJoin:'round'				
+				};
 				console.log('front draggable = '+ frontDraggable());
-			}
-			var polylineOptions = {
-				newPolylines: true,
-				contextmenu: false,
-				newPolylineConfirmMessage: 'Voulez-vous commencer une ligne ici ?',
-				newPolylineTypeMessage: 2,
-				maxMarkers: monMaxMarkers,
-				color: monLigneFront.couleur,
-				formeLigne:monLigneFront.type, 
-				weight: 5,
-				dashArray: '10,7',
-				lineJoin:'round'				
+			}else{
+				var polylineOptions = {
+					newPolylines: true,
+					contextmenu: false,
+					newPolylineTypeMessage: 2,
+					color: monLigneFront.couleur,
+					formeLigne:monLigneFront.type, 
+					weight: 5,
+					dashArray: '10,7',
+					lineJoin:'round'				
+				};
 			};
 			console.log ('coordonnées de me points = '+monLigneFront.donneCoordonneesMesPoints(monLigneFront.idlignefront));
 			uneLigneFront = L.Polyline.PolylineEditor(monLigneFront.donneCoordonneesMesPoints(monLigneFront.idlignefront), polylineOptions).addTo(mymap);
