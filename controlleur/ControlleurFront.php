@@ -8,8 +8,7 @@ class ControlleurFront  extends Controlleur {
 		
 	public function executeCarte($params){
 		//echo"<br />FRONT: <pre>";print_r($params);echo"</pre>";
-		$maView= new View($params['zone']);
-		
+		$maView= new View($params['zone']);		
 		$maView->render();
 	}
 	

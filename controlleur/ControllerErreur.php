@@ -1,6 +1,7 @@
 <?php
+namespace web_max\ecrivain\controler;
 
-class ControlleurErreur 	{
+class ErrorController extends MainController	{
 
 	
 public function __construct(){

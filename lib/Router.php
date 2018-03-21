@@ -50,7 +50,7 @@ class Router{
 	/********************************************** */
 	public function renderControlleur(){
 		//echo "<br />get =<pre>";print_r($_GET);echo"</pre>";
-		//echo "<br />request =<pre>";print_r($_REQUEST);echo"</pre>";
+		//echo "<br />request =<pre>";print_r($this->request);echo"</pre>";
 		//echo "<br />controller =".CONTROLLEUR;
 		
 		!isset($this->request['action']) ? $this->request['action']="accueil.html/classe/AccueilView/action/show" : true;
@@ -70,6 +70,7 @@ class Router{
 			//echo"<br />appel 1 : ".$this->myRoad['classe']." fonction : ".$this->myRoad['operation'];
 			//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
 			$this->myParam=$this->myRequest;
+			$this->myParam['brut']=$this->request;
 			if(isset($this->request['userName'])){
 					$this->myParam['userName']=$this->request['userName'];
 					$this->myParam['userPwd']=$this->request['userPwd'];

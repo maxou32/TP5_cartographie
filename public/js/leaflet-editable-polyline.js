@@ -3,7 +3,7 @@ L.Polyline.polylineEditor = L.Polyline.extend({
         var that = this;
         that._changed = false;
 
-        if(this._map._editablePolylines != null) {
+        if(this._map._editablePolylines != null ) {
             return
         }
 
@@ -44,15 +44,16 @@ L.Polyline.polylineEditor = L.Polyline.extend({
 				// ---------------------------------------------------------------------------
 				document.getElementById("btnOuiLigne").addEventListener("click", function(e){
 					
-					console.log("ligne oui ");
-					$('#choixLigne').css({display:'none'});
-					that._options.color=FormeLigne[$('#typeLigne2').val()].couleur;
-					that._options.formeLigne=FormeLigne[$('#typeLigne2').val()].libelle;
-					that._path.attributes[1].value=FormeLigne[$('#typeLigne2').val()].couleur;
-					L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
+						console.log("ligne oui ");
+						$('#choixLigne').css({display:'none'});
+						that._options.color=FormeLigne[$('#typeLigne2').val()].couleur;
+						that._options.formeLigne=FormeLigne[$('#typeLigne2').val()].libelle;
+						that._path.attributes[1].value=FormeLigne[$('#typeLigne2').val()].couleur;
+						L.Polyline.PolylineEditor([latLng], that._options, contexts).addTo(that._map);
+						that.weight=5;
+						that._showBoundMarkers();
+						that._changed = true;
 					
-					that._showBoundMarkers();
-					that._changed = true;
 				});
 				document.getElementById("btnAnnulerLigne").addEventListener("click", function(e){
 					
@@ -196,11 +197,11 @@ L.Polyline.polylineEditor = L.Polyline.extend({
 
             // Do not show edit markers if more than maxMarkers would be shown:
             if(!('maxMarkers' in options))
-                options.maxMarkers = 100;
+                options.maxMarkers = 0;
             if(!('newPolylines' in options))
                 options.newPolylines = false;
             if(!('newPolylineConfirmMessage' in options))
-                options.newPolylineConfirmMessage = '';
+                options.newPolylineConfirmMessage = 'Voulez-vous commencer une ligne ici ?';
 			if(!('newPolylineTypeMessage' in options))
                 options.newPolylineTypeMessage = '';
             if(!('addFirstLastPointEvent' in options))

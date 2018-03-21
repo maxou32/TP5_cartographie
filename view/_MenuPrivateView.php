@@ -27,7 +27,7 @@ class _MenuPrivateView extends View
 							<div class="collapsible-body">
 								<ul>
 									<li><a href="#">Validation des conflits</a></li>
-									<li><a href="#" >Gestion des habilitations</a></li>
+									<li><a href="?action=adminAbonne.html" >Gestion des habilitations</a></li>
 								</ul>
 							</div>				  
 						</li>
@@ -62,7 +62,7 @@ class _MenuPrivateView extends View
 			<!--      -->
 			<ul  class="dropdown-content active" id="dropdown-1">
 				<li><a href="#">Validation des conflits</a></li>
-				<li><a href="#">Gestion des habilitations</a></li>
+				<li><a href="?action=adminAbonne.html">Gestion des habilitations</a></li>
 			</ul>
 			<ul  class="dropdown-content active" id="dropdown-2">
 				<li><a  href="?action=creerFrontsJSON">Création Json</a></li>

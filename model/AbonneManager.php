@@ -102,6 +102,21 @@ class AbonneManager extends Manager{
 		}catch (PDOException  $e){ 
 			return 'Erreur : '.$e->getMessage();
 		}	;
+	}	
+	
+	public function updateNiveauStatus(Abonne $abonne)  {
+		try{
+			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'abonne SET status = :status, idniveau= :idniveau WHERE idabonne = :idabonne');
+
+			$q->bindValue(':idabonne', $abonne->getIdabonne(), \PDO::PARAM_INT);
+			$q->bindValue(':status', $abonne->getStatus(), \PDO::PARAM_STR);
+			$q->bindValue(':idniveau', $abonne->getIdNiveau(), \PDO::PARAM_INT);
+			
+			$q->execute();
+			return true;
+		}catch (PDOException  $e){ 
+			return 'Erreur : '.$e->getMessage();
+		}	;
 	}
 		
 	public function getNbAbonneValide()  {

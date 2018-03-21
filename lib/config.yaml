@@ -221,3 +221,15 @@ supprimeLigneDate :
  niveauSecurité: 0
  variable :
   Null 
+adminAbonne.html :
+ classe : ControlleurAbonne
+ operation : executeCarte
+ niveauSecurité: 4
+ variable :
+  Null
+validabonnes :
+ classe : ControlleurAbonne
+ operation : validAbonne
+ niveauSecurité: 4
+ variable :
+  Null

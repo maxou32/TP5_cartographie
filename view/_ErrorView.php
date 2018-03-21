@@ -10,14 +10,13 @@ class _ErrorView {
 	public function hasError(){
 		$monError=new ControlleurErreur();
 		//ECHO "ERROR VIEW 0";
-		/*if ($monError->getExisteError()) {
-			$monMessageManager= new MessageManager();
-			$this->leMessage=$monMessageManager->getByNumber($monError->getNumberError());
+		if ($monError->getExisteError()) {
+			$this->leMessage=$monError->getLibelleError();
 			$this->laRaison=$monError->getRaisonError();
 			$monError->deleteError();
 			return true;
 		}
-		*/
+		
 	}
 	
 	
@@ -37,12 +36,12 @@ class _ErrorView {
 		</script>
 
 		<div id="modal1" class="modal card-panel hoverable">
-			<div class="modal-content ">
+			<div class="modal-content orange lighten-5">
 				<h5><i class="material-icons">info</i>  <?php echo ($this->laRaison) ?></h5>
 				<div class="divider"></div>
-				<p><?php echo ($this->leMessage->getTexte()) ?></p>
+				<p><?php echo ($this->leMessage) ?></p>
 			</div>
-			<div class="progress">
+			<div class="progress orange lighten-5">
 				<div class="indeterminate"></div>
 			</div>
 		</div>
