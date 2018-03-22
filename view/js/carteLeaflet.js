@@ -5,7 +5,7 @@
 	/*******************************************
 		variables
 	********************************************/
-
+var mymap=[];
 var FormeLigne={
 	1:{
 		couleur:'blue',	
@@ -441,14 +441,10 @@ var Front={
 	},
 	creePointeur:function(centreFront){
 		var newLeaflet= Object.create(Leaflet);
-		
 		newLeaflet.init(this.idfront);
-		//listeLeaflet[this._leaflet_id]=newLeaflet;
 		listeLeaflet[centreFront._leaflet_id]=newLeaflet;
-		console.log ('taille leaflet = '+listeLeaflet.length);
-		console.debug(listeLeaflet);
-
-		centreFront.bindPopup("<b>"+this.nom+" <i>"+this.idfront+"</i></b><br />"+this.description);
+		!this.valide ? nomConflit='A valider' : nomConflit="";
+		centreFront.bindPopup("<b>"+this.nom+"</b> <i>"+ nomConflit +"</i><br />"+this.description);
 		
 	}, 
 	
@@ -881,10 +877,8 @@ var LigneFront={
 				var polylineOptions = {
 					newPolylines: true,
 					contextmenu: false,
-					newPolylineTypeMessage: 2,
 					maxMarkers: 1000,
 					color: monLigneFront.couleur,
-					formeLigne:monLigneFront.type, 
 					weight: 5,
 					dashArray: '10,7',
 					lineJoin:'round'				
@@ -894,9 +888,7 @@ var LigneFront={
 				var polylineOptions = {
 					newPolylines: true,
 					contextmenu: false,
-					newPolylineTypeMessage: 2,
 					color: monLigneFront.couleur,
-					formeLigne:monLigneFront.type, 
 					weight: 5,
 					dashArray: '10,7',
 					lineJoin:'round'				
@@ -1095,6 +1087,7 @@ window.onload = function () {
 		console.log('id Date = '+sessionStorage['idDate'] +'dans liste = '+maDate.description);
 		console.log('id Date = '+sessionStorage['idDate'] +'dans liste = '+maDate.date);
 		$('#dateFront-show').css({display:'inline-block'});
+		$('.dateFrontAction ').css({display:'inline-block'});
 		$('.dateFront-save-cancel').css({display:'none'});
 		$('.detailFront').css({display:'none'});
 		$("#addDescriptionLigne").val(maDate.description);
@@ -1239,20 +1232,9 @@ window.onload = function () {
 		ParamGeneraux[0].actionEnCours="";
 		ParamGeneraux[0].majLigneEnCours=false;
 		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
-		
 	});
 	
-	document.getElementById("btnOuiLigne").addEventListener("click", function(e){
-		console.log("création ligne validée ");
-		$('#choixLigne').css({display:'none'});
-		sessionStorage['couleurFront']=FormeLigne[$('#typeLigne2').val()].couleur;
-		sessionStorage['typeFront']=FormeLigne[$('#typeLigne2').val()].libelle;
-	});
 	
-	document.getElementById("btnAnnulerLigne").addEventListener("click", function(e){
-		console.log("création ligne  annulée ");
-		$('#choixLigne').css({display:'none'});
-	});
 	
 
 	document.getElementById("detailFront-save-button").addEventListener("click", function(e){

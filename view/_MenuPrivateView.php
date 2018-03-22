@@ -19,7 +19,7 @@ class _MenuPrivateView extends View
 		</script>
 		<div >
 			<ul id="menuMobile" class="side-nav active" >
-				<li ><a class="no-padding" href="?action=accueil.html/classe/AccueilView/action/show"  ><i class="material-icons left">home</i>Accueil</a></li>
+				<li ><a class="no-padding" href="?action=accueil.html/classe/AccueilView/action/show"><i class="material-icons left">home</i>Accueil</a></li>
 				<li ><a class="no-padding" href="?action=leaflet2.html" >Zones de conflit</a></li>
 				<li >
 					<ul class="collapsible collapsible-accordion">
@@ -33,6 +33,7 @@ class _MenuPrivateView extends View
 						</li>
 					</ul>
 				</li>
+				<!--
 				<li >
 					<ul class="collapsible collapsible-accordion">
 						<li><a class="collapsible-header no-padding" href="#">json<i class="material-icons right">arrow_drop_down</i></a>
@@ -45,6 +46,8 @@ class _MenuPrivateView extends View
 						</li>
 					</ul>
 				</li>
+				-->
+				<li><a href="?action=montreParam.html" >Présentation </a></li>
 				<li >
 					<ul class="collapsible collapsible-accordion">
 						<li><a class="collapsible-header no-padding" href="#">Bonjour, <?= $datas['nom'] ?><i class="material-icons right">arrow_drop_down</i></a>
@@ -59,15 +62,17 @@ class _MenuPrivateView extends View
 					</ul>
 				</li>
 			</ul>
-			<!--      -->
+			
 			<ul  class="dropdown-content active" id="dropdown-1">
 				<li><a href="?action=adminFront.html">Validation des conflits</a></li>
 				<li><a href="?action=adminAbonne.html">Gestion des habilitations</a></li>
 			</ul>
+			<!--     
 			<ul  class="dropdown-content active" id="dropdown-2">
 				<li><a  href="?action=creerFrontsJSON">Création Json</a></li>
 				<li><a href="?action=lireFrontsJSON" >Lecture Json</a></li>
 			</ul>
+			-->
 			<ul  class="dropdown-content active" id="dropdown-3">
 				<li><a href="#" class="item_menu">Mon profil</a></li>
 				<li class="divider"></li>
@@ -85,7 +90,10 @@ class _MenuPrivateView extends View
 						<li><a href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
 						<li><a href="?action=leaflet2.html" >Zones de conflits</a></li>
 						<li><a data-activates="dropdown-1" class="dropdown-button" href="#">Validation<i class="material-icons right">arrow_drop_down</i></a></li>
+						<!-- 
 						<li><a data-activates="dropdown-2" class="dropdown-button" href="#">json<i class="material-icons right">arrow_drop_down</i></a></li>
+						-->
+						<li><a href="?action=montreParam.html" >Présentation </a></li>
 						<li><a data-activates="dropdown-3" class="dropdown-button" href="#">Bonjour, <?= htmlspecialchars($datas['nom']) ?><i class="material-icons right">arrow_drop_down</i></a></li>
 					</ul>
 				</div>

@@ -38,16 +38,14 @@ main
 {
 	background-color:blue;	
 }
-.admin
-{
-	display:none;
-}
-#sidenav-overlay
+
+#sidenav-overlay, .addDateLigne, .admin, #Front-action
 {
 	display:none;
 }
 
-.slideshow {
+.slideshow 
+{
    	width: 700px;
    	height: 450px;
    	overflow: hidden;
@@ -55,7 +53,6 @@ main
 }
 .imgFront
 {
-    	/* 4 images donc 4 x 100% */
   	width: 700px;
    	height: 400px;
 }
@@ -65,16 +62,12 @@ main
    	text-align:center;
 	margin-top:0px;
 }
-.addDateLigne
-{
-	display:none;
-}
 #btnNavDate
 {
 	display : flex;
 	align-items:center;
 }
-.dateFront-save-cancel, dateLigne
+.dateFront-save-cancel, #dateLigne
 {
 	display:inline;
 	margin-bottom:10px;
@@ -115,11 +108,6 @@ main
 	width:270px; 
 	display:none;
 }
-
-#Front-action
-{
-	display:none;
-}
 #defFront
 {
 	display : none;
@@ -135,14 +123,19 @@ main
 	background-color:white;
 	text-align:center;
 }
+#detailFront-save-button
+{
+	margin-bottom:10px;
+}
 @media screen and (max-width: 800px)
 {
 	#btnCommande
 	{
 		position: relative;
-		top: 0px; 
+		top: 0px !important; 
 		left: 0px; 
 		margin-top:10px;
 		margin-left:10px;
+		width: 95%;
 	}
 }

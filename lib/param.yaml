@@ -1,0 +1,28 @@
+
+#**************************************
+# ajax  
+#*************************************
+ajax :
+ synchrone : 0
+#**************************************
+# propriété de la carte  
+#*************************************
+carte :
+ zoom : 5
+ latCentre : 48.777006
+ lngCentre : 6.354958
+ maxZoom : 18
+ tileSize : 256
+ boxZoom : 1
+ attribution : Web-Max &copy; https://web-max.fr
+ layer : GEOGRAPHICALGRIDSYSTEMS.MAPS
+#**************************************
+# style 
+#*************************************
+style :
+ couleurFondLibre : blue-grey
+ couleurFondReservee : grey
+ couleurTexteLibre : grey-text
+ couleurTexteReserve : lue-grey-text
+ couleurFormeLibre : blue-grey
+ couleurFormeReservee : grey

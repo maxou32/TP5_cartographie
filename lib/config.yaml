@@ -1,29 +1,4 @@
 ﻿#**************************************
-# ajax
-#*************************************
-synchrone : 0
-#**************************************
-# propriétés de la carte
-#*************************************
-zoom : 5
-latCentre : 48.777006
-lngCentre : 6.354958
-maxZoom : 18
-tileSize : 256
-boxZoom : 1
-attribution : Web-Max &copy; https://web-max.fr
-layer : GEOGRAPHICALGRIDSYSTEMS.MAPS
-#**************************************
-# style 
-#*************************************
-style :
- couleurFondLibre: blue-grey
- couleurFondReservee: grey
- couleurTexteLibre: grey-text
- couleurTexteReserve: lue-grey-text
- couleurFormeLibre: blue-grey
- couleurFormeReservee: grey
-#**************************************
 #routes à suivre
 #**************************************
 # l'appel donne le nom de la fonction
@@ -243,5 +218,29 @@ validfront :
  classe : ControlleurFront
  operation : validFront
  niveauSecurité: 4
+ variable :
+  Null
+montreParam.html :
+ classe : ControlleurParam
+ operation : executeCarte
+ niveauSecurité : 4
+ variable :
+  Null
+validparam :
+ classe : ControlleurParam
+ operation : validParam
+ niveauSecurité: 4
+ variable :
+  Null
+demandeMessage.html :
+ classe : ControlleurMessage
+ operation : executeCarte
+ niveauSecurité: 0
+ variable :
+  Null
+envoiMessage.html :
+ classe : ControlleurMessage
+ operation : validMessage
+ niveauSecurité: 0
  variable :
   Null
