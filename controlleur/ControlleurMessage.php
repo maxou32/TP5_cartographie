@@ -3,7 +3,7 @@
 class ControlleurMessage extends Controlleur{
 
 	public function __construct(){
-		//echo"<br />ControlleurAbonne Construct ";
+		//echo"<br />ControlleurMessage Construct ";
 	}
 	
 	public function executeCarte($params){
@@ -15,10 +15,10 @@ class ControlleurMessage extends Controlleur{
 	
 	
 	public function validMessage($params){
-		echo"<br />Controlleur Message 1<pre>";print_r($params['brut']);echo"</pre>";
+		//echo"<br />Controlleur Message 1<pre>";print_r($params['brut']);echo"</pre>";
 		
 		$donnees=array('nom' => $params['brut']['nom'], 'prenom' => $params['brut']['prenom'], 'email'=>$params['brut']['email'], 'objet' => $params['brut']['objet'], 'texte'=>$params['brut']['texte'], 'lu'=>0);
-		echo"<br />ControlleurMessage <pre>";print_r($donnees);echo"</pre>";
+		//echo"<br />ControlleurMessage <pre>";print_r($donnees);echo"</pre>";
 		
 		$monMessage= new MessageManager();
 		$result=$monMessage->add( new Message($donnees));
@@ -28,40 +28,53 @@ class ControlleurMessage extends Controlleur{
 		}else{
 			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurMessage", "raison"=>"Enregistrement d'un nouveau message", "libelle"=>"Votre message est enregistré."));
 		}
-		//echo"<br />ControlleurAbonne création terminée ";
+		//echo"<br />ControlleurMessage création terminée ";
 		header ("location: ?action=accueil.html");	
 		
 	}
-
+	public function donneMessage($params){
+		$maView = new VoirMessagesView();		
+		
+		$monMessage= new MessageManager();
+		$temp['message']=$monMessage->getListAll();
+		
+		isset($_SESSION['niveau']) ? $temp['levelUser']=$_SESSION['niveau'] : $temp['levelUser']=0;
+		isset($_SESSION['IdMessage']) ? $temp['idMessage']=$_SESSION['IdMessage'] : $temp['idMessage']=0;
+		
+		$paramView=$maView->show($temp);			
+		
+		$this->appelleTemplate($paramView);
+	}
 	
-    /**
-     * pour chaque triplet (chapitre, status, numéro) modifie les chapitres
-     * 
-     * @param  array $params couples à modifier
-     * @return boolean resultat de la modification
-     */
-    public function validAbonne($params){	
-		//echo"<PRE>CONTROLLER : validStatusChapters 1 ";print_r($params);echo"</PRE>";
-		$abonneManager= new AbonneManager();
-		foreach ($params['brut']['actionAFaire'] as $key => $value){	
-			if (isset($params['brut']["D".$value])){
-				echo"delete abonné ".$value;
-				$resultat["result"]=$abonneManager->delete($value);
+	public function noteMessageLu($params){
+		echo"<br />Controlleur Message 1<pre>";print_r($params);echo"</pre>";
+		$monMessage= new MessageManager();
+		
+		foreach ($params['brut']as $key => $value){	
+			if (is_numeric($key)){
+				echo ("<br/> nom = ".$key." lu = ".$value);
+				$value === 'on' ? $etat=true :$etat=false ;
+				$donnees=array('idmessage'=>$key, 'lu'=>$etat);
+				$newMessage = new Message($donnees);
+				$resultat["result"]=$monMessage->updateLu($newMessage);
 			}else{
-				//echo (" abone = ".$value." niveau = ".$params['brut']["N".$value]);
-				$donnees=array('idabonne'=>$value,'status'=>$params['brut']["S".$value], 'idniveau'=>$params['brut']["N".$value]);
-				$newAbonne = new Abonne($donnees);
-				$resultat["result"]=$abonneManager->updateNiveauStatus($newAbonne);
+				echo ("<br/> nom = ".$key." non lu = ".$value);
+				$key=substr($key, 1); 
+				$value === 'off' ? $etat=true :$etat=false ;
+				$donnees=array('idmessage'=>$key, 'lu'=>$etat);
+				$newMessage = new Message($donnees);
+				$resultat["result"]=$monMessage->updateLu($newMessage);
 			}
 		}
-		if ($resultat["result"]){
-			
-			$monError=new ControlleurErreur();
-			$monError->setError(array("origine"=> "web_max\Gesfront\controlleurAbonne\validAbonne", "raison"=>"Mise à jour de la liste des abonnés", "libelle"=>"Vos modifications sont prises en compte"));
-		}		
 		
-		header ("Location:?action=adminAbonne.html");
-		//return $resultat["result"];		
-	}	
+		$monError=new ControlleurErreur();
+		if (!$resultat["result"]){
+			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurMessage", "raison"=>"Lecture des messages", "libelle"=>"les messages lus n'ont pas pu être marqués comme tels."));
+		}else{
+			$monError->setError(array("origine"=>CONTROLLEUR."ControlleurMessage", "raison"=>"Lecture des messages", "libelle"=>"Les messages lus sont marqués comme tels."));
+		}
+		//echo"<br />ControlleurMessage création terminée ";
+		header ("location: ?action=accueil.html");	
+	}
 	
 }

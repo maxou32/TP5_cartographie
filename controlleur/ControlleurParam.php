@@ -32,7 +32,7 @@ class ControlleurParam 	extends Controlleur{
 	}
 	  
     public function validParam($params){	
-		//echo"<PRE>CONTROLLER : validParam1 ";print_r($this->data);echo"</PRE>";
+		echo"<PRE>CONTROLLER : validParam1 ";print_r($params);echo"</PRE>";
 
 
 		$result='';
@@ -73,6 +73,6 @@ class ControlleurParam 	extends Controlleur{
 		fclose($handle);
 
 
-		header ("Location:?action=montreParam.html");
+		//header ("Location:?action=montreParam.html");
 	}	
 }

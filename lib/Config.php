@@ -22,6 +22,7 @@ class Config{
 		//echo "CONFIG construct<br/>";
 		require_once "Spyc.php";
 		$this->data = \Spyc::YAMLLoad('lib/config.yaml');
+		$this->data['param'] = \Spyc::YAMLLoad('lib/param.yaml');
 		$this->data['secu'] = \Spyc::YAMLLoad('lib/secu.yaml');
 	}
 	
@@ -53,22 +54,22 @@ class Config{
      * @return array des couleurs
      */
     public function getCouleur(){
-		return $this->data['style'];
+		return $this->data['param']['style'];
 	}
 	/**
      * donne les propriétés de la carte
      * @return array des propriétés
      */	
 	public function getProprieteLeaflet(){
-		$resultat['zoom']= $this->data['zoom'];
-		$resultat['latCentre']= $this->data['latCentre'];
-		$resultat['lngCentre']= $this->data['lngCentre'];
-		$resultat['maxZoom']= $this->data['maxZoom'];
-		$resultat['boxZoom']= $this->data['boxZoom'];
-		$resultat['tileSize']= $this->data['tileSize'];
-		$resultat['attribution']= $this->data['attribution'];
-		$resultat['layer']= $this->data['layer'];
-		$resultat['synchrone']= $this->data['synchrone'];
+		$resultat['zoom']= $this->data['param']['carte']['zoom'];
+		$resultat['latCentre']= $this->data['param']['carte']['latCentre'];
+		$resultat['lngCentre']= $this->data['param']['carte']['lngCentre'];
+		$resultat['maxZoom']= $this->data['param']['carte']['maxZoom'];
+		$resultat['boxZoom']= $this->data['param']['carte']['boxZoom'];
+		$resultat['tileSize']= $this->data['param']['carte']['tileSize'];
+		$resultat['attribution']= $this->data['param']['carte']['attribution'];
+		$resultat['layer']= $this->data['param']['carte']['layer'];
+		$resultat['synchrone']= $this->data['param']['ajax']['synchrone'];
 		return $resultat;
 	}
     /**

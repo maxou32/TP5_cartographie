@@ -28,6 +28,7 @@ class _MenuPrivateView extends View
 								<ul>
 									<li><a href="?action=adminFront.html">Validation des conflits</a></li>
 									<li><a href="?action=adminAbonne.html" >Gestion des habilitations</a></li>
+									<li><a href="?action=litTousMessages.html">Gérer les messages</a></li>
 								</ul>
 							</div>				  
 						</li>
@@ -47,7 +48,7 @@ class _MenuPrivateView extends View
 					</ul>
 				</li>
 				-->
-				<li><a href="?action=montreParam.html" >Présentation </a></li>
+				<li><a href="?action=montreParam.html" >Paramètres </a></li>
 				<li >
 					<ul class="collapsible collapsible-accordion">
 						<li><a class="collapsible-header no-padding" href="#">Bonjour, <?= $datas['nom'] ?><i class="material-icons right">arrow_drop_down</i></a>
@@ -66,6 +67,7 @@ class _MenuPrivateView extends View
 			<ul  class="dropdown-content active" id="dropdown-1">
 				<li><a href="?action=adminFront.html">Validation des conflits</a></li>
 				<li><a href="?action=adminAbonne.html">Gestion des habilitations</a></li>
+				<li><a href="?action=litTousMessages.html">Gérer les messages</a></li>
 			</ul>
 			<!--     
 			<ul  class="dropdown-content active" id="dropdown-2">
@@ -93,7 +95,7 @@ class _MenuPrivateView extends View
 						<!-- 
 						<li><a data-activates="dropdown-2" class="dropdown-button" href="#">json<i class="material-icons right">arrow_drop_down</i></a></li>
 						-->
-						<li><a href="?action=montreParam.html" >Présentation </a></li>
+						<li><a href="?action=montreParam.html" >Paramètres </a></li>
 						<li><a data-activates="dropdown-3" class="dropdown-button" href="#">Bonjour, <?= htmlspecialchars($datas['nom']) ?><i class="material-icons right">arrow_drop_down</i></a></li>
 					</ul>
 				</div>

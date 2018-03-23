@@ -244,3 +244,15 @@ envoiMessage.html :
  niveauSecurité: 0
  variable :
   Null
+litTousMessages.html :
+ classe : ControlleurMessage
+ operation : donneMessage
+ niveauSecurité: 4
+ variable :
+  Null
+noteMessageLu :
+ classe : ControlleurMessage
+ operation : noteMessageLu
+ niveauSecurité: 4
+ variable :
+  Null

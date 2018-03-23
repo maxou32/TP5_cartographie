@@ -10,12 +10,6 @@ class ParamView extends View
 		//echo "debut controlleur carte-> execute carte<pre>";print_r($datas);echo"</pre>";
 		ob_start();
 			?>
-			<script language="javascript" type="text/javascript">
-				function changeParam($key) {
-					document.getElementById("action"+$key).checked=true;
-				}
-
-			</script>
 			<div class="row">
 				<form method="post" action="?action=validparam" class="col m10 offset-m1 s12" >
 					<div class ="col m6 s12">
@@ -40,8 +34,7 @@ class ParamView extends View
 											<input type="checkbox" name="actionAFaire[]" 
 													type="checkbox" 
 													id="<?= "action".htmlspecialchars($key) ?>" 
-													value="<?= htmlspecialchars($key) ?>"
-													onClick='javascript:changeParam("<?= htmlspecialchars($key) ?>")' />												
+													value="<?= htmlspecialchars($key) ?>" />												
 									
 										</td>
 									</tr>
@@ -61,15 +54,15 @@ class ParamView extends View
 							</thead>
 							<tbody>
 								<?php 
-									//for ($i=0; $i < count($datas); $i++){
 									foreach ($datas['style'] as $key => $value){
 										?>
 										<tr>
 											<td><?= htmlspecialchars($key) ?> </td>
 											<td>
-												<input type="text" id="<?="style".htmlspecialchars($key) ?><?= htmlspecialchars($value) ?>"  value="<?= htmlspecialchars($value) ?>">
+												<input type="text" id="<?="style".htmlspecialchars($key) ?>
+													<?= htmlspecialchars($value) ?>"  value="<?= htmlspecialchars($value) ?>">
 											</td>
-									</tr>
+										</tr>
 										<?php							
 									}
 								?>

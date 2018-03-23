@@ -70,7 +70,7 @@ class MessageManager extends Manager{
 	public function getListAll()  {
 		try{
 			$messages = [];
-			$q = $this->dbConnect()->query('SELECT idmessage, nom, prenom, email, texte, datemessage, lu FROM '.$this->prefix.'message ORDER BY nom, prenom ASC ');
+			$q = $this->dbConnect()->query('SELECT idmessage, nom, prenom, email, texte, datemessage, objet, lu FROM '.$this->prefix.'message ORDER BY lu ASC ');
 			
 			while ($donnees = $q->fetch(\PDO::FETCH_ASSOC)){
 				$messages[] = new Message($donnees);
@@ -106,7 +106,7 @@ class MessageManager extends Manager{
 			$q = $this->dbConnect()->prepare('UPDATE '.$this->prefix.'message SET  lu= :lu WHERE idmessage = :idmessage');
 
 			$q->bindValue(':idmessage', $message->getIdmessage(), \PDO::PARAM_INT);
-			$q->bindValue(':lu', $message->getIdNiveau(), \PDO::PARAM_BOLL);
+			$q->bindValue(':lu', $message->getLu(), \PDO::PARAM_BOOL);
 			
 			$q->execute();
 			return true;
