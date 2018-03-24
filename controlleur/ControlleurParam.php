@@ -73,6 +73,6 @@ class ControlleurParam 	extends Controlleur{
 		fclose($handle);
 
 
-		//header ("Location:?action=montreParam.html");
+		header ("Location:?action=montreParam.html");
 	}	
 }

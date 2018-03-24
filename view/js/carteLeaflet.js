@@ -81,16 +81,19 @@ function gererlesDates(idfront){
 	maDate.effaceFronts();
 	console.log('gesrerlesDates idfront = '+ monIdFront);
 	maDate.setIdFront(monIdFront);	
-	maDate.recoitListeDate();
+	var nbDates=maDate.recoitListeDate();
 	
 	if(afficheActionMaj()){
 		$('.dateLigne').css({display:'inline-block'});
 		$('.detailFront').css({display:'none'});
 		$('.infoligne').css({display:'none'});
-		$('#dateFront-show').css({display:'none'});
+		//$('#dateFront-show').css({display:'none'});
 		$('.dateFront-save-cancel').css({display:'none'});
 		$('#btnNavDate').css({display:'none'});
 		$('#infoDateLigne').css({display:'inline-block'});
+
+		$('#dateFront-show').css({display:'inline-block'});
+		
 	}else{
 		var v = maDate.prev();
 		$("#textDescriptifLigne").html(maDate.donneDescriptif());
@@ -279,7 +282,11 @@ function appelAjax(action, param, monDataType){
 				};
 				console.debug(listeDates);
 				removeOptions(document.getElementById("dateLigne"));
-		    }		   
+		    }else if(action==='addFront'){
+				console.log(' demande de tout montrer ');
+				var mesFronts=Object.create(Front);
+					
+			}
         }
     });
 }
@@ -397,21 +404,26 @@ var Front={
 	setModifEnCours:function(etat){
 		this.modifEnCours=etat;
 	},
+	
 	montreTout:function(){
+		console.log('je montre tout');
 		markerFrontGroup = new L.LayerGroup();
 		mymap.addLayer(markerFrontGroup);
 		listeFronts.forEach(function(unFront){
+			console.log('je montre tout');
 			this.centreMonFront=unFront.montreMoi();
 		});
 	},
+	
 	zoomFront:function(idFront){
 		var paramFront=[];
 		paramFront=listeFronts[idFront].getParamCarteUnFront();
 		console.debug("paramFront = "+paramFront['lat']+' '+paramFront['lng']+' '+paramFront['zoom']);
 		mymap.setView([paramFront['lat'],paramFront['lng']],paramFront['zoom']);
 	},
+	
 	montreMoi:function(){
-		console.log('prepare context menu id '+this.idfront+ ' lat = '+this.lat+' lng = '+this.lng);
+		console.log('pje me montre menu id '+this.idfront+ ' lat = '+this.lat+' lng = '+this.lng);
 		sessionStorage['idFront']=this.idfront;
 		var nomConflit=this.nom;
 		var numIcone=4;
@@ -460,7 +472,9 @@ var Front={
 		//rep += 'nbLignesFront>'+ mesFront.length +'|';
 		appelAjax('addFront','nbFront/1/mesFronts/'+rep,'','text');
 		
+		
 	},
+	
 	deleteFront:function(monFront){
 		listeFronts.splice(monFront,1);
 		markerFrontGroup.clearLayers();
@@ -469,6 +483,7 @@ var Front={
 		appelAjax('supprimeFront','idfront/'+monFront,'','text');
 		console.log("Mode suppression terminés");
 	},
+	
 	updateFront:function(monFront){
 		var rep='';
 		rep += 'idfront>' + this.idfront+ '|';
@@ -668,6 +683,8 @@ var DateFront={
 		rep += 'description>'+this.description +'|';
 		rep += 'idfront>'+this.idfront +'|';		
 		appelAjax('addDateFront','nbFront/1/maDate/'+rep,'','text');
+		this.donneDernierId();
+		this.ajoutePointInitiaux();
 		this.recoitListeDate();
 	},
 	duppliqueDateFront:function(){
@@ -732,6 +749,46 @@ var DateFront={
 				});
 			});
 		};
+	},
+	ajoutePointInitiaux:function(maDate){
+		//Ami
+		var maLigneDate=Object.create(LigneFront); 
+		maLigneDate.init(0,'blue','Ami',false,sessionStorage['idDate'],0);
+		maLigneDate.addLigneDate();	
+		maLigneDate.donneDernierId();
+		
+		var idLigneDate=sessionStorage['idLigneDate'];		
+		var lat = parseFloat(listeFronts[this.idfront]['lat'])+0.001;
+		var lng = parseFloat(listeFronts[this.idfront]['lng'])+0.001;
+		var monPoint=Object.create(Point);
+		monPoint.init(0,lat,lng,1,parseInt(idLigneDate));
+		monPoint.addPoint();
+		
+		//Ennemi
+		var maLigneDate=Object.create(LigneFront); 
+		maLigneDate.init(0,'red','Ennemi',false,sessionStorage['idDate'],0);
+		maLigneDate.addLigneDate();	
+		maLigneDate.donneDernierId();
+		
+		var idLigneDate=sessionStorage['idLigneDate'];		
+		var lat = parseFloat(listeFronts[this.idfront]['lat'])-0.001;
+		var lng = parseFloat(listeFronts[this.idfront]['lng'])-0.001;
+		var monPoint=Object.create(Point);
+		monPoint.init(0,lat,lng,1,parseInt(idLigneDate));
+		monPoint.addPoint();
+		
+		//neutre
+		var maLigneDate=Object.create(LigneFront); 
+		maLigneDate.init(0,'green','Neutre',false,sessionStorage['idDate'],0);
+		maLigneDate.addLigneDate();	
+		maLigneDate.donneDernierId();
+		
+		var idLigneDate=sessionStorage['idLigneDate'];		
+		var lat = parseFloat(listeFronts[this.idfront]['lat'])+0.001;
+		var lng = parseFloat(listeFronts[this.idfront]['lng'])-0.001;
+		var monPoint=Object.create(Point);
+		monPoint.init(0,lat,lng,1,parseInt(idLigneDate));
+		monPoint.addPoint();
 	},
 	supprimeMesLignes:function(maDate){
 		var mesLignes=Object.create(LigneFront);
@@ -1208,6 +1265,7 @@ window.onload = function () {
 		ParamGeneraux[0].majLigneEnCours=false;
 		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
 	});
+	
 	document.getElementById("dateFront-save-button").addEventListener("click", function(e){
 		$('.dateFrontAction').css({display:'inline-block'});
 		$('.dateLigne').css({display:'inline-block'});
@@ -1233,9 +1291,6 @@ window.onload = function () {
 		ParamGeneraux[0].majLigneEnCours=false;
 		maDate.donneDateFront(parseInt(sessionStorage['idDate']));	
 	});
-	
-	
-	
 
 	document.getElementById("detailFront-save-button").addEventListener("click", function(e){
 		$('.detailFront').css({display:'none'});
@@ -1259,8 +1314,9 @@ window.onload = function () {
 		var newFront= Object.create(Front);
 		var monCentre=donneCarte().getCenter();
 		console.log("centre carte "+donneCarte().getZoom());
-		newFront.init(0,$('#nomFront').val(),donneCarte().getZoom(),String(monCentre.lat),String(monCentre.lng),false,'',$('#descriptionFront').val());
+		newFront.init(0,$('#nomFront').val(),donneCarte().getZoom(),String(monCentre.lat),String(monCentre.lng),false,listeUser[0].getIdUser(),$('#descriptionFront').val());
 		newFront.addFront();
+		newFront.montreMoi();
 	});
 	document.getElementById("btnAnnulerFront").addEventListener("click", function(e){
 		

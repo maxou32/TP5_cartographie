@@ -67,23 +67,72 @@ class Router{
 		if(isset($this->myRoad['classe'])){
 			$maClasse = new $this->myRoad['classe'];
 			$function = $this->myRoad['operation'];
-			//echo"<br />appel 1 : ".$this->myRoad['classe']." fonction : ".$this->myRoad['operation'];
-			//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
 			$this->myParam=$this->myRequest;
 			$this->myParam['brut']=$this->request;
 			if(isset($this->request['userName'])){
 					$this->myParam['userName']=$this->request['userName'];
 					$this->myParam['userPwd']=$this->request['userPwd'];
 			}
-			
-			foreach ($this->myRoad["variable"] as $key => $value){
-				//echo"<br />element : <pre>";print_r($key);echo"</pre>";
-				empty($key) ? null : $param = $key ;
-				$this->myParam[$key]=$value;
-				//echo"<br />element 2: <pre>";print_r($this->myParam);echo"</pre>";
-				
+			if(isset($this->myRoad['niveauSecurité'])){
+				if(isset($_SESSION['niveau']) ){
+					if($this->myRoad['niveauSecurité']>$_SESSION['niveau']){
+						$monError=new ControlleurErreur();
+						$monError->setError(array("origine"=> "web_max\Gesfront\router\renderControlleur", "raison"=>"Accès avec réservé", "libelle"=>"Vous ne bénéficiez pas des autorisations nécessaires pour poursuivre."));
+						echo "niveau insuffisant";
+						header ("Location:?action=accueil.html/classe/AccueilView/action/show");
+					}else{
+						foreach ($this->myRoad["variable"] as $key => $value){
+							//echo"<br />element : <pre>";print_r($key);echo"</pre>";
+							empty($key) ? null : $param = $key ;
+							$this->myParam[$key]=$value;
+							//echo"<br />element 2: <pre>";print_r($this->myParam);echo"</pre>";
+							
+						}
+						$maClasse->$function($this->myParam);
+					}
+				}else{
+					if($this->myRoad['niveauSecurité'] > 0){
+						$monError=new ControlleurErreur();
+						$monError->setError(array("origine"=> "web_max\Gesfront\router\renderControlleur", "raison"=>"Accès avec réservé (idenfication non réalisée)", "libelle"=>"Vous devez vous identifier pour poursuivre."));			
+						echo "a inscrire ".$this->myRoad['niveauSecurité'];
+					
+						$this->request['action']="accueil.html/classe/AccueilView/action/show";
+						
+						$pathName=$this->getPathName();
+						if(isset($pathName)){		
+							$myConfig= new Config(); 
+							$this->myRoad=$myConfig->getRoad($pathName);
+							//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
+						}
+							
+					
+						$maClasse = new $this->myRoad['classe'];
+						$function = $this->myRoad['operation'];
+						$this->myParam=$this->myRequest;
+						$this->myParam['brut']=$this->request;
+						
+						
+						foreach ($this->myRoad["variable"] as $key => $value){
+							//echo"<br />element : <pre>";print_r($key);echo"</pre>";
+							empty($key) ? null : $param = $key ;
+							$this->myParam[$key]=$value;
+							//echo"<br />element 2: <pre>";print_r($this->myParam);echo"</pre>";
+							
+						}
+						$maClasse->$function($this->myParam);	
+					}else{
+						foreach ($this->myRoad["variable"] as $key => $value){
+							//echo"<br />element : <pre>";print_r($key);echo"</pre>";
+							empty($key) ? null : $param = $key ;
+							$this->myParam[$key]=$value;
+							//echo"<br />element 2: <pre>";print_r($this->myParam);echo"</pre>";
+							
+						}
+						$maClasse->$function($this->myParam);
+					}
+				}
 			}
-			$maClasse->$function($this->myParam);
+			
 		}
 	}
 }

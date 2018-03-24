@@ -60,7 +60,7 @@ class ControlleurFront  extends Controlleur {
 	}	
 	
 	public function addFront($params){
-		//echo "<br />ControlleurLigne 0 : <pre>";print_r($paramsBrut);"</pre>";
+		//echo "<br />ControlleurLigne 0 : <pre>";print_r($params);"</pre>";
 		$params=$this->decoupeParam($params['mesFronts']); 
 		//echo "<br />ControlleurLigne 1 : <pre>";print_r($params);"</pre>";	
 		
@@ -78,6 +78,7 @@ class ControlleurFront  extends Controlleur {
 		}else{
 			echo"Success";
 		}
+		exit;
 		//return $result;
 	}
 	

@@ -47,11 +47,11 @@ class ControlleurAbonne extends Controlleur{
 	public function ajoute($params){
 		echo"<br />ControlleurAbonne 1<pre>";print_r($params);echo"</pre>";
 		
-		$donnees=array('nom' => $params['userName'], 'prenom' => $params['firstName'], 'email'=>$params['mail'], 'datecreation' =>mktime(0, 0, 0, date("m")  , date("d"), date("Y")), 'mdp' => hash('sha256',$params['userPwd']), 'idniveau'=>1, 'status'=>'', 'idavatar'=>Null);
+		$donnees=array('nom' => $params['brut']['userName'], 'prenom' => $params['brut']['firstName'], 'email'=>$params['brut']['mail'], 'datecreation' =>mktime(0, 0, 0, date("m")  , date("d"), date("Y")), 'mdp' => hash('sha256',$params['brut']['userPwd']), 'idniveau'=>1, 'status'=>'', 'idavatar'=>Null);
 		echo"<br />ControlleurAbonne donnees<pre>";print_r($donnees);echo"</pre>";
 		
 		$monAbonne= new AbonneManager();
-		$result=$monAbonne->	add( new Abonne($donnees));
+		$result=$monAbonne->add( new Abonne($donnees));
 		if (!$result){
 			echo"<br />ControlleurAbonne erreur création ";
 			$monError=new ControlleurErreur();
