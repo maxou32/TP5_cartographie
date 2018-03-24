@@ -66,7 +66,7 @@ class VoirMessagesView extends View
 										</span>
 									</div>
 								</li>
-								<!-- lu: <?= htmlspecialchars($datas['message'][$i]->getLu()) ?> -->
+								
 							</ul>
 							<?php	
 								

@@ -9,7 +9,7 @@ class AccueilView extends View
 	public function show($datas){
 		ob_start(); 
 		?>
-		<script language="javascript" type="text/javascript">
+		<script>
 			$(document).ready(function(){
 				$('.slideshow').find('> div:eq(0)').nextAll().css({'opacity':'0','display':'none'});
 				$('.controls > a').click(function(event) {
@@ -31,7 +31,7 @@ class AccueilView extends View
 				<div class ="slideshow col m6 s12"> 
 					<div>
 						<img src="public/media/Front1.jpg" class="imgFront" alt="voir les fronts d'un conflit" />
-							<p class="controls"><a href="#2" class="next"><a href="#3" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
+							<p class="controls"><a href="#2" class="next"></a><a href="#3" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></p>
 					</div>
 					<div>
 						<img src="public/media/Front2.jpg" class="imgFront" alt="1° jour"  />
@@ -39,15 +39,15 @@ class AccueilView extends View
 					</div>
 					<div>
 						<img src="public/media/Front3.jpg" class="imgFront" alt="2° jour"  />
-						<p class="controls"><a href="#2" class="prev"><img src="public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#4" class="next"><a href="#3" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
+						<p class="controls"><a href="#2" class="prev"><img src="public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#4" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></p>
 					</div>
 					<div>
 						<img src="public/media/Front4.jpg" class="imgFront" alt="3° jour" />
-						<p class="controls"><a href="#3" class="prev"><img src="public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#5" class="next"><a href="#3" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
+						<p class="controls"><a href="#3" class="prev"><img src="public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#5" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></p>
 					</div>
 					<div>
 						<img src="public/media/Front5.jpg" class="imgFront" alt="4° jour" />
-						<p class="controls"><a href="#4" class="prev"><img src="public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#5" class="next"><a href="#3" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></a></p>
+						<p class="controls"><a href="#4" class="prev"><img src="public/sdk-ol/img/icons8-inferieur-32.png" alt="Précédent"></a><a href="#5" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></p>
 					</div>
 					<div>
 						<img src="public/media/Front6.jpg" class="imgFront"  alt="5° jour" />
@@ -72,7 +72,7 @@ class AccueilView extends View
 		<div class="row">
 			<div class ="col s12" >
 				<div class= "col s1 offset-s2 <?= htmlspecialchars($datas['style']['couleurFormeLibre']) ?>-text darken-text-4" id="Contact">
-					<a href="index.php?askSendMail"><i class="large material-icons">email</i></a>
+					<a href="?action=demandeMessage.html"><i class="large material-icons">email</i></a>
 				</div>	
 				<div class ="col s1 offset-s3 <?= htmlspecialchars($datas['style']['couleurFormeLibre']) ?>-text darken-text-4" id="sInscrire">
 					<a href="?action=inscription.html/classe/InscriptionView/action/show"><i class="large  material-icons">person_add</i> </a>

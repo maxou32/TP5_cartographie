@@ -11,7 +11,8 @@ class ParamView extends View
 		ob_start();
 			?>
 			<div class="row">
-				<form method="post" action="?action=validparam" class="col m10 offset-m1 s12" >
+				<form method="post" action="?action=validparam.html" class="col m10 offset-m1 s12" >
+					<input name="ajax/synchrone" type="hidden" value='<?= htmlspecialchars($datas['ajax']['synchrone']) ?>' />
 					<div class ="col m6 s12">
 					<table class="highlight centered">
 						<thead>
@@ -25,19 +26,16 @@ class ParamView extends View
 								//for ($i=0; $i < count($datas); $i++){
 								foreach ($datas['carte'] as $key => $value){
 									?>
-									<tr>
-										<td><?= htmlspecialchars($key) ?> </td>
-										<td>
-											<input 	type="text" 
-													id=<?="carte".htmlspecialchars($key) ?><?= htmlspecialchars($value) ?> 
-													value="<?= htmlspecialchars($value) ?>">
-											<input type="checkbox" name="actionAFaire[]" 
-													type="checkbox" 
-													id="<?= "action".htmlspecialchars($key) ?>" 
-													value="<?= htmlspecialchars($key) ?>" />												
-									
-										</td>
-									</tr>
+										<tr>
+											<td><?= htmlspecialchars($key) ?> </td>
+											<td>
+												<input 	type="text" 
+														name='<?="carte/".htmlspecialchars($key) ?>'
+														//id='<?="carte".htmlspecialchars($key) ?>'
+														value='<?= htmlspecialchars($value) ?>' 
+												/>
+											</td>
+										</tr>
 									<?php							
 								}
 							?>
@@ -56,13 +54,16 @@ class ParamView extends View
 								<?php 
 									foreach ($datas['style'] as $key => $value){
 										?>
-										<tr>
-											<td><?= htmlspecialchars($key) ?> </td>
-											<td>
-												<input type="text" id="<?="style".htmlspecialchars($key) ?>
-													<?= htmlspecialchars($value) ?>"  value="<?= htmlspecialchars($value) ?>">
-											</td>
-										</tr>
+											<tr>
+												<td><?= htmlspecialchars($key) ?> </td>
+												<td>
+													<input type="text" 
+														//id='<?="style".htmlspecialchars($key) ?>'  
+														value='<?= htmlspecialchars($value) ?>'
+														name='<?="style/".htmlspecialchars($key) ?>'
+													/>
+												</td>
+											</tr>
 										<?php							
 									}
 								?>

@@ -11,11 +11,10 @@ class AdminFrontView extends View{
 		ob_start(); 
 		
 		?>
-		<script language="javascript" type="text/javascript">
+		<script>
 			function changeValide($front, $valide) {
 				document.getElementById("action"+$front).checked=true;
 				document.getElementById($front).value=$valide;
-				
 			}
 			function detruit($front) {
 				document.getElementById("action"+$front).checked=true;
@@ -23,9 +22,9 @@ class AdminFrontView extends View{
 		</script>
 		<div class="row">
 			<div class="card-panel col s12 m8 offset-m2">
-				<form method="post" action="?action=validfront"  >
+				<form method="post" action="?action=validfront">
 						
-					<div >
+					<div>
 					<?php
 					for($i=0;$i<count($datas['front']);$i++)
 					{

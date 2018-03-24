@@ -56,30 +56,30 @@ class AccesReserveView extends View
 				<div id="resultat"></div>
 				<form  class="formUser" method="post" action="?action=zonereservee.html">    
 					<div class="row">
-					<label for ="userName" class="col s12"> Nom *:</label>
-					<input id="userName" name="userName" type="text"  class="form-control validate col m10 s10"  title="Seuls les lettres et les chiffres sont admis" pattern="[a-zA-Z0-9éèêïë ]*"       required />
-					<input id="cocheNom" class="green-text" type="checkbox" id="test6" checked="checked" />
-					<div id="cercle" class="preloader-wrapper small active">
-						<div class="spinner-layer spinner-green-only">
-							<div class="circle-clipper left">
-								<div class="circle"></div>
-							</div>
-							<div class="gap-patch">
-								<div class="circle"></div>
-							</div>
-							<div class="circle-clipper right">
-								<div class="circle"></div>
+						<label for ="userName" class="col s12"> Nom *:</label>
+						<input id="userName" name="userName" type="text"  class="form-control validate col m10 s10"  title="Seuls les lettres et les chiffres sont admis" pattern="[a-zA-Z0-9éèêïë ]*" required />
+						<input id="cocheNom" class="green-text" type="checkbox" checked="checked" />
+						<div id="cercle" class="preloader-wrapper small active">
+							<div class="spinner-layer spinner-green-only">
+								<div class="circle-clipper left">
+									<div class="circle"></div>
+								</div>
+								<div class="gap-patch">
+									<div class="circle"></div>
+								</div>
+								<div class="circle-clipper right">
+									<div class="circle"></div>
+								</div>
 							</div>
 						</div>
 					</div>
 					
-					
 					<div class="row">
 						<label for ="userPwd" class="col s12"> Mot de passe *:</label>	
-						<input id="userPwd" name="userPwd" type="password" class="form-control validate col m10 s10"  pattern=".{5,}" title="Seules les lettres et les chiffres sont admis"   pattern="[a-zA-Z0-9éèêïë ]*" required/>
+						<input id="userPwd" name="userPwd" type="password" class="form-control validate col m10 s10"  pattern="[a-zA-Z0-9éèêïë ]*.{5,}" title="Seules les lettres et les chiffres sont admis" required/>
 					</div>
 					<span  class=" waves-effect center-align waves-light  btn btn-large blue col m6 offset-m3 s12 ">
-						<input id="submit" type="submit" name="sousAction" value="Accéder à l'espace réservé" class="right-align"><i class="material-icons left">send</i>
+						<input id="submit" type="submit" name="sousAction" value="Accéder à l'espace réservé" class="right-align" /><i class="material-icons left">send</i>
 					</span>
 				</form>
 			</div>

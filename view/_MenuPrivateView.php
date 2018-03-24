@@ -81,7 +81,7 @@ class _MenuPrivateView extends View
 				<li><a href="?action=sortirZoneReservee.html" class="item_menu">Me déconnecter</a></li>
 			</ul>
 			<nav >
-				<div id="menu" class="nav-wrapper <?= $datas['style']['couleurFondReservee'] ?> <?= $datas['style']['couleurTexteReservee'] ?> darken-1">
+				<div id="menu" class="nav-wrapper <?= $datas['style']['couleurFondReservee'] ?> <?= $datas['style']['couleurTexteReserve'] ?> darken-1">
 					<a href="index.php" id= "logo" class="brand-logo">	
 						<img src="public/media/WMlogo.png"	alt="web-max"  class="logo" style="height:65px;">		
 					</a> 

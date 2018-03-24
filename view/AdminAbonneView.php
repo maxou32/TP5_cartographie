@@ -11,7 +11,7 @@ class AdminAbonneView extends View{
 		ob_start(); 
 		
 		?>
-		<script language="javascript" type="text/javascript">
+		<script>
 			function changeStatus($abonne,$status) {
 				document.getElementById($abonne).value=$status;
 				document.getElementById("action"+$abonne).checked=true;

@@ -22,21 +22,21 @@ class _MenuFreeView extends View
 						<i class="material-icons">menu</i>
 					</a>	
 					<ul id="menuGeneral" class="left hide-on-med-and-down">
-						<li><a href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
+						<li><a href="?action=accueil.html" ><i class="material-icons left">home</i>Accueil</a></li>
 						<li><a href="?action=leaflet2.html" >Zones de conflit</a></li>
 						<li><a href="?action=demandeMessage.html">Contactez moi</a></li>
-						<li><a href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
+						<li><a href="?action=inscription.html"> Inscrivez-vous</a></li>
 						<li class="divider"></li>
-						<li><a href="?action=accesreserve.html/classe/AccesReserveView/action/show" >Gestion des conflits</a></li>
+						<li><a href="?action=accesreserve.html" >Gestion des conflits</a></li>
 					
 					</ul>
 					<ul id="menuMobile" class="side-nav active" >
-						<li><a class="no-padding" href="?action=accueil.html/classe/AccueilView/action/show" ><i class="material-icons left">home</i>Accueil</a></li>
+						<li><a class="no-padding" href="?action=accueil.html" ><i class="material-icons left">home</i>Accueil</a></li>
 						<li><a class="no-padding" href="?action=leaflet2.html" >Zones de conflit</a></li>
 						<li><a class="no-padding" href="?action=demandeMessage.html">Contactez moi</a></li>
-						<li><a class="no-padding" href="?action=inscription.html/classe/InscriptionView/action/show"> Inscrivez-vous</a></li>
+						<li><a class="no-padding" href="?action=inscription.html"> Inscrivez-vous</a></li>
 						<li class="divider"></li>
-						<li><a class="no-padding" href="?action=accesreserve.html/classe/AccesReserveView/action/show" >Gestion des conflits	</a></li>
+						<li><a class="no-padding" href="?action=accesreserve.html" >Gestion des conflits	</a></li>
 					</ul>
 					<a href="http://web-max.fr" id= "logo" class="right  brand-logo">	
 						<img src="public/media/WMlogo.png"	alt="web-max" style="height:65px;">		

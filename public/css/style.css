@@ -28,16 +28,6 @@ main
 {
 	min-height:700px !important;
 }
-.GPshowAdvancedToolOpen
-{
-	background-color:white;
-	border: 0px solide white;
-}
-
-#^GPshowSearchEngineOpen
-{
-	background-color:blue;	
-}
 
 #sidenav-overlay, .addDateLigne, .admin, #Front-action
 {

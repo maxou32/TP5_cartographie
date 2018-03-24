@@ -10,7 +10,7 @@ class InscriptionView extends View
 		ob_start(); 
 		//echo "<br />Inscription View avant obStart<pre>";print_r($datas);echo"</pre>";
 		?>
-			<script language="javascript" type="text/javascript">
+			<script>
 				function verifPwd() {
 						if (document.getElementById('userPwd').value != document.getElementById('confPwd').value){
 							$('#modal').css({visibility: 'visible',display:'inline-block'});

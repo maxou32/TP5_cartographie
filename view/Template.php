@@ -19,10 +19,10 @@ class Template extends view{
 		<!DOCTYPE html>
 		<html>
 			<head>
-				<meta charset= "utf8" />
-				<!-- <meta charset="utf8_general_ci" />  -->
-				<!-- Ligne à ajouter si on veut un favicon		-->
-				<link rel="icon" type="image/jpeg" href="public\media\WM.png">
+				<meta charset= "utf-8" />
+				<title>GesFront</title>
+				
+				<link rel="icon" type="image/jpeg" href="public/media/WM.png">
 
 				<meta name="description" content="Protype de présentation des conflits !" />	<!-- description pour les moteurs -->
 				<meta name="keywords" content="conflit, carte, guerre, front, bataille" />										<!-- description des mots clefs -->
@@ -39,14 +39,14 @@ class Template extends view{
 				<meta property="og:url" content="https://web-max.fr/gesfront/index.php"/>
 				<meta property="og:site_name" content="web-max.fr"/>
 				<meta property="og:description" content="Dessin, évolution en vue de la présentation de l'évolution des fronts pendant un conflit">
-				<meta property="og:image" content="public\media\WMlogo.png">
+				<meta property="og:image" content="public/media/WMlogo.png">
 				<!-- Twitter  		-->
 				<meta name="twitter:card" content="Présentation de l'évolution des fronts pendant un conflit">
 				<meta name="twitter:site" content="@Web-max">
 				<meta name="twitter:title" content="Web-max">
 				<meta name="twitter:description" content="Dessin, évolution en vue de la présentation de l'évolution des fronts pendant un conflit"><meta name="twitter:creator" content="@moi_meme">
 				<!-- Twitter Summary card images must be at least 120x120px -->
-				<meta name="twitter:image" content="public\media\icone.png">
+				<meta name="twitter:image" content="public/media/icone.png">
 				
 				<meta http-equiv="X-UA-Compatible" content="IE=edge">
 				<link href="public/css/style.css" rel="stylesheet" /> 
@@ -81,19 +81,18 @@ class Template extends view{
 					
 					});
 				</script>
-				-->
+				--> 
+				
 			</head>
 			<body class="grey lighten-2">	 
 				<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-				<script type="text/javascript"  src="public/js/jquery-3.2.1.min.js"></script>		
-				<script type="text/javascript" src="public/js/ajax.js"></script>
-				<script type="text/javascript" src="public/materialize/js/materialize.min.js"></script>
+				<script src="public/js/jquery-3.2.1.min.js"></script>		
+				<script src="public/js/ajax.js"></script>
+				<script src="public/materialize/js/materialize.min.js"></script>
 				<script src="public/sdk-ol/GpOl3.js"></script>
 				<!-- Extension Géoportail pour Leaflet -->
 				<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js" integrity="sha512-/Nsx9X4HebavoBvEBuyp3I7od5tA0UzAxs+j83KgC8PU0kgB4XiK4Lfe4y4cgBtaRJQEIFCW+oC506aPT2L1zw=="    crossorigin=""></script>
-				
-				
-				<title>GesFront</title>
+
 				<?= $this->menuView ?>
 				<div id="content" >
 					<div id="contenuDetail">
