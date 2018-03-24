@@ -226,7 +226,7 @@ montreParam.html :
  niveauSecurité : 4
  variable :
   Null
-validparam :
+validparam.html :
  classe : ControlleurParam
  operation : validParam
  niveauSecurité: 4

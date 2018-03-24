@@ -46,11 +46,10 @@ class Router{
 	// la fonction renderControlleur va chercher la route à suivre
 	// grace à la classe config et aux parametrtes passés dasn l'url
 	//		si la route existe, il en déduit le controller à appeler
-	//      sinon erreur 44
 	/********************************************** */
 	public function renderControlleur(){
 		//echo "<br />get =<pre>";print_r($_GET);echo"</pre>";
-		//echo "<br />request =<pre>";print_r($this->request);echo"</pre>";
+		//echo "<br />request =<pre>";print_r($_POST);echo"</pre>";
 		//echo "<br />controller =".CONTROLLEUR;
 		
 		!isset($this->request['action']) ? $this->request['action']="accueil.html/classe/AccueilView/action/show" : true;
@@ -78,7 +77,7 @@ class Router{
 					if($this->myRoad['niveauSecurité']>$_SESSION['niveau']){
 						$monError=new ControlleurErreur();
 						$monError->setError(array("origine"=> "web_max\Gesfront\router\renderControlleur", "raison"=>"Accès avec réservé", "libelle"=>"Vous ne bénéficiez pas des autorisations nécessaires pour poursuivre."));
-						echo "niveau insuffisant";
+						//echo "niveau insuffisant";
 						header ("Location:?action=accueil.html/classe/AccueilView/action/show");
 					}else{
 						foreach ($this->myRoad["variable"] as $key => $value){
@@ -94,16 +93,15 @@ class Router{
 					if($this->myRoad['niveauSecurité'] > 0){
 						$monError=new ControlleurErreur();
 						$monError->setError(array("origine"=> "web_max\Gesfront\router\renderControlleur", "raison"=>"Accès avec réservé (idenfication non réalisée)", "libelle"=>"Vous devez vous identifier pour poursuivre."));			
-						echo "a inscrire ".$this->myRoad['niveauSecurité'];
+						//echo "a inscrire ".$this->myRoad['niveauSecurité'];
 					
 						$this->request['action']="accueil.html/classe/AccueilView/action/show";
 						
 						$pathName=$this->getPathName();
-						if(isset($pathName)){		
-							$myConfig= new Config(); 
-							$this->myRoad=$myConfig->getRoad($pathName);
-							//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
-						}
+						$myConfig= new Config(); 
+						$this->myRoad=$myConfig->getRoad($pathName);
+						//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
+						
 							
 					
 						$maClasse = new $this->myRoad['classe'];
@@ -133,6 +131,32 @@ class Router{
 				}
 			}
 			
+		}else{
+			$monError=new ControlleurErreur();
+			$monError->setError(array("origine"=> "web_max\Gesfront\router\renderControlleur", "raison"=>"Route inconnue", "libelle"=>"Cette fonctionnalité n'existe pas"));
+			$this->request['action']="accueil.html/classe/AccueilView/action/show";
+						
+			$pathName=$this->getPathName();
+			$myConfig= new Config(); 
+			$this->myRoad=$myConfig->getRoad($pathName);
+			//echo"<br />myRoad : <pre>";print_r($this->myRoad);echo"</pre>";
+			
+				
+		
+			$maClasse = new $this->myRoad['classe'];
+			$function = $this->myRoad['operation'];
+			$this->myParam=$this->myRequest;
+			$this->myParam['brut']=$this->request;
+			
+			
+			foreach ($this->myRoad["variable"] as $key => $value){
+				//echo"<br />element : <pre>";print_r($key);echo"</pre>";
+				empty($key) ? null : $param = $key ;
+				$this->myParam[$key]=$value;
+				//echo"<br />element 2: <pre>";print_r($this->myParam);echo"</pre>";
+				
+			}
+			$maClasse->$function($this->myParam);				
 		}
 	}
 }

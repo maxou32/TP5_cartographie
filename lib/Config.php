@@ -68,7 +68,8 @@ class Config{
 		$resultat['boxZoom']= $this->data['param']['carte']['boxZoom'];
 		$resultat['tileSize']= $this->data['param']['carte']['tileSize'];
 		$resultat['attribution']= $this->data['param']['carte']['attribution'];
-		$resultat['layer']= $this->data['param']['carte']['layer'];
+		$resultat['layer1']= $this->data['param']['carte']['layer1'];
+		$resultat['layer2']= $this->data['param']['carte']['layer2'];
 		$resultat['synchrone']= $this->data['param']['ajax']['synchrone'];
 		return $resultat;
 	}

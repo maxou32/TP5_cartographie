@@ -32,35 +32,47 @@ class ControlleurParam 	extends Controlleur{
 	}
 	  
     public function validParam($params){	
-		echo"<PRE>CONTROLLER : validParam1 ";print_r($params);echo"</PRE>";
-
-
+		//echo"<PRE>CONTROLLER : validParam1 ";print_r($params['brut']);echo"</PRE>";
+		$this->data=$params['brut'];
+		//echo"<PRE>CONTROLLER : validParam1 ";print_r($this->data);echo"</PRE>";
+		
 		$result='';
 		$result.="\r\n"."#**************************************";
 		$result.="\r\n"."# ajax  ";
 		$result.="\r\n"."#*************************************";		
 		$result.="\r\n"."ajax :";
-		foreach ($this->data["ajax"] as $key => $value){
-			$result.="\r\n ".$key." : ".$value;
-		}		
+		$result.="\r\n synchrone : ".$this->data['ajax/synchrone'];
+				
 		$result.="\r\n"."#**************************************";
 		$result.="\r\n"."# propriété de la carte  ";
 		$result.="\r\n"."#*************************************";		
 		
 		$result.="\r\n"."carte :";
-		foreach ($this->data["carte"] as $key => $value){
-			$result.="\r\n ".$key." : ".$value;
+		foreach ($this->data as $key => $value){
+			$element=explode('/',$key);
+			
+			if($element[0]==='carte'){ 
+				//echo "clef : ".$element[0]." ".$element[1]."<br />";
+				$result.="\r\n ".$element[1]." : ".$value;
+			}
 		}
 		
 		$result.="\r\n"."#**************************************";
 		$result.="\r\n"."# style ";
 		$result.="\r\n"."#*************************************";		
 		
-		$result=$result."\r\n"."style :";
-		foreach ($this->data["style"] as $key => $value){
-			$result.="\r\n ".$key." : ".$value;
+		$result.="\r\n"."style :";
+		foreach ($this->data as $key => $value){
+			$element=explode('/',$key);
+			
+			if($element[0]==='style'){ 
+				//echo "clef : ".$element[0]." ".$element[1]."<br />";
+				$result.="\r\n ".$element[1]." : ".$value;
+			}
 		}
 		$result=substr($result, 1); 
+		//echo"<PRE>CONTROLLER : result ";print_r($result);echo"</PRE>";
+		
 		$chemin = $this->cheminFichier;
 		$handle = fopen($chemin, "w+");
 		$monError=new ControlleurErreur();

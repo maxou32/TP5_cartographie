@@ -113,7 +113,6 @@ function modifierUnConflit(idfront){
 	var idfront=listeLeaflet[idfront.relatedTarget._leaflet_id]['idFront'];
 	var monFront=Object.create(Front);
 	monFront.zoomFront(idfront);
-	//alert('modifier le conflit num = '+idfront);
 	$('.detailFront').css({display:'inline-block'});
 	var monParam=Object.create(paramGeneraux);
 	monParam.afficheBtnCommande(true);
@@ -140,6 +139,7 @@ function donneCarte(){
 function ouvrirCarte(){
 	appelAjax('paramGenerauxCarte','','json');
 	console.log(donneMenuContext('gene'));
+	
 	mymap = L.map("mapid",{
 		center : [ ParamGeneraux[0]['latCentre'],ParamGeneraux[0]['lngCentre'] ],
 		zoom: ParamGeneraux[0]['zoom'],
@@ -149,7 +149,7 @@ function ouvrirCarte(){
 		}
 	);
 
-	var etatMajor =	L.tileLayer('https://wxs.ign.fr/hz2zuzccg4dyv6kacncfnbxj/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer='+ParamGeneraux[0]['layer']+'&format=image/jpeg&style=normal',  //
+	var etatMajor =	L.tileLayer('https://wxs.ign.fr/hz2zuzccg4dyv6kacncfnbxj/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer='+ParamGeneraux[0]['layer1']+'&format=image/jpeg&style=normal',  //
 		{
 			minZoom : 0,
 			maxZoom : ParamGeneraux[0]['maxZoom'] ,
@@ -158,6 +158,20 @@ function ouvrirCarte(){
 			attribution : ParamGeneraux[0]['attribution']
 		});
 	etatMajor.addTo(mymap);	
+	var photo =	L.tileLayer('https://wxs.ign.fr/hz2zuzccg4dyv6kacncfnbxj/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer='+ParamGeneraux[0]['layer2']+'&format=image/jpeg&style=normal',  //
+		{
+			minZoom : 0,
+			maxZoom : ParamGeneraux[0]['maxZoom'] ,
+			tileSize : ParamGeneraux[0]['tileSize'],
+			boxZoom : ParamGeneraux[0]['boxZoom'],
+			attribution : ParamGeneraux[0]['attribution']
+		});
+	etatMajor.addTo(mymap);	
+	var baseMaps={
+		"Etat-major" : etatMajor,
+		"Photo" : photo
+	}
+	L.control.layers(baseMaps).addTo(mymap);
 };
 
 function donneMenuContext(menu){
@@ -313,7 +327,7 @@ var Leaflet={
 	********************************************/
 ParamGeneraux=[];
 var paramGeneraux={
-	init:function(zoom, latCentre,lngCentre,maxZoom,tileSize,boxZoom,attribution,layer,synchrone,majLigneEnCours){
+	init:function(zoom, latCentre,lngCentre,maxZoom,tileSize,boxZoom,attribution,layer1,layer2,synchrone,majLigneEnCours){
 	this.zoom=zoom;
 	this.latCentre=latCentre;
 	this.lngCentre=lngCentre;
@@ -321,7 +335,8 @@ var paramGeneraux={
 	this.tileSize=tileSize;
 	this.boxZoom=boxZoom;
 	this.attribution=attribution;
-	this.layer=layer;
+	this.layer1=layer1;
+	this.layer2=layer2;
 	this.synchrone=synchrone;
 	this.majLigneEnCours=false;
 	this.actionEnCours=''

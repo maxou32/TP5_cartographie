@@ -34,7 +34,8 @@ class ControlleurCarte extends Controlleur{
 			$param['tileSize']=$maConfig->getProprieteLeaflet()['tileSize']; 
 			$param['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
 			$param['attribution']=$maConfig->getProprieteLeaflet()['attribution'];
-			$param['layer']=$maConfig->getProprieteLeaflet()['layer'];
+			$param['layer1']=$maConfig->getProprieteLeaflet()['layer1'];
+			$param['layer2']=$maConfig->getProprieteLeaflet()['layer2'];
 			$param['synchrone']=$maConfig->getProprieteLeaflet()['synchrone'];
 		echo json_encode($param);	
 		//echo $param;	
@@ -90,7 +91,8 @@ class ControlleurCarte extends Controlleur{
 			$param['tileSize']=$maConfig->getProprieteLeaflet()['tileSize']; 
 			$param['boxZoom']=$maConfig->getProprieteLeaflet()['boxZoom'];
 			$param['attribution']=$maConfig->getProprieteLeaflet()['attribution'];
-			$param['layer']=$maConfig->getProprieteLeaflet()['layer'];
+			$param['layer1']=$maConfig->getProprieteLeaflet()['layer1'];
+			$param['layer2']=$maConfig->getProprieteLeaflet()['layer2'];
 			$param['synchrone']=$maConfig->getProprieteLeaflet()['synchrone'];
 			
 		return $param;		

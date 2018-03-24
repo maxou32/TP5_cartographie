@@ -1,4 +1,4 @@
-﻿
+
 #**************************************
 # ajax  
 #*************************************
@@ -15,8 +15,7 @@ carte :
  tileSize : 256
  boxZoom : 1
  attribution : Web-Max &copy; https://web-max.fr
- layer1 : GEOGRAPHICALGRIDSYSTEMS.MAPS
- layer2 : ORTHOIMAGERY.ORTHOPHOTOS
+ layer : GEOGRAPHICALGRIDSYSTEMS.MAPS
 #**************************************
 # style 
 #*************************************
@@ -24,6 +23,6 @@ style :
  couleurFondLibre : blue-grey
  couleurFondReservee : grey
  couleurTexteLibre : grey-text
- couleurTexteReserve : blue-grey-text
+ couleurTexteReserve : lue-grey-text
  couleurFormeLibre : blue-grey
  couleurFormeReservee : grey
