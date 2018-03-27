@@ -28,7 +28,7 @@ class AccueilView extends View
 			
 		</script>
 			<div class="row">	
-				<div class ="slideshow col m6 s12"> 
+				<div class ="slideshow col m6 s12 center"> 
 					<div>
 						<img src="public/media/Front1.jpg" class="imgFront" alt="voir les fronts d'un conflit" />
 							<p class="controls"><a href="#2" class="next"></a><a href="#3" class="next"><img src="public/sdk-ol/img/icons8-superieur-32.png" alt="Suivant"></a></p>

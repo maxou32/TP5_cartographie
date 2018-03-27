@@ -52,12 +52,12 @@ class AccesReserveView extends View
 		</script>
 
 		<div class="row">
-			<div class="card-panel col m6 offset-m3 s12">
+			<div class="card-panel orange lighten-5 col m6 offset-m3 s12">
 				<div id="resultat"></div>
 				<form  class="formUser" method="post" action="?action=zonereservee.html">    
 					<div class="row">
-						<label for ="userName" class="col s12"> Nom *:</label>
-						<input id="userName" name="userName" type="text"  class="form-control validate col m10 s10"  title="Seuls les lettres et les chiffres sont admis" pattern="[a-zA-Z0-9éèêïë ]*" required />
+						<input id="userName" name="userName" type="text"  class="validate col m10 s10"  title="Seuls les lettres et les chiffres sont admis" pattern="[a-zA-Z0-9éèêïë ]*" required />
+						<label for ="userName" class="col s12"> Nom *</label>
 						<input id="cocheNom" class="green-text" type="checkbox" checked="checked" />
 						<div id="cercle" class="preloader-wrapper small active">
 							<div class="spinner-layer spinner-green-only">
@@ -75,12 +75,14 @@ class AccesReserveView extends View
 					</div>
 					
 					<div class="row">
-						<label for ="userPwd" class="col s12"> Mot de passe *:</label>	
-						<input id="userPwd" name="userPwd" type="password" class="form-control validate col m10 s10"  pattern="[a-zA-Z0-9éèêïë ]*.{5,}" title="Seules les lettres et les chiffres sont admis" required/>
+						<input id="userPwd" name="userPwd" type="password" class=" validate col m10 s10"  pattern="[a-zA-Z0-9éèêïë ]*.{5,}" title="Seules les lettres et les chiffres sont admis" required/>
+						<label for ="userPwd" class="col s12"> Mot de passe *</label>	
 					</div>
-					<span  class=" waves-effect center-align waves-light  btn btn-large blue col m6 offset-m3 s12 ">
-						<input id="submit" type="submit" name="sousAction" value="Accéder à l'espace réservé" class="right-align" /><i class="material-icons left">send</i>
-					</span>
+					<div class="row">
+						<span  class=" waves-effect center-align waves-light  btn btn-large blue col m6 offset-m3 s12 ">
+							<input id="submit" type="submit" name="sousAction" value="Accéder à l'espace réservé" class="right-align" /><i class="material-icons left">send</i>
+						</span>
+					</div>
 				</form>
 			</div>
 		</div>		

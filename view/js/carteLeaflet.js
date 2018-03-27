@@ -1,4 +1,4 @@
-
+﻿
 /*******************************************
 		globales
 ********************************************/
@@ -1126,6 +1126,8 @@ window.onload = function () {
 	console.log('debut chgt fronts');
 	
 	console.log('fin chgt fronts');
+	
+	//$('#mapid').css({height:'700px'});
 	
 	//positionnement des combats
 	mesFronts=Object.create(Front);

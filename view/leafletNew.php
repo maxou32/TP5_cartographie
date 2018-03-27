@@ -57,7 +57,7 @@
 		<div class="row">
 			
 			<div class="col m12 s12">
-				<div id="mapid" ></div>
+				<div id="mapid"  ></div>
 			</div>
 			
 			<div id="btnCommande" >
